@@ -20,5 +20,6 @@ export function createInitialState(): GameState {
     dialogue: OPENING_DIALOGUE,
     dialogueIndex: 0,
     lastOpinion: null,
+    rejectionPressure: 0,
   };
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type Dispatch } from "react";
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
+import { getProposal, PROPOSALS, type ProposalDefinition } from "../../content/proposals";
 import { formatClock, formatDuration, REFRIGERATION_DEADLINE_MINUTES } from "../../game/clock";
 import {
   getAvailableTasks,
@@ -9,9 +10,11 @@ import {
 } from "../../game/reducer";
 import type {
   Actor,
+  DialogueLine,
   GameAction,
   GameState,
-  Opinion,
+  EvidenceId,
+  ProposalId,
   TaskDefinition,
   TaskId,
 } from "../../types/game";
@@ -37,13 +40,6 @@ const ACTOR_COLOR: Record<Actor, string> = {
   mira: "var(--plan-mira)",
   seoyun: "var(--plan-seoyun)",
 };
-
-const OPINIONS: { id: Opinion; label: string; detail: string }[] = [
-  { id: "power", label: "발전소부터 보자", detail: "주 전원을 먼저 확인한다" },
-  { id: "motorcycle", label: "바이크부터 보자", detail: "서윤의 이동 수단을 먼저 확인한다" },
-  { id: "refrigeration", label: "냉장 설비부터 보자", detail: "비상 전원에 의존하는 설비를 본다" },
-  { id: "investigate", label: "조금 더 조사하자", detail: "판단 전에 새 정보를 요청한다" },
-];
 
 function getTimelineBlocks(state: GameState, actor: Actor, previewProgress = 0): TimelineBlock[] {
   const blocks: TimelineBlock[] = [];
@@ -503,30 +499,94 @@ function TaskPicker({ state, dispatch }: { state: GameState; dispatch: Dispatch<
   );
 }
 
-function OpinionDrawer({ dispatch, disabled = false }: { dispatch: Dispatch<GameAction>; disabled?: boolean }) {
+function ProposalEvidenceDialog({
+  proposal,
+  state,
+  selectedEvidenceIds,
+  onToggleEvidence,
+  onCancel,
+  onConfirm,
+}: {
+  proposal: ProposalDefinition;
+  state: GameState;
+  selectedEvidenceIds: EvidenceId[];
+  onToggleEvidence: (evidenceId: EvidenceId) => void;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
   return (
-    <details className="opinion-drawer">
-      <summary>
-        <span>
-          <small>판단</small>
-          의견 말하기
-        </span>
-        <b>열기</b>
-      </summary>
-      <div className="opinion-drawer-list">
-        {OPINIONS.map((opinion) => (
-          <button
-            type="button"
-            disabled={disabled}
-            key={opinion.id}
-            onClick={() => dispatch({ type: "CHOOSE_OPINION", opinion: opinion.id })}
-          >
-            <strong>{opinion.label}</strong>
-            <span>{opinion.detail}</span>
-          </button>
-        ))}
-      </div>
-    </details>
+    <div className="proposal-backdrop" role="presentation" onClick={onCancel}>
+      <section
+        className="proposal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="proposal-dialog-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="proposal-dialog-header">
+          <div>
+            <p className="panel-eyebrow">PLAYER PROPOSAL / EVIDENCE</p>
+            <h2 id="proposal-dialog-title">제안</h2>
+          </div>
+          <button type="button" className="proposal-dialog-close" onClick={onCancel}>닫기</button>
+        </header>
+
+        <div className="proposal-dialog-action">
+          <span>{proposal.number}</span>
+          <strong>{proposal.title}</strong>
+          <p>행동만 제안하거나, 지금까지 확보한 정보를 함께 제시할 수 있습니다.</p>
+        </div>
+
+        <div className="proposal-evidence-heading">
+          <div>
+            <p>함께 제시할 정보</p>
+            <small>근거는 선택 사항입니다. 최대 3개까지 고를 수 있습니다.</small>
+          </div>
+          <strong>{selectedEvidenceIds.length} / 3</strong>
+        </div>
+
+        <div className="proposal-evidence-options">
+          {state.discoveredEvidence.length === 0 ? (
+            <p className="proposal-no-evidence">아직 확보한 정보가 없습니다. 행동만 제안할 수 있습니다.</p>
+          ) : (
+            state.discoveredEvidence.map((evidenceId) => {
+              const evidence = EVIDENCE[evidenceId];
+              const isSelected = selectedEvidenceIds.includes(evidenceId);
+              const isAtLimit = selectedEvidenceIds.length >= 3 && !isSelected;
+              return (
+                <label className={`proposal-evidence-option${isSelected ? " is-selected" : ""}`} key={evidenceId}>
+                  <input
+                    type="checkbox"
+                    aria-label={evidence.title}
+                    checked={isSelected}
+                    disabled={isAtLimit}
+                    onChange={() => onToggleEvidence(evidenceId)}
+                  />
+                  <span>
+                    <strong>{evidence.title}</strong>
+                    <small>{evidence.detail}</small>
+                  </span>
+                </label>
+              );
+            })
+          )}
+        </div>
+
+        <div className="proposal-selected-evidence">
+          <p>선택한 근거</p>
+          {selectedEvidenceIds.length === 0 ? (
+            <span>· 근거 없이 행동만 제안</span>
+          ) : (
+            selectedEvidenceIds.map((evidenceId) => <span key={evidenceId}>· {EVIDENCE[evidenceId].title}</span>)
+          )}
+        </div>
+
+        <footer className="proposal-dialog-actions">
+          <button type="button" className="proposal-cancel-button" onClick={onCancel}>취소</button>
+          <button type="button" className="proposal-confirm-button" onClick={onConfirm}>제시하시겠습니까?</button>
+        </footer>
+      </section>
+    </div>
   );
 }
 
@@ -640,12 +700,92 @@ function AttachmentViewer({
   );
 }
 
+function rawSpeakerLabel(speaker: DialogueLine["speaker"]): string {
+  switch (speaker) {
+    case "mira":
+      return "MIRAGE";
+    case "seoyun":
+      return "한서윤";
+    case "player":
+      return "당신";
+    default:
+      return "OASIS 기록";
+  }
+}
+
+function ProposalLedger({
+  onStartProposal,
+  disabled = false,
+}: {
+  onStartProposal: (proposalId: ProposalId) => void;
+  disabled?: boolean;
+}) {
+  return (
+    <section className="proposal-ledger" aria-label="행동별 논쟁">
+      <header className="proposal-ledger-heading">
+        <div>
+          <p>행동별 논쟁</p>
+          <h2>무엇을 먼저 할지</h2>
+        </div>
+        <span>읽은 자리에서 바로 제안</span>
+      </header>
+      <div className="proposal-list">
+        {PROPOSALS.map((proposal) => (
+          <article className="proposal-entry" key={proposal.id}>
+            <header className="proposal-entry-header">
+              <div className="proposal-entry-title">
+                <span>{proposal.number}</span>
+                <h3>{proposal.title}</h3>
+              </div>
+              <button
+                type="button"
+                className="proposal-start-button"
+                disabled={disabled}
+                onClick={() => onStartProposal(proposal.id)}
+              >
+                제안하기 <span aria-hidden="true">↗</span>
+              </button>
+            </header>
+
+            <div className="proposal-positions">
+              <blockquote className="proposal-position proposal-position--seoyun">
+                <cite>한서윤</cite>
+                <p>“{proposal.seoyunSummary}”</p>
+              </blockquote>
+              <blockquote className="proposal-position proposal-position--mira">
+                <cite>MIRAGE</cite>
+                <p>“{proposal.miraSummary}”</p>
+              </blockquote>
+            </div>
+
+            <details className="proposal-raw-log">
+              <summary><span>대화 LOG RAW</span><small>요약 아래 원문 보기</small></summary>
+              <div className="proposal-raw-lines">
+                {proposal.rawDialogue.map((line, index) => (
+                  <p key={`${proposal.id}-raw-${index}`}>
+                    <strong>{rawSpeakerLabel(line.speaker)}</strong>
+                    <span>{line.text}</span>
+                  </p>
+                ))}
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function FieldDocument({
   state,
   onOpenAttachment,
+  onStartProposal,
+  disabled = false,
 }: {
   state: GameState;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
+  onStartProposal: (proposalId: ProposalId) => void;
+  disabled?: boolean;
 }) {
   return (
     <article className="field-document">
@@ -665,19 +805,7 @@ function FieldDocument({
         </div>
       </section>
 
-      <section className="field-document-section">
-        <SectionHeading eyebrow="두 사람의 메모" title="서로 다른 우선순위" />
-        <div className="field-opinion-notes">
-          <blockquote className="field-opinion-note field-opinion-note--mira">
-            <p>“주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”</p>
-            <cite>미라</cite>
-          </blockquote>
-          <blockquote className="field-opinion-note field-opinion-note--seoyun">
-            <p>“난 바이크부터 보고 싶은데?”</p>
-            <cite>한서윤</cite>
-          </blockquote>
-        </div>
-      </section>
+      <ProposalLedger onStartProposal={onStartProposal} disabled={disabled} />
 
       <section className="field-document-section">
         <SectionHeading eyebrow="조사 결과" title="도착한 기록" />
@@ -705,7 +833,7 @@ function FieldDocument({
 
       <section className="field-document-section field-document-section--records">
         <SectionHeading eyebrow="문서 사용법" title="읽는 곳, 정하는 곳" />
-        <p className="document-note">본문은 상황과 상세 기록을 읽는 곳입니다. 조사 요청과 시간 진행은 오른쪽 계획판에서 언제든 조정할 수 있습니다.</p>
+        <p className="document-note">본문의 행동별 논쟁에서 제안을 시작하고, 조사 요청과 시간 진행은 오른쪽 계획판에서 조정할 수 있습니다.</p>
       </section>
     </article>
   );
@@ -726,7 +854,7 @@ function CompletionNote({ state }: { state: GameState }) {
   );
 }
 
-type SupportTab = "evidence" | "results" | "opinion";
+type SupportTab = "evidence" | "results";
 
 function ResultHistory({
   state,
@@ -833,7 +961,6 @@ function SupportTabs({
   onChange,
   onOpenAttachment,
   onOpenResult,
-  dispatch,
   disabled = false,
 }: {
   state: GameState;
@@ -841,7 +968,6 @@ function SupportTabs({
   onChange: (tab: SupportTab) => void;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onOpenResult: (taskId: TaskId) => void;
-  dispatch: Dispatch<GameAction>;
   disabled?: boolean;
 }) {
   return (
@@ -850,7 +976,6 @@ function SupportTabs({
         {([
           ["evidence", "확보한 정보"],
           ["results", "최근 결과"],
-          ["opinion", "의견 말하기"],
         ] as [SupportTab, string][]).map(([tab, label]) => (
           <button
             type="button"
@@ -871,7 +996,6 @@ function SupportTabs({
       <div className="support-tab-content">
         {activeTab === "evidence" && <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} disabled={disabled} />}
         {activeTab === "results" && <ResultHistory state={state} onOpenResult={onOpenResult} disabled={disabled} />}
-        {activeTab === "opinion" && <OpinionDrawer dispatch={dispatch} disabled={disabled} />}
       </div>
     </section>
   );
@@ -981,7 +1105,6 @@ function PlanningPanel({
           onChange={onSupportTabChange}
           onOpenAttachment={onOpenAttachment}
           onOpenResult={onOpenResult}
-          dispatch={dispatch}
           disabled={isAdvancing}
         />
       </div>
@@ -992,6 +1115,7 @@ function PlanningPanel({
 export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   const [openAttachment, setOpenAttachment] = useState<AttachmentDefinition | null>(null);
   const [openResult, setOpenResult] = useState<TaskId[] | null>(null);
+  const [proposalDialog, setProposalDialog] = useState<{ id: ProposalId; evidenceIds: EvidenceId[] } | null>(null);
   const [activeSupportTab, setActiveSupportTab] = useState<SupportTab>("evidence");
   const [toastTaskIds, setToastTaskIds] = useState<TaskId[]>([]);
   const [transition, setTransition] = useState<{ from: number; to: number } | null>(null);
@@ -1047,6 +1171,22 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
     setOpenResult([taskId]);
   };
 
+  const startProposal = (proposalId: ProposalId) => {
+    setProposalDialog({ id: proposalId, evidenceIds: [] });
+  };
+
+  const toggleProposalEvidence = (evidenceId: EvidenceId) => {
+    setProposalDialog((current) => {
+      if (!current) return current;
+      const evidenceIds = current.evidenceIds.includes(evidenceId)
+        ? current.evidenceIds.filter((id) => id !== evidenceId)
+        : current.evidenceIds.length >= 3
+          ? current.evidenceIds
+          : [...current.evidenceIds, evidenceId];
+      return { ...current, evidenceIds };
+    });
+  };
+
   return (
     <main className="report-shell">
       <header className="report-topbar">
@@ -1063,7 +1203,12 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
       <div className="report-workspace">
         <section className="document-pane" aria-label="정보 문서">
           <div className="document-scroll">
-            <FieldDocument state={state} onOpenAttachment={setOpenAttachment} />
+            <FieldDocument
+              state={state}
+              onOpenAttachment={setOpenAttachment}
+              onStartProposal={startProposal}
+              disabled={isAdvancing}
+            />
           </div>
         </section>
         <PlanningPanel
@@ -1098,6 +1243,23 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
         />
       )}
       {openAttachment && <AttachmentViewer attachment={openAttachment} onClose={() => setOpenAttachment(null)} />}
+      {proposalDialog && (
+        <ProposalEvidenceDialog
+          proposal={getProposal(proposalDialog.id)}
+          state={state}
+          selectedEvidenceIds={proposalDialog.evidenceIds}
+          onToggleEvidence={toggleProposalEvidence}
+          onCancel={() => setProposalDialog(null)}
+          onConfirm={() => {
+            dispatch({
+              type: "PROPOSE_ACTION",
+              proposalId: proposalDialog.id,
+              evidenceIds: proposalDialog.evidenceIds,
+            });
+            setProposalDialog(null);
+          }}
+        />
+      )}
     </main>
   );
 }

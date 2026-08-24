@@ -1,4 +1,8 @@
-import { getOpinionDialogue } from "../content/dialogue/opinions";
+import {
+  AUTONOMOUS_TAKEOVER_DIALOGUE,
+  getAutonomousTaskIds,
+  getProposalReaction,
+} from "../content/proposals";
 import { TASKS } from "../content/tasks";
 import { createInitialState } from "./state";
 import type {
@@ -174,6 +178,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         activeTasks[actor] = null;
       });
 
+      const foundNewEvidence = discoveredEvidence.length > state.discoveredEvidence.length;
+
       (Object.entries(activeTasks) as [
         Actor,
         GameState["activeTasks"][Actor],
@@ -194,17 +200,43 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         completedTaskIds,
         discoveredEvidence,
         recentlyCompleted: completedNow.map(([, task]) => task!.taskId),
+        rejectionPressure: foundNewEvidence ? 0 : state.rejectionPressure,
       };
     }
 
-    case "CHOOSE_OPINION":
+    case "PROPOSE_ACTION": {
+      const selectedEvidenceIds = [...new Set(action.evidenceIds)].slice(0, 3);
+      const reaction = getProposalReaction(state, action.proposalId, selectedEvidenceIds);
+      const nextPressure = reaction.outcome === "rejected" ? state.rejectionPressure + 1 : 0;
+      const shouldTakeOver = nextPressure >= 3;
+      const queuedTasks = {
+        mira: [...state.queuedTasks.mira],
+        seoyun: [...state.queuedTasks.seoyun],
+      };
+
+      if (shouldTakeOver) {
+        const scheduledTaskIds = new Set(getScheduledTaskIds(state));
+        getAutonomousTaskIds(state).forEach((taskId) => {
+          const task = getTask(taskId);
+          const canPlan = getAvailableTasks(state).some((availableTask) => availableTask.id === taskId);
+          if (!canPlan || scheduledTaskIds.has(taskId)) return;
+          queuedTasks[task.actor].push(taskId);
+          scheduledTaskIds.add(taskId);
+        });
+      }
+
       return {
         ...state,
         view: "vn",
-        dialogue: getOpinionDialogue(state, action.opinion),
+        dialogue: shouldTakeOver
+          ? [...reaction.dialogue, ...AUTONOMOUS_TAKEOVER_DIALOGUE]
+          : reaction.dialogue,
         dialogueIndex: 0,
-        lastOpinion: action.opinion,
+        lastOpinion: action.proposalId,
+        queuedTasks,
+        rejectionPressure: shouldTakeOver ? 0 : nextPressure,
       };
+    }
 
     case "RESTART":
       return createInitialState();

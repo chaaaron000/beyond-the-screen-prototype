@@ -4755,3 +4755,480 @@ body {
     overflow-x: auto;
   }
 }
+
+/* Proposal ledger: the document presents arguments by action, not by speaker. */
+.proposal-ledger {
+  margin-top: clamp(2.9rem, 5.2cqw, 5.6rem);
+}
+
+.proposal-ledger-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid #bfc0b7;
+  padding-bottom: 0.75rem;
+}
+
+.proposal-ledger-heading p {
+  margin: 0 0 0.38rem;
+  color: #aa6e3f;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.proposal-ledger-heading h2 {
+  margin: 0;
+  color: #30332f;
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1.18rem, 1.8cqw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+}
+
+.proposal-ledger-heading > span {
+  color: #7d7e75;
+  font-size: clamp(0.6rem, 0.72cqw, 0.72rem);
+  white-space: nowrap;
+}
+
+.proposal-list {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.proposal-entry {
+  border: 1px solid #d0d0c7;
+  border-left: 3px solid #aa6e3f;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.proposal-entry:nth-child(2) {
+  border-left-color: #b2644e;
+}
+
+.proposal-entry:nth-child(3) {
+  border-left-color: #4d7772;
+}
+
+.proposal-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #d0d0c7;
+  padding: 0.82rem 0.95rem;
+}
+
+.proposal-entry-title {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.68rem;
+}
+
+.proposal-entry-title > span {
+  color: #aa6e3f;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+}
+
+.proposal-entry-title h3 {
+  margin: 0;
+  color: #30332f;
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(0.92rem, 1.25cqw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+
+.proposal-start-button {
+  flex: 0 0 auto;
+  border: 1px solid rgba(170, 110, 63, 0.55);
+  padding: 0.4rem 0.58rem;
+  color: #8d552f;
+  background: rgba(170, 110, 63, 0.05);
+  cursor: pointer;
+  font-size: clamp(0.58rem, 0.72cqw, 0.72rem);
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.proposal-start-button:hover:not(:disabled) {
+  border-color: #8d552f;
+  color: #f1f0eb;
+  background: #8d552f;
+}
+
+.proposal-start-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.proposal-positions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.proposal-position {
+  min-height: 6.2rem;
+  margin: 0;
+  padding: 0.9rem 0.95rem 1rem;
+}
+
+.proposal-position + .proposal-position {
+  border-left: 1px solid #d0d0c7;
+}
+
+.proposal-position--seoyun {
+  border-top: 2px solid #b2644e;
+}
+
+.proposal-position--mira {
+  border-top: 2px solid #4d7772;
+}
+
+.proposal-position cite {
+  display: block;
+  margin-bottom: 0.48rem;
+  color: #777970;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.58rem;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.proposal-position--seoyun cite {
+  color: #b2644e;
+}
+
+.proposal-position--mira cite {
+  color: #4d7772;
+}
+
+.proposal-position p {
+  margin: 0;
+  color: #343732;
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(0.78rem, 1.05cqw, 1.05rem);
+  line-height: 1.55;
+  letter-spacing: -0.035em;
+}
+
+.proposal-raw-log {
+  border-top: 1px solid #d0d0c7;
+}
+
+.proposal-raw-log summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.72rem 0.95rem;
+  color: #7f5a41;
+  cursor: pointer;
+  list-style: none;
+}
+
+.proposal-raw-log summary::-webkit-details-marker {
+  display: none;
+}
+
+.proposal-raw-log summary::before {
+  content: "▸";
+  color: #aa6e3f;
+  font-size: 0.72rem;
+  transition: transform 160ms ease;
+}
+
+.proposal-raw-log[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.proposal-raw-log summary > span {
+  flex: 1 1 auto;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.61rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.proposal-raw-log summary small {
+  color: #989990;
+  font-size: 0.58rem;
+}
+
+.proposal-raw-lines {
+  border-top: 1px dashed #c7c7bd;
+  padding: 0.55rem 0.95rem 0.78rem 2rem;
+  background: rgba(53, 57, 52, 0.035);
+}
+
+.proposal-raw-lines p {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0.32rem 0;
+  color: #575b54;
+  font-size: clamp(0.62rem, 0.76cqw, 0.76rem);
+  line-height: 1.65;
+}
+
+.proposal-raw-lines strong {
+  color: #7f5a41;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.57rem;
+  font-weight: 500;
+}
+
+.proposal-backdrop {
+  position: absolute;
+  z-index: 24;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background: rgba(15, 19, 18, 0.7);
+}
+
+.proposal-dialog {
+  width: min(39rem, 94%);
+  max-height: 90%;
+  overflow: auto;
+  border: 1px solid rgba(236, 231, 220, 0.32);
+  border-left: 3px solid var(--plan-amber);
+  padding: clamp(1rem, 2.1cqw, 2rem);
+  color: var(--plan-ink);
+  background: #202522;
+  box-shadow: 0 1.6rem 3rem rgba(0, 0, 0, 0.46);
+}
+
+.proposal-dialog-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding-bottom: 0.85rem;
+}
+
+.proposal-dialog-header h2 {
+  margin: 0.35rem 0 0;
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1.35rem, 2.2cqw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+}
+
+.proposal-dialog-close,
+.proposal-cancel-button {
+  border: 0;
+  border-bottom: 1px solid rgba(236, 231, 220, 0.32);
+  padding: 0 0 0.2rem;
+  color: var(--plan-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.58rem;
+}
+
+.proposal-dialog-close:hover,
+.proposal-cancel-button:hover {
+  border-color: var(--plan-amber);
+  color: var(--plan-amber);
+}
+
+.proposal-dialog-action {
+  display: grid;
+  gap: 0.28rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding: 1rem 0;
+}
+
+.proposal-dialog-action > span {
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+}
+
+.proposal-dialog-action strong {
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.proposal-dialog-action p,
+.proposal-evidence-heading small,
+.proposal-no-evidence,
+.proposal-selected-evidence span {
+  margin: 0;
+  color: var(--plan-muted);
+  font-size: 0.62rem;
+  line-height: 1.6;
+}
+
+.proposal-evidence-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0 0.6rem;
+}
+
+.proposal-evidence-heading > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.proposal-evidence-heading p,
+.proposal-selected-evidence p {
+  margin: 0;
+  color: var(--plan-ink);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.proposal-evidence-heading > strong {
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.66rem;
+  font-weight: 400;
+}
+
+.proposal-evidence-options {
+  display: grid;
+  border-top: 1px solid var(--plan-line);
+}
+
+.proposal-evidence-option {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.62rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.68rem 0.2rem;
+  cursor: pointer;
+}
+
+.proposal-evidence-option:hover:not(:has(input:disabled)),
+.proposal-evidence-option.is-selected {
+  background: rgba(212, 160, 108, 0.07);
+}
+
+.proposal-evidence-option input {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0.12rem 0 0;
+  accent-color: var(--plan-amber);
+}
+
+.proposal-evidence-option > span {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.proposal-evidence-option strong {
+  color: var(--plan-ink);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.proposal-evidence-option small {
+  color: var(--plan-muted);
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+.proposal-evidence-option input:disabled {
+  opacity: 0.4;
+}
+
+.proposal-no-evidence {
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.75rem 0;
+}
+
+.proposal-selected-evidence {
+  display: grid;
+  gap: 0.24rem;
+  margin-top: 1rem;
+  border-left: 2px solid var(--plan-mira);
+  padding: 0.1rem 0 0.1rem 0.7rem;
+}
+
+.proposal-selected-evidence p {
+  color: var(--plan-mira);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.proposal-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--plan-line);
+  padding-top: 1rem;
+}
+
+.proposal-confirm-button {
+  border: 1px solid var(--plan-amber);
+  padding: 0.58rem 0.72rem;
+  color: #18211f;
+  background: var(--plan-amber);
+  cursor: pointer;
+  font-size: 0.64rem;
+}
+
+.proposal-confirm-button:hover {
+  color: var(--plan-ink);
+  background: transparent;
+}
+
+.support-tab-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 760px) {
+  .proposal-ledger-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .proposal-positions {
+    grid-template-columns: 1fr;
+  }
+
+  .proposal-position + .proposal-position {
+    border-top: 1px solid #d0d0c7;
+    border-left: 0;
+  }
+
+  .proposal-raw-lines {
+    padding-left: 0.95rem;
+  }
+
+  .proposal-raw-lines p {
+    grid-template-columns: 3.6rem minmax(0, 1fr);
+    gap: 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proposal-start-button,
+  .proposal-raw-log summary::before {
+    transition: none;
+  }
+}

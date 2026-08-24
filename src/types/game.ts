@@ -5,8 +5,11 @@ export type Speaker = Actor | "player" | "narrator";
 export type Opinion =
   | "power"
   | "motorcycle"
-  | "refrigeration"
-  | "investigate";
+  | "refrigeration";
+
+export type ProposalId = Opinion;
+export type EvidenceRelation = "supports" | "complicates" | "irrelevant";
+export type ProposalOutcome = "accepted" | "considering" | "rejected";
 
 export type EvidenceId =
   | "refrigerationLimit"
@@ -66,6 +69,7 @@ export interface GameState {
   dialogue: DialogueLine[];
   dialogueIndex: number;
   lastOpinion: Opinion | null;
+  rejectionPressure: number;
 }
 
 export type GameAction =
@@ -77,5 +81,5 @@ export type GameAction =
   /** Move a task within its actor's planned queue. */
   | { type: "MOVE_PLANNED_TASK"; actor: Actor; fromIndex: number; toIndex: number }
   | { type: "ADVANCE_TO_NEXT_COMPLETION" }
-  | { type: "CHOOSE_OPINION"; opinion: Opinion }
+  | { type: "PROPOSE_ACTION"; proposalId: ProposalId; evidenceIds: EvidenceId[] }
   | { type: "RESTART" };

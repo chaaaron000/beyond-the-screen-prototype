@@ -17,13 +17,15 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ## Screenshots
 
-![VN scene](docs/screenshots/vn-scene.png)
+![VN scene](docs/screenshots/vn-scene-proposal-flow.png)
 
-![Report screen](docs/screenshots/report-screen.png)
+![Report document and planning pane](docs/screenshots/report-proposals-top.png)
 
-![Planning pane timeline](docs/screenshots/planning-pane-top.png)
+![Proposal evidence dialog](docs/screenshots/proposal-evidence-dialog.png)
 
-![Planning pane results and evidence](docs/screenshots/planning-pane-results.png)
+![Report document bottom](docs/screenshots/report-document-bottom.png)
+
+![Planning pane bottom](docs/screenshots/report-planning-bottom.png)
 
 ## 실행
 
