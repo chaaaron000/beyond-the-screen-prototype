@@ -1,6 +1,6 @@
 import type { Dispatch } from "react";
 import { formatDuration } from "../../game/clock";
-import { isActorBusy } from "../../game/reducer";
+import { getScheduledTaskIds } from "../../game/reducer";
 import type { GameAction, GameState, TaskDefinition } from "../../types/game";
 
 interface TaskCardProps {
@@ -17,7 +17,8 @@ const ACTOR_LABEL: Record<TaskDefinition["actor"], string> = {
 export function TaskCard({ task, state, dispatch }: TaskCardProps) {
   const activeTask = state.activeTasks[task.actor];
   const isActive = activeTask?.taskId === task.id;
-  const actorBusy = isActorBusy(state, task.actor);
+  const isQueued = state.queuedTasks[task.actor].includes(task.id);
+  const isScheduled = getScheduledTaskIds(state).includes(task.id);
   const isComplete = state.completedTaskIds.includes(task.id);
 
   return (
@@ -33,16 +34,16 @@ export function TaskCard({ task, state, dispatch }: TaskCardProps) {
       <button
         className="task-request-button"
         type="button"
-        disabled={isActive || actorBusy || isComplete}
+        disabled={isScheduled || isComplete}
         onClick={() => dispatch({ type: "START_TASK", taskId: task.id })}
       >
         {isActive
           ? `진행 중 · ${formatDuration(activeTask.remainingMinutes)} 남음`
-          : actorBusy
-            ? "현재 다른 작업 중"
+          : isQueued
+            ? "예약됨"
             : task.actor === "mira"
-              ? "조사 요청"
-              : "현장 확인 요청"}
+              ? "조사 예약"
+              : "현장 확인 예약"}
       </button>
     </article>
   );

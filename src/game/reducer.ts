@@ -14,13 +14,24 @@ export function getTask(taskId: TaskId): TaskDefinition {
 }
 
 export function getAvailableTasks(state: GameState): TaskDefinition[] {
+  const scheduledTaskIds = new Set(getScheduledTaskIds(state));
   return TASKS.filter(
     (task) =>
       !state.completedTaskIds.includes(task.id) &&
+      !scheduledTaskIds.has(task.id) &&
       (task.requires ?? []).every((evidenceId) =>
         state.discoveredEvidence.includes(evidenceId),
       ),
   );
+}
+
+export function getScheduledTaskIds(state: GameState): TaskId[] {
+  return [
+    ...Object.values(state.activeTasks)
+      .filter((task): task is NonNullable<typeof task> => task !== null)
+      .map((task) => task.taskId),
+    ...Object.values(state.queuedTasks).flat(),
+  ];
 }
 
 export function getNextCompletionMinutes(state: GameState): number | null {
@@ -49,23 +60,75 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, dialogueIndex: state.dialogueIndex + 1 };
     }
 
-    case "START_TASK": {
+    case "START_TASK":
+    case "QUEUE_TASK": {
       const task = getTask(action.taskId);
       const canStart = getAvailableTasks(state).some((item) => item.id === task.id);
-      if (!canStart || isActorBusy(state, task.actor)) return state;
+      if (!canStart) return state;
 
       // Scheduling only records work. The clock moves in ADVANCE_TO_NEXT_COMPLETION.
+      const activeTask = state.activeTasks[task.actor];
+      const queuedTasks = {
+        ...state.queuedTasks,
+        [task.actor]: activeTask
+          ? [...state.queuedTasks[task.actor], task.id]
+          : state.queuedTasks[task.actor],
+      };
+
       return {
         ...state,
         activeTasks: {
           ...state.activeTasks,
-          [task.actor]: {
-            taskId: task.id,
-            actor: task.actor,
-            remainingMinutes: task.durationMinutes,
-          },
+          [task.actor]: activeTask
+            ? activeTask
+            : {
+                taskId: task.id,
+                actor: task.actor,
+                remainingMinutes: task.durationMinutes,
+              },
         },
+        queuedTasks,
         recentlyCompleted: [],
+      };
+    }
+
+    case "CANCEL_QUEUED_TASK": {
+      const task = getTask(action.taskId);
+      const queue = state.queuedTasks[task.actor];
+      if (!queue.includes(action.taskId)) return state;
+
+      return {
+        ...state,
+        queuedTasks: {
+          ...state.queuedTasks,
+          [task.actor]: queue.filter((taskId) => taskId !== action.taskId),
+        },
+      };
+    }
+
+    case "MOVE_QUEUED_TASK": {
+      const queue = state.queuedTasks[action.actor];
+      const { fromIndex, toIndex } = action;
+      if (
+        fromIndex < 0 ||
+        fromIndex >= queue.length ||
+        toIndex < 0 ||
+        toIndex >= queue.length ||
+        fromIndex === toIndex
+      ) {
+        return state;
+      }
+
+      const nextQueue = [...queue];
+      const [movedTask] = nextQueue.splice(fromIndex, 1);
+      nextQueue.splice(toIndex, 0, movedTask);
+
+      return {
+        ...state,
+        queuedTasks: {
+          ...state.queuedTasks,
+          [action.actor]: nextQueue,
+        },
       };
     }
 
@@ -80,6 +143,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const completedTaskIds = [...state.completedTaskIds];
       const discoveredEvidence = [...state.discoveredEvidence];
       const activeTasks = { ...state.activeTasks };
+      const queuedTasks = {
+        mira: [...state.queuedTasks.mira],
+        seoyun: [...state.queuedTasks.seoyun],
+      };
 
       completedNow.forEach(([actor, activeTask]) => {
         if (!activeTask) return;
@@ -106,10 +173,23 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         }
       });
 
+      // A queued task begins at the exact completion time, without another clock step.
+      completedNow.forEach(([actor]) => {
+        const nextTaskId = queuedTasks[actor].shift();
+        if (!nextTaskId) return;
+        const nextTask = getTask(nextTaskId);
+        activeTasks[actor] = {
+          taskId: nextTask.id,
+          actor,
+          remainingMinutes: nextTask.durationMinutes,
+        };
+      });
+
       return {
         ...state,
         clockMinutes: state.clockMinutes + step,
         activeTasks,
+        queuedTasks,
         completedTaskIds,
         discoveredEvidence,
         recentlyCompleted: completedNow.map(([, task]) => task!.taskId),

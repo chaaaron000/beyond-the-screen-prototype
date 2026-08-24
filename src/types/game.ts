@@ -59,6 +59,7 @@ export interface GameState {
   view: ViewMode;
   clockMinutes: number;
   activeTasks: Record<Actor, ActiveTask | null>;
+  queuedTasks: Record<Actor, TaskId[]>;
   completedTaskIds: TaskId[];
   discoveredEvidence: EvidenceId[];
   recentlyCompleted: TaskId[];
@@ -70,6 +71,9 @@ export interface GameState {
 export type GameAction =
   | { type: "ADVANCE_DIALOGUE" }
   | { type: "START_TASK"; taskId: TaskId }
+  | { type: "QUEUE_TASK"; taskId: TaskId }
+  | { type: "CANCEL_QUEUED_TASK"; taskId: TaskId }
+  | { type: "MOVE_QUEUED_TASK"; actor: Actor; fromIndex: number; toIndex: number }
   | { type: "ADVANCE_TO_NEXT_COMPLETION" }
   | { type: "CHOOSE_OPINION"; opinion: Opinion }
   | { type: "RESTART" };

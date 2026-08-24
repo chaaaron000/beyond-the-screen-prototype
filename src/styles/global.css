@@ -2670,3 +2670,1288 @@ body {
     transition: none;
   }
 }
+
+/* Split field console: the document and the playable plan are separate surfaces. */
+.report-shell {
+  --plan-ink: #ece7dc;
+  --plan-muted: #a39f93;
+  --plan-faint: #6e6d65;
+  --plan-line: rgba(236, 231, 220, 0.14);
+  --plan-panel: #1c201f;
+  --plan-panel-raised: #252a27;
+  --plan-mira: #89b4ad;
+  --plan-seoyun: #d18c68;
+  --plan-amber: #d4a06c;
+  --plan-risk: #9b5e4e;
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--plan-ink);
+  background: #151817;
+}
+
+.report-topbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: clamp(3.35rem, 6.2cqw, 5.25rem);
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.75rem clamp(1rem, 2.8cqw, 3rem);
+  background: #171b1a;
+}
+
+.report-topbar-eyebrow,
+.report-topbar-right span,
+.panel-eyebrow,
+.field-document-date,
+.document-stamp,
+.record-source,
+.deadline-readout > span,
+.timeline-axis,
+.timeline-lane-label small,
+.schedule-status-heading > span:last-child,
+.task-option-meta,
+.completion-note-panel > p,
+.sidebar-evidence > p,
+.attachment-viewer-header > div > p {
+  margin: 0;
+  color: var(--plan-faint);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.48rem, 0.68cqw, 0.68rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.report-topbar-eyebrow {
+  margin-bottom: 0.35rem;
+  color: var(--plan-amber);
+}
+
+.report-topbar strong {
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(0.82rem, 1.35cqw, 1.35rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.report-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.7rem, 1.5cqw, 1.5rem);
+}
+
+.report-topbar-right time {
+  color: var(--plan-amber);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(1.1rem, 1.8cqw, 1.8rem);
+  letter-spacing: -0.04em;
+}
+
+.report-topbar-right button,
+.attachment-viewer-header button {
+  border: 0;
+  border-bottom: 1px solid rgba(236, 231, 220, 0.32);
+  padding: 0 0 0.2rem;
+  color: var(--plan-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.52rem, 0.72cqw, 0.72rem);
+}
+
+.report-topbar-right button:hover,
+.attachment-viewer-header button:hover {
+  border-color: var(--plan-amber);
+  color: var(--plan-amber);
+}
+
+.report-workspace {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1.55fr) minmax(18rem, 0.85fr);
+  overflow: hidden;
+}
+
+.document-pane {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #e9e8e2;
+}
+
+.document-scroll,
+.planning-scroll {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-color: rgba(170, 110, 63, 0.55) transparent;
+  scrollbar-width: thin;
+}
+
+.field-document {
+  width: min(100%, 56rem);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: clamp(1.35rem, 3.4cqw, 3.5rem) clamp(1.4rem, 4.4cqw, 4.7rem) 4rem;
+  color: #2f322e;
+  background:
+    linear-gradient(90deg, rgba(70, 76, 69, 0.035), transparent 17%, transparent 83%, rgba(70, 76, 69, 0.035)),
+    #e9e8e2;
+}
+
+.field-document-header {
+  position: relative;
+  padding-left: clamp(0.8rem, 1.5cqw, 1.6rem);
+  border-left: 2px solid #aa6e3f;
+}
+
+.document-stamp {
+  margin-bottom: 1.2rem;
+  color: #aa6e3f;
+  letter-spacing: 0.13em;
+}
+
+.field-document-date {
+  margin-bottom: 0.55rem;
+  color: #7d7e75;
+}
+
+.field-document h1 {
+  margin: 0;
+  color: #2f322e;
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(2.15rem, 5.1cqw, 4.4rem);
+  font-weight: 400;
+  letter-spacing: -0.09em;
+  line-height: 0.98;
+}
+
+.field-document-lede {
+  max-width: 30rem;
+  margin: 1rem 0 0;
+  color: #757870;
+  font-size: clamp(0.72rem, 0.95cqw, 0.95rem);
+  line-height: 1.7;
+}
+
+.field-document-rule {
+  height: 1px;
+  margin: clamp(1.8rem, 3.2cqw, 3.4rem) 0 clamp(2rem, 4cqw, 4.4rem);
+  background: #3b3e39;
+  opacity: 0.24;
+}
+
+.field-document-section {
+  margin-top: clamp(2.9rem, 5.2cqw, 5.6rem);
+}
+
+.field-document-section:first-of-type {
+  margin-top: 0;
+}
+
+.field-section-heading {
+  display: grid;
+  gap: 0.38rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #d0d0c7;
+  padding-bottom: 0.75rem;
+}
+
+.field-section-heading p {
+  margin: 0;
+  color: #aa6e3f;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.field-section-heading h2 {
+  margin: 0;
+  color: #30332f;
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1.18rem, 1.8cqw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+}
+
+.situation-copy {
+  border-top: 0;
+  padding-top: 0.2rem;
+}
+
+.situation-copy p {
+  max-width: 47rem;
+  margin: 0;
+  border-bottom: 1px solid rgba(65, 69, 63, 0.11);
+  padding: 0.75rem 0 0.85rem;
+  color: #383b36;
+  font-size: clamp(0.76rem, 1.02cqw, 1.02rem);
+  line-height: 1.8;
+  letter-spacing: -0.025em;
+}
+
+.field-opinion-notes {
+  display: grid;
+  gap: 1rem;
+}
+
+.field-opinion-note {
+  margin: 0;
+  border-left: 3px solid #d0d0c7;
+  padding: 0.1rem 0 0.1rem 1rem;
+}
+
+.field-opinion-note--mira {
+  border-color: #4d7772;
+}
+
+.field-opinion-note--seoyun {
+  border-color: #b2644e;
+}
+
+.field-opinion-note p {
+  margin: 0;
+  color: #343732;
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(0.84rem, 1.28cqw, 1.28rem);
+  letter-spacing: -0.04em;
+  line-height: 1.55;
+}
+
+.field-opinion-note cite {
+  display: block;
+  margin-top: 0.42rem;
+  color: #777970;
+  font-size: clamp(0.6rem, 0.72cqw, 0.72rem);
+  font-style: normal;
+}
+
+.field-opinion-note--mira cite {
+  color: #4d7772;
+}
+
+.field-opinion-note--seoyun cite {
+  color: #b2644e;
+}
+
+.document-empty,
+.document-note {
+  max-width: 42rem;
+  margin: 0;
+  color: #777970;
+  font-size: clamp(0.72rem, 0.88cqw, 0.88rem);
+  line-height: 1.8;
+}
+
+.document-records {
+  border-top: 1px solid #d0d0c7;
+}
+
+.document-record {
+  border-bottom: 1px solid #d0d0c7;
+  padding: 1rem 0 1.15rem;
+}
+
+.record-source {
+  margin-bottom: 0.5rem;
+  color: #4d7772;
+  font-size: 0.61rem;
+}
+
+.document-record h3 {
+  margin: 0 0 0.38rem;
+  color: #30332f;
+  font-size: clamp(0.76rem, 1cqw, 1rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.document-record > p:not(.record-source) {
+  max-width: 46rem;
+  margin: 0;
+  color: #6f7169;
+  font-size: clamp(0.7rem, 0.85cqw, 0.85rem);
+  line-height: 1.75;
+}
+
+.attachment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  margin-top: 0.75rem;
+  border: 0;
+  border-bottom: 1px solid rgba(170, 110, 63, 0.48);
+  padding: 0 0 0.2rem;
+  color: #9c6037;
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.62rem, 0.74cqw, 0.74rem);
+}
+
+.attachment-link:hover {
+  border-color: #9c6037;
+  color: #633f2c;
+}
+
+.planning-pane {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-left: 1px solid rgba(236, 231, 220, 0.17);
+  background:
+    linear-gradient(145deg, rgba(123, 148, 140, 0.055), transparent 34%),
+    var(--plan-panel);
+}
+
+.planning-scroll {
+  padding: clamp(1rem, 2.4cqw, 2.4rem) clamp(0.9rem, 2.1cqw, 2.1rem) 2.5rem;
+  scrollbar-color: rgba(137, 180, 173, 0.5) transparent;
+}
+
+.planning-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding-bottom: 0.85rem;
+}
+
+.planning-header h2 {
+  margin: 0.35rem 0 0;
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1.2rem, 1.9cqw, 1.9rem);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+}
+
+.planning-clock {
+  display: grid;
+  gap: 0.15rem;
+  text-align: right;
+}
+
+.planning-clock span {
+  color: var(--plan-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.48rem, 0.62cqw, 0.62rem);
+}
+
+.planning-clock strong {
+  color: var(--plan-amber);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(1rem, 1.55cqw, 1.55rem);
+  font-weight: 400;
+}
+
+.timeline-section {
+  margin-top: clamp(1rem, 2cqw, 2rem);
+}
+
+.timeline-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+}
+
+.timeline-heading h3 {
+  margin: 0.33rem 0 0;
+  color: var(--plan-ink);
+  font-size: clamp(0.72rem, 0.95cqw, 0.95rem);
+  font-weight: 600;
+}
+
+.panel-eyebrow {
+  color: var(--plan-amber);
+  font-size: clamp(0.46rem, 0.58cqw, 0.58rem);
+}
+
+.deadline-key,
+.deadline-unknown {
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.45rem, 0.58cqw, 0.58rem);
+  white-space: nowrap;
+}
+
+.deadline-unknown {
+  color: var(--plan-faint);
+}
+
+.timeline-axis {
+  position: relative;
+  height: 1.15rem;
+  margin-left: 4.2rem;
+  color: var(--plan-muted);
+  font-size: clamp(0.43rem, 0.57cqw, 0.57rem);
+}
+
+.timeline-axis span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.timeline-axis span:first-child {
+  transform: none;
+}
+
+.timeline-board {
+  position: relative;
+  border-top: 1px solid var(--plan-line);
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.35rem 0;
+}
+
+.timeline-zone,
+.deadline-zone {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(155, 94, 78, 0.1);
+  pointer-events: none;
+}
+
+.deadline-line {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(210, 160, 108, 0.82);
+  pointer-events: none;
+}
+
+.deadline-line span {
+  position: absolute;
+  top: -1.2rem;
+  left: 0.24rem;
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.53rem;
+  white-space: nowrap;
+}
+
+.timeline-lane {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 3.25rem;
+}
+
+.timeline-lane-label {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.timeline-lane-label > span {
+  color: var(--plan-mira);
+  font-size: clamp(0.62rem, 0.78cqw, 0.78rem);
+  font-weight: 700;
+}
+
+.timeline-lane--seoyun .timeline-lane-label > span {
+  color: var(--plan-seoyun);
+}
+
+.timeline-lane-label small {
+  overflow: hidden;
+  color: var(--plan-faint);
+  font-size: clamp(0.39rem, 0.5cqw, 0.5rem);
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-track {
+  position: relative;
+  height: 2.25rem;
+  border-bottom: 1px solid rgba(236, 231, 220, 0.08);
+}
+
+.timeline-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(236, 231, 220, 0.07);
+}
+
+.timeline-empty {
+  position: absolute;
+  top: 0.68rem;
+  left: 0;
+  color: var(--plan-faint);
+  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+}
+
+.timeline-block {
+  position: absolute;
+  z-index: 2;
+  top: 0.33rem;
+  bottom: 0.32rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(236, 231, 220, 0.13);
+  border-left: 2px solid rgba(255, 255, 255, 0.72);
+  padding: 0 0.42rem;
+  color: #17201e;
+  font-size: clamp(0.4rem, 0.55cqw, 0.55rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-block--active {
+  box-shadow: 0 0 0 1px rgba(236, 231, 220, 0.26);
+}
+
+.timeline-block--risk {
+  border-color: rgba(224, 157, 126, 0.68);
+}
+
+.timeline-note {
+  margin: 0.65rem 0 0;
+  color: #aa9487;
+  font-size: clamp(0.46rem, 0.59cqw, 0.59rem);
+  line-height: 1.5;
+}
+
+.deadline-readout {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--plan-line);
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.65rem 0;
+}
+
+.deadline-readout > span {
+  font-size: clamp(0.44rem, 0.55cqw, 0.55rem);
+}
+
+.deadline-readout strong {
+  color: var(--plan-amber);
+  font-size: clamp(0.52rem, 0.68cqw, 0.68rem);
+  font-weight: 500;
+  text-align: right;
+}
+
+.deadline-readout strong.is-unknown {
+  color: var(--plan-faint);
+  font-weight: 400;
+}
+
+.schedule-status-list {
+  display: grid;
+  gap: 0;
+  margin-top: 0.4rem;
+}
+
+.schedule-status {
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.75rem 0 0.85rem;
+}
+
+.schedule-status-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.actor-name {
+  color: var(--plan-mira);
+  font-size: clamp(0.62rem, 0.78cqw, 0.78rem);
+  font-weight: 700;
+}
+
+.actor-name--seoyun {
+  color: var(--plan-seoyun);
+}
+
+.schedule-status-heading > span:last-child {
+  color: var(--plan-faint);
+  font-size: clamp(0.4rem, 0.53cqw, 0.53rem);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.current-task-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin: 0.42rem 0 0.6rem;
+  color: var(--plan-ink);
+  font-size: clamp(0.55rem, 0.68cqw, 0.68rem);
+  line-height: 1.45;
+}
+
+.current-task-line strong {
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.current-task-line span {
+  flex: 0 0 auto;
+  color: var(--plan-amber);
+  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+}
+
+.current-task-line--empty {
+  color: var(--plan-faint);
+}
+
+.queue-empty {
+  margin: 0;
+  color: var(--plan-faint);
+  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+}
+
+.queue-list {
+  display: grid;
+  gap: 0.26rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.queue-list li {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.38rem;
+  color: var(--plan-muted);
+  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+}
+
+.queue-index {
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+.queue-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-actions {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.queue-actions button {
+  border: 0;
+  padding: 0.12rem 0.18rem;
+  color: var(--plan-faint);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.4rem, 0.5cqw, 0.5rem);
+}
+
+.queue-actions button:hover:not(:disabled) {
+  color: var(--plan-amber);
+}
+
+.queue-actions button:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.advance-time-control {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 1rem;
+  border: 1px solid var(--plan-amber);
+  padding: 0.75rem 0.7rem;
+  color: var(--plan-amber);
+  background: rgba(212, 160, 108, 0.08);
+  cursor: pointer;
+  font-size: clamp(0.52rem, 0.68cqw, 0.68rem);
+  text-align: left;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.advance-time-control:hover:not(:disabled) {
+  color: #18211f;
+  background: var(--plan-amber);
+}
+
+.advance-time-control strong {
+  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.advance-time-control:disabled {
+  border-color: var(--plan-line);
+  color: var(--plan-faint);
+  background: transparent;
+  cursor: not-allowed;
+}
+
+.advance-time-note,
+.panel-footnote {
+  margin: 0.48rem 0 0;
+  color: var(--plan-faint);
+  font-size: clamp(0.44rem, 0.56cqw, 0.56rem);
+  line-height: 1.55;
+}
+
+.completion-note-panel {
+  margin-top: 1.25rem;
+  border-left: 2px solid var(--plan-mira);
+  padding: 0.1rem 0 0.1rem 0.75rem;
+}
+
+.completion-note-panel > p:first-child {
+  margin-bottom: 0.45rem;
+  color: var(--plan-mira);
+}
+
+.completion-note-panel > p:not(:first-child) {
+  display: grid;
+  gap: 0.22rem;
+  margin: 0 0 0.58rem;
+  color: var(--plan-muted);
+  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  line-height: 1.45;
+}
+
+.completion-note-panel > p:last-child {
+  margin-bottom: 0;
+}
+
+.completion-note-panel strong {
+  color: var(--plan-ink);
+  font-weight: 600;
+}
+
+.task-picker,
+.evidence-sidebar {
+  margin-top: 1.7rem;
+  border-top: 1px solid var(--plan-line);
+  padding-top: 1.15rem;
+}
+
+.task-picker .field-section-heading,
+.evidence-sidebar .field-section-heading {
+  margin-bottom: 0.65rem;
+  border-bottom-color: var(--plan-line);
+}
+
+.task-picker .field-section-heading h2,
+.evidence-sidebar .field-section-heading h2 {
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1rem, 1.35cqw, 1.35rem);
+}
+
+.task-picker .field-section-heading p,
+.evidence-sidebar .field-section-heading p {
+  color: var(--plan-amber);
+}
+
+.task-picker-list {
+  display: grid;
+  gap: 0;
+}
+
+.task-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.72rem 0;
+}
+
+.task-option-meta {
+  display: flex;
+  gap: 0.65rem;
+  color: var(--plan-mira);
+  font-size: clamp(0.42rem, 0.52cqw, 0.52rem);
+  letter-spacing: 0.06em;
+}
+
+.task-option--seoyun .task-option-meta {
+  color: var(--plan-seoyun);
+}
+
+.task-option h4 {
+  margin: 0.32rem 0 0.22rem;
+  color: var(--plan-ink);
+  font-size: clamp(0.56rem, 0.7cqw, 0.7rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.task-option p {
+  margin: 0;
+  color: var(--plan-muted);
+  font-size: clamp(0.46rem, 0.56cqw, 0.56rem);
+  line-height: 1.5;
+}
+
+.task-option button {
+  border: 0;
+  border-bottom: 1px solid rgba(236, 231, 220, 0.28);
+  padding: 0 0 0.18rem;
+  color: var(--plan-amber);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.45rem, 0.56cqw, 0.56rem);
+  white-space: nowrap;
+}
+
+.task-option button:hover {
+  border-color: var(--plan-amber);
+  color: var(--plan-ink);
+}
+
+.panel-empty {
+  margin: 0;
+  color: var(--plan-faint);
+  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  line-height: 1.6;
+}
+
+.opinion-drawer {
+  margin-top: 1.4rem;
+  border-top: 1px solid var(--plan-amber);
+  border-bottom: 1px solid var(--plan-line);
+}
+
+.opinion-drawer summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  color: var(--plan-ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.opinion-drawer summary::-webkit-details-marker {
+  display: none;
+}
+
+.opinion-drawer summary > span {
+  display: grid;
+  gap: 0.25rem;
+  font-size: clamp(0.66rem, 0.82cqw, 0.82rem);
+  font-weight: 600;
+}
+
+.opinion-drawer summary small {
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.43rem, 0.52cqw, 0.52rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.opinion-drawer summary b {
+  color: var(--plan-muted);
+  font-size: clamp(0.45rem, 0.55cqw, 0.55rem);
+  font-weight: 400;
+}
+
+.opinion-drawer[open] summary b::after {
+  content: " 닫기";
+}
+
+.opinion-drawer[open] summary b {
+  font-size: 0;
+}
+
+.opinion-drawer[open] summary b::after {
+  font-size: clamp(0.45rem, 0.55cqw, 0.55rem);
+}
+
+.opinion-drawer-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--plan-line);
+}
+
+.opinion-drawer-list button {
+  display: grid;
+  gap: 0.28rem;
+  min-height: 3.3rem;
+  border: 0;
+  border-right: 1px solid var(--plan-line);
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.55rem 0.5rem;
+  color: var(--plan-ink);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.opinion-drawer-list button:nth-child(even) {
+  border-right: 0;
+}
+
+.opinion-drawer-list button:hover {
+  background: rgba(212, 160, 108, 0.08);
+}
+
+.opinion-drawer-list strong {
+  font-size: clamp(0.48rem, 0.62cqw, 0.62rem);
+  font-weight: 600;
+}
+
+.opinion-drawer-list span {
+  color: var(--plan-muted);
+  font-size: clamp(0.41rem, 0.52cqw, 0.52rem);
+  line-height: 1.35;
+}
+
+.sidebar-evidence-list {
+  display: grid;
+  gap: 0;
+}
+
+.sidebar-evidence {
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.65rem 0;
+}
+
+.sidebar-evidence > p {
+  margin-bottom: 0.32rem;
+  color: var(--plan-mira);
+  font-size: clamp(0.4rem, 0.5cqw, 0.5rem);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.sidebar-evidence button {
+  display: grid;
+  gap: 0.28rem;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  color: var(--plan-ink);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar-evidence button:hover strong {
+  color: var(--plan-amber);
+}
+
+.sidebar-evidence strong {
+  font-size: clamp(0.53rem, 0.66cqw, 0.66rem);
+  font-weight: 600;
+}
+
+.sidebar-evidence button span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--plan-muted);
+  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.attachment-backdrop {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background: rgba(11, 14, 14, 0.68);
+}
+
+.attachment-viewer {
+  width: min(36rem, 92%);
+  max-height: 90%;
+  overflow: auto;
+  border: 1px solid rgba(236, 231, 220, 0.22);
+  border-left: 2px solid var(--plan-amber);
+  padding: clamp(1rem, 2cqw, 2rem);
+  color: var(--plan-ink);
+  background: #202522;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.38);
+}
+
+.attachment-viewer-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.2rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding-bottom: 0.8rem;
+}
+
+.attachment-viewer-header h2 {
+  margin: 0.35rem 0 0;
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1rem, 1.55cqw, 1.55rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.attachment-viewer-header button {
+  flex: 0 0 auto;
+  color: var(--plan-muted);
+}
+
+.attachment-visual {
+  margin-top: 1.1rem;
+  border: 1px solid var(--plan-line);
+  background: #181d1b;
+}
+
+.attachment-caption {
+  margin: 0.8rem 0 0;
+  color: var(--plan-muted);
+  font-size: clamp(0.55rem, 0.68cqw, 0.68rem);
+  line-height: 1.65;
+}
+
+.attachment-visual--trend {
+  padding: 0.8rem 0.8rem 0.55rem;
+}
+
+.graph-labels,
+.graph-axis {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--plan-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.5rem;
+}
+
+.graph-labels span:last-child {
+  color: var(--plan-amber);
+}
+
+.attachment-visual--trend svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0.5rem 0 0.2rem;
+}
+
+.graph-grid {
+  fill: none;
+  stroke: rgba(236, 231, 220, 0.12);
+  stroke-width: 1;
+}
+
+.graph-deadline {
+  fill: none;
+  stroke: var(--plan-amber);
+  stroke-dasharray: 4 5;
+  stroke-width: 1;
+}
+
+.graph-line {
+  fill: none;
+  stroke: var(--plan-mira);
+  stroke-width: 4;
+}
+
+.graph-axis {
+  color: var(--plan-faint);
+}
+
+.attachment-visual--log {
+  padding: 0.45rem 0.8rem;
+}
+
+.log-line {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  margin: 0;
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.65rem 0;
+  color: var(--plan-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+  line-height: 1.5;
+}
+
+.log-line:last-child {
+  border-bottom: 0;
+}
+
+.log-line b {
+  color: var(--plan-amber);
+  font-weight: 400;
+}
+
+.log-line em {
+  color: var(--plan-mira);
+  font-style: normal;
+}
+
+.attachment-visual--photo {
+  padding: 0.8rem;
+}
+
+.photo-placeholder {
+  display: grid;
+  min-height: 10rem;
+  place-items: center;
+  border: 1px solid rgba(236, 231, 220, 0.16);
+  background:
+    linear-gradient(135deg, transparent 49%, rgba(137, 180, 173, 0.14) 50%, transparent 51%),
+    linear-gradient(45deg, transparent 49%, rgba(209, 140, 104, 0.12) 50%, transparent 51%),
+    #252d29;
+}
+
+.photo-placeholder span {
+  color: rgba(236, 231, 220, 0.58);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+}
+
+.attachment-visual--photo p,
+.attachment-visual--map p {
+  margin: 0.65rem 0 0;
+  color: var(--plan-faint);
+  font-size: 0.55rem;
+  line-height: 1.5;
+}
+
+.attachment-visual--map {
+  padding: 0.8rem;
+}
+
+.map-grid {
+  position: relative;
+  min-height: 10rem;
+  overflow: hidden;
+  border: 1px solid rgba(236, 231, 220, 0.16);
+  background:
+    linear-gradient(rgba(137, 180, 173, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(137, 180, 173, 0.09) 1px, transparent 1px),
+    #1e2824;
+  background-size: 2.4rem 2.4rem;
+}
+
+.map-line {
+  position: absolute;
+  display: block;
+  height: 1px;
+  background: rgba(236, 231, 220, 0.42);
+  transform-origin: left center;
+}
+
+.map-line--one {
+  top: 29%;
+  left: 7%;
+  width: 80%;
+  transform: rotate(13deg);
+}
+
+.map-line--two {
+  top: 72%;
+  left: 19%;
+  width: 66%;
+  transform: rotate(-28deg);
+}
+
+.map-marker {
+  position: absolute;
+  top: 45%;
+  left: 56%;
+  border: 1px solid var(--plan-amber);
+  padding: 0.3rem 0.4rem;
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.56rem;
+}
+
+@media (max-width: 1050px) {
+  .report-workspace {
+    grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.95fr);
+  }
+
+  .field-document {
+    padding-right: clamp(1.25rem, 3cqw, 2.8rem);
+    padding-left: clamp(1.25rem, 3cqw, 2.8rem);
+  }
+
+  .planning-scroll {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .report-topbar {
+    min-height: 3.6rem;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .report-workspace {
+    grid-template-columns: minmax(0, 1.1fr) minmax(15rem, 0.9fr);
+  }
+
+  .field-document {
+    padding: 1.4rem 1.1rem 3rem;
+  }
+
+  .field-document h1 {
+    font-size: 2.5rem;
+  }
+
+  .planning-scroll {
+    padding: 1rem 0.8rem 2rem;
+  }
+
+  .task-option {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .task-option button {
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .advance-time-control,
+  .report-topbar-right button,
+  .attachment-link,
+  .task-option button,
+  .opinion-drawer-list button {
+    transition: none;
+  }
+}

@@ -10,6 +10,10 @@ export function createInitialState(): GameState {
       mira: null,
       seoyun: null,
     },
+    queuedTasks: {
+      mira: [],
+      seoyun: [],
+    },
     completedTaskIds: [],
     discoveredEvidence: [],
     recentlyCompleted: [],
