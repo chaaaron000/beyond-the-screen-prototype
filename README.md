@@ -1,3 +1,5 @@
+# [배포 URL: https://chaaaron000.github.io/beyond-the-screen-prototype/](https://chaaaron000.github.io/beyond-the-screen-prototype/)
+
 # 화면 너머의 너
 
 OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시설을 조사하고, 확보한 정보로 다음 행동을 판단하는 비주얼 노벨 프로토타입입니다.
