@@ -21,6 +21,10 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report screen](docs/screenshots/report-screen.png)
 
+![Planning pane timeline](docs/screenshots/planning-pane-top.png)
+
+![Planning pane results and evidence](docs/screenshots/planning-pane-results.png)
+
 ## 실행
 
 ```bash

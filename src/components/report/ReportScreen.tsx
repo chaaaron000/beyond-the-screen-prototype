@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type Dispatch } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type Dispatch } from "react";
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
 import { formatClock, formatDuration, REFRIGERATION_DEADLINE_MINUTES } from "../../game/clock";
@@ -13,6 +13,7 @@ import type {
   GameState,
   Opinion,
   TaskDefinition,
+  TaskId,
 } from "../../types/game";
 
 interface ReportScreenProps {
@@ -96,20 +97,27 @@ function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) 
   );
 }
 
-function Timeline({ state }: { state: GameState }) {
+function Timeline({
+  state,
+  displayClockMinutes = state.clockMinutes,
+  transitionProgress = 0,
+}: {
+  state: GameState;
+  displayClockMinutes?: number;
+  transitionProgress?: number;
+}) {
   const windowMinutes = getTimelineWindow(state);
   const knowsDeadline = state.discoveredEvidence.includes("refrigerationLimit");
   const deadlineOffset = knowsDeadline
-    ? REFRIGERATION_DEADLINE_MINUTES - state.clockMinutes
+    ? REFRIGERATION_DEADLINE_MINUTES - displayClockMinutes
     : null;
-  const ticks = Array.from(
-    new Set(
-      [0, 60, 120, 180, 240, windowMinutes].filter(
-        (tick) =>
-          tick <= windowMinutes &&
-          (knowsDeadline || state.clockMinutes + tick !== REFRIGERATION_DEADLINE_MINUTES),
-      ),
-    ),
+  const baseTicks = [0, 60, 120, 180, 240].filter((tick) => tick <= windowMinutes);
+  const ticks = [
+    ...baseTicks,
+    ...(windowMinutes >= 270 ? [windowMinutes] : []),
+  ].filter(
+    (tick) =>
+      knowsDeadline || displayClockMinutes + tick !== REFRIGERATION_DEADLINE_MINUTES,
   );
   const deadlinePosition =
     deadlineOffset === null
@@ -133,12 +141,19 @@ function Timeline({ state }: { state: GameState }) {
       <div className="timeline-axis" aria-hidden="true">
         {ticks.map((tick) => (
           <span key={tick} style={{ left: `${(tick / windowMinutes) * 100}%` }}>
-            {formatClock(state.clockMinutes + tick)}
+            {formatClock(displayClockMinutes + tick)}
           </span>
         ))}
       </div>
 
       <div className="timeline-board">
+        <div
+          className={`timeline-now-marker${transitionProgress > 0 ? " timeline-now-marker--moving" : ""}`}
+          style={{ left: `${Math.max(0, Math.min(100, (transitionProgress * (getNextCompletionMinutes(state) ?? 0) / windowMinutes) * 100))}%` }}
+          aria-label={`현재 시각 ${formatClock(displayClockMinutes)}`}
+        >
+          <span>현재</span>
+        </div>
         {deadlinePosition !== null && (
           <>
             <div
@@ -216,7 +231,17 @@ function Timeline({ state }: { state: GameState }) {
   );
 }
 
-function QueueList({ actor, state, dispatch }: { actor: Actor; state: GameState; dispatch: Dispatch<GameAction> }) {
+function QueueList({
+  actor,
+  state,
+  dispatch,
+  disabled = false,
+}: {
+  actor: Actor;
+  state: GameState;
+  dispatch: Dispatch<GameAction>;
+  disabled?: boolean;
+}) {
   const queue = state.queuedTasks[actor];
 
   if (queue.length === 0) {
@@ -232,7 +257,7 @@ function QueueList({ actor, state, dispatch }: { actor: Actor; state: GameState;
           <span className="queue-actions">
             <button
               type="button"
-              disabled={index === 0}
+              disabled={disabled || index === 0}
               aria-label={`${getTask(taskId).title} 위로 이동`}
               onClick={() =>
                 dispatch({ type: "MOVE_QUEUED_TASK", actor, fromIndex: index, toIndex: index - 1 })
@@ -242,7 +267,7 @@ function QueueList({ actor, state, dispatch }: { actor: Actor; state: GameState;
             </button>
             <button
               type="button"
-              disabled={index === queue.length - 1}
+              disabled={disabled || index === queue.length - 1}
               aria-label={`${getTask(taskId).title} 아래로 이동`}
               onClick={() =>
                 dispatch({ type: "MOVE_QUEUED_TASK", actor, fromIndex: index, toIndex: index + 1 })
@@ -252,6 +277,7 @@ function QueueList({ actor, state, dispatch }: { actor: Actor; state: GameState;
             </button>
             <button
               type="button"
+              disabled={disabled}
               aria-label={`${getTask(taskId).title} 예약 취소`}
               onClick={() => dispatch({ type: "CANCEL_QUEUED_TASK", taskId })}
             >
@@ -261,6 +287,103 @@ function QueueList({ actor, state, dispatch }: { actor: Actor; state: GameState;
         </li>
       ))}
     </ol>
+  );
+}
+
+function ActorPlanningCard({
+  actor,
+  state,
+  dispatch,
+  disabled = false,
+}: {
+  actor: Actor;
+  state: GameState;
+  dispatch: Dispatch<GameAction>;
+  disabled?: boolean;
+}) {
+  const activeTask = state.activeTasks[actor];
+  const availableTasks = getAvailableTasks(state).filter((task) => task.actor === actor);
+  const avatar = actor === "mira" ? "/assets/characters/미라.png" : "/assets/characters/서윤.png";
+
+  return (
+    <article className={`actor-planning-card actor-planning-card--${actor}`}>
+      <header className="actor-planning-header">
+        <img src={avatar} alt="" className="actor-avatar" />
+        <div>
+          <p className="actor-planning-kicker">조사 담당</p>
+          <h3>{ACTOR_LABEL[actor]}</h3>
+        </div>
+        <span className="actor-planning-count">{availableTasks.length}건 가능</span>
+      </header>
+
+      <section className="actor-current-work" aria-label={`${ACTOR_LABEL[actor]} 현재 진행 중`}>
+        <div className="actor-subheading">
+          <span>현재 진행 중</span>
+          {activeTask && <strong>{formatDuration(activeTask.remainingMinutes)} 남음</strong>}
+        </div>
+        {activeTask ? (
+          <p className="actor-current-task">{getTask(activeTask.taskId).title}</p>
+        ) : (
+          <p className="actor-current-task actor-current-task--empty">현재 진행 중인 작업 없음</p>
+        )}
+      </section>
+
+      <section className="actor-queue-section" aria-label={`${ACTOR_LABEL[actor]} 조사 예정`}>
+        <div className="actor-subheading"><span>조사 예정</span><small>순서를 바꿀 수 있어요</small></div>
+        <QueueList actor={actor} state={state} dispatch={dispatch} disabled={disabled} />
+      </section>
+
+      <section className="actor-available-section" aria-label={`${ACTOR_LABEL[actor]} 가능한 조사`}>
+        <div className="actor-subheading"><span>가능한 조사</span><small>선택하면 마지막에 추가</small></div>
+        {availableTasks.length === 0 ? (
+          <p className="actor-empty-message">지금 확인할 수 있는 새 조사가 없습니다.</p>
+        ) : (
+          <div className="actor-available-list">
+            {availableTasks.map((task) => (
+              <button
+                key={task.id}
+                className="actor-available-task"
+                type="button"
+                disabled={disabled}
+                onClick={() => dispatch({ type: "START_TASK", taskId: task.id })}
+              >
+                <span>
+                  <strong>{task.title}</strong>
+                  <small>{formatDuration(task.durationMinutes)} · {task.description}</small>
+                </span>
+                <em>{activeTask ? "예약" : "시작"}</em>
+              </button>
+            ))}
+          </div>
+        )}
+      </section>
+    </article>
+  );
+}
+
+function InvestigationPlanner({
+  state,
+  dispatch,
+  disabled = false,
+}: {
+  state: GameState;
+  dispatch: Dispatch<GameAction>;
+  disabled?: boolean;
+}) {
+  return (
+    <section className="investigation-planner" aria-label="캐릭터별 조사 큐">
+      <div className="planner-section-heading">
+        <div>
+          <p className="panel-eyebrow">QUEUE / HANDOFF</p>
+          <h3>조사 순서 정하기</h3>
+        </div>
+        <span>예약은 시간을 소비하지 않아요</span>
+      </div>
+      <div className="actor-planning-grid">
+        <ActorPlanningCard actor="mira" state={state} dispatch={dispatch} disabled={disabled} />
+        <ActorPlanningCard actor="seoyun" state={state} dispatch={dispatch} disabled={disabled} />
+      </div>
+    </section>
   );
 }
 
@@ -290,7 +413,7 @@ function TaskPicker({ state, dispatch }: { state: GameState; dispatch: Dispatch<
 
   return (
     <section className="task-picker">
-      <SectionHeading eyebrow="현재 knowledge state" title="새로 맡길 수 있는 조사" />
+      <SectionHeading eyebrow="추가 조사" title="새로 맡길 수 있는 조사" />
       {availableTasks.length === 0 ? (
         <p className="panel-empty">지금 확인 가능한 새로운 작업이 없습니다.</p>
       ) : (
@@ -323,7 +446,7 @@ function TaskPicker({ state, dispatch }: { state: GameState; dispatch: Dispatch<
   );
 }
 
-function OpinionDrawer({ dispatch }: { dispatch: Dispatch<GameAction> }) {
+function OpinionDrawer({ dispatch, disabled = false }: { dispatch: Dispatch<GameAction>; disabled?: boolean }) {
   return (
     <details className="opinion-drawer">
       <summary>
@@ -337,6 +460,7 @@ function OpinionDrawer({ dispatch }: { dispatch: Dispatch<GameAction> }) {
         {OPINIONS.map((opinion) => (
           <button
             type="button"
+            disabled={disabled}
             key={opinion.id}
             onClick={() => dispatch({ type: "CHOOSE_OPINION", opinion: opinion.id })}
           >
@@ -352,9 +476,11 @@ function OpinionDrawer({ dispatch }: { dispatch: Dispatch<GameAction> }) {
 function EvidenceSidebar({
   state,
   onOpenAttachment,
+  disabled = false,
 }: {
   state: GameState;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
+  disabled?: boolean;
 }) {
   return (
     <section className="evidence-sidebar">
@@ -369,7 +495,7 @@ function EvidenceSidebar({
             return (
               <article className="sidebar-evidence" key={evidenceId}>
                 <p>{evidence.source}</p>
-                <button type="button" onClick={() => onOpenAttachment(attachment)}>
+                <button type="button" disabled={disabled} onClick={() => onOpenAttachment(attachment)}>
                   <strong>{evidence.title}</strong>
                   <span>{evidence.detail}</span>
                 </button>
@@ -543,10 +669,204 @@ function CompletionNote({ state }: { state: GameState }) {
   );
 }
 
-function PlanningPanel({ state, dispatch, onOpenAttachment }: {
+type SupportTab = "evidence" | "results" | "opinion";
+
+function ResultHistory({
+  state,
+  onOpenResult,
+  disabled = false,
+}: {
+  state: GameState;
+  onOpenResult: (taskId: TaskId) => void;
+  disabled?: boolean;
+}) {
+  const completed = [...state.completedTaskIds].reverse();
+  return (
+    <section className="support-panel support-panel--results" aria-label="최근 조사 결과">
+      <div className="support-panel-heading">
+        <p className="panel-eyebrow">FIELD NOTES / RESULTS</p>
+        <h3>최근 결과</h3>
+      </div>
+      {completed.length === 0 ? (
+        <p className="panel-empty">아직 도착한 조사 결과가 없습니다.</p>
+      ) : (
+        <div className="result-history-list">
+          {completed.map((taskId, index) => {
+            const task = getTask(taskId);
+            return (
+              <button
+                type="button"
+                className={`result-history-item${index === 0 ? " result-history-item--latest" : ""}`}
+                key={taskId}
+                disabled={disabled}
+                onClick={() => onOpenResult(taskId)}
+              >
+                <span>
+                  <small>{ACTOR_LABEL[task.actor]} · {TASK_RESULT_LABELS[taskId]}</small>
+                  <strong>{task.result.summary}</strong>
+                </span>
+                <em>열기</em>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ResultViewer({
+  taskIds,
+  onClose,
+  onOpenAttachment,
+}: {
+  taskIds: TaskId[];
+  onClose: () => void;
+  onOpenAttachment: (attachment: AttachmentDefinition) => void;
+}) {
+  return (
+    <div className="result-backdrop" role="presentation" onClick={onClose}>
+      <section
+        className="result-viewer"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="result-viewer-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="result-viewer-header">
+          <div>
+            <p className="panel-eyebrow">WORK COMPLETE / REPORT IN</p>
+            <h2 id="result-viewer-title">조사 결과</h2>
+          </div>
+          <button type="button" onClick={onClose}>닫기</button>
+        </header>
+        <div className="result-viewer-list">
+          {taskIds.map((taskId) => {
+            const task = getTask(taskId);
+            const evidence = task.result.evidenceId ? EVIDENCE[task.result.evidenceId] : null;
+            const attachment = task.result.evidenceId ? ATTACHMENTS[task.result.evidenceId] : null;
+            return (
+              <article className="result-viewer-entry" key={taskId}>
+                <p className={`result-viewer-actor result-viewer-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]} · 완료</p>
+                <h3>{task.title}</h3>
+                <p className="result-viewer-summary">{task.result.summary}</p>
+                {evidence && (
+                  <div className="result-viewer-evidence">
+                    <strong>{evidence.title}</strong>
+                    <p>{evidence.detail}</p>
+                    {attachment && (
+                      <button type="button" onClick={() => onOpenAttachment(attachment)}>
+                        {attachment.label}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function SupportTabs({
+  state,
+  activeTab,
+  onChange,
+  onOpenAttachment,
+  onOpenResult,
+  dispatch,
+  disabled = false,
+}: {
+  state: GameState;
+  activeTab: SupportTab;
+  onChange: (tab: SupportTab) => void;
+  onOpenAttachment: (attachment: AttachmentDefinition) => void;
+  onOpenResult: (taskId: TaskId) => void;
+  dispatch: Dispatch<GameAction>;
+  disabled?: boolean;
+}) {
+  return (
+    <section className={`support-tabs${disabled ? " support-tabs--disabled" : ""}`} aria-label="보조 정보">
+      <nav className="support-tab-list" aria-label="보조 정보 탭">
+        {([
+          ["evidence", "확보한 정보"],
+          ["results", "최근 결과"],
+          ["opinion", "의견 말하기"],
+        ] as [SupportTab, string][]).map(([tab, label]) => (
+          <button
+            type="button"
+            className={activeTab === tab ? "is-active" : ""}
+            aria-selected={activeTab === tab}
+            role="tab"
+            key={tab}
+            disabled={disabled}
+            onClick={() => onChange(tab)}
+          >
+            {label}
+            {tab === "results" && state.completedTaskIds.length > 0 && (
+              <span>{state.completedTaskIds.length}</span>
+            )}
+          </button>
+        ))}
+      </nav>
+      <div className="support-tab-content">
+        {activeTab === "evidence" && <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} disabled={disabled} />}
+        {activeTab === "results" && <ResultHistory state={state} onOpenResult={onOpenResult} disabled={disabled} />}
+        {activeTab === "opinion" && <OpinionDrawer dispatch={dispatch} disabled={disabled} />}
+      </div>
+    </section>
+  );
+}
+
+function CompletionToast({
+  taskIds,
+  onOpen,
+  onDismiss,
+}: {
+  taskIds: TaskId[];
+  onOpen: () => void;
+  onDismiss: () => void;
+}) {
+  if (taskIds.length === 0) return null;
+  return (
+    <div className="completion-toast" role="status" aria-live="polite">
+      <button type="button" className="completion-toast-main" onClick={onOpen}>
+        <span className="completion-toast-icon" aria-hidden="true">✓</span>
+        <span>
+          <strong>작업 결과 도착</strong>
+          {taskIds.map((taskId) => <small key={taskId}>{ACTOR_LABEL[getTask(taskId).actor]}: {TASK_RESULT_LABELS[taskId]}</small>)}
+        </span>
+        <em>결과 보기</em>
+      </button>
+      <button type="button" className="completion-toast-close" aria-label="알림 닫기" onClick={onDismiss}>×</button>
+    </div>
+  );
+}
+
+function PlanningPanel({
+  state,
+  dispatch,
+  onOpenAttachment,
+  displayClockMinutes = state.clockMinutes,
+  transitionProgress = 0,
+  isAdvancing = false,
+  activeSupportTab,
+  onSupportTabChange,
+  onOpenResult,
+  onAdvance,
+}: {
   state: GameState;
   dispatch: Dispatch<GameAction>;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
+  displayClockMinutes?: number;
+  transitionProgress?: number;
+  isAdvancing?: boolean;
+  activeSupportTab: SupportTab;
+  onSupportTabChange: (tab: SupportTab) => void;
+  onOpenResult: (taskId: TaskId) => void;
+  onAdvance: () => void;
 }) {
   const nextStep = getNextCompletionMinutes(state);
   const nextClock = nextStep === null ? null : state.clockMinutes + nextStep;
@@ -565,7 +885,7 @@ function PlanningPanel({ state, dispatch, onOpenAttachment }: {
           </div>
         </header>
 
-        <Timeline state={state} />
+        <Timeline state={state} displayClockMinutes={displayClockMinutes} transitionProgress={transitionProgress} />
 
         <div className="deadline-readout">
           <span>중요한 시간 제한</span>
@@ -576,26 +896,32 @@ function PlanningPanel({ state, dispatch, onOpenAttachment }: {
           )}
         </div>
 
-        <div className="schedule-status-list">
-          <ScheduleStatus actor="mira" state={state} dispatch={dispatch} />
-          <ScheduleStatus actor="seoyun" state={state} dispatch={dispatch} />
-        </div>
+        <InvestigationPlanner state={state} dispatch={dispatch} disabled={isAdvancing} />
 
         <button
           className="advance-time-control"
           type="button"
-          disabled={nextStep === null}
-          onClick={() => dispatch({ type: "ADVANCE_TO_NEXT_COMPLETION" })}
+          disabled={nextStep === null || isAdvancing}
+          onClick={onAdvance}
         >
-          <span>{nextClock === null ? "진행할 작업이 없습니다" : "다음 완료 시점까지 시간 진행"}</span>
-          {nextClock !== null && <strong>{formatClock(nextClock)}까지</strong>}
+          <span>
+            <b>{isAdvancing ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}</b>
+            {nextClock !== null && !isAdvancing && <small>다음 완료: {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
+            {isAdvancing && <small>작업 완료 시점으로 이동하고 있습니다</small>}
+          </span>
+          {nextClock !== null && <strong>{formatClock(isAdvancing ? displayClockMinutes : nextClock)}</strong>}
         </button>
         <p className="advance-time-note">작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.</p>
 
-        <CompletionNote state={state} />
-        <TaskPicker state={state} dispatch={dispatch} />
-        <OpinionDrawer dispatch={dispatch} />
-        <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} />
+        <SupportTabs
+          state={state}
+          activeTab={activeSupportTab}
+          onChange={onSupportTabChange}
+          onOpenAttachment={onOpenAttachment}
+          onOpenResult={onOpenResult}
+          dispatch={dispatch}
+          disabled={isAdvancing}
+        />
       </div>
     </aside>
   );
@@ -603,6 +929,61 @@ function PlanningPanel({ state, dispatch, onOpenAttachment }: {
 
 export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   const [openAttachment, setOpenAttachment] = useState<AttachmentDefinition | null>(null);
+  const [openResult, setOpenResult] = useState<TaskId[] | null>(null);
+  const [activeSupportTab, setActiveSupportTab] = useState<SupportTab>("evidence");
+  const [toastTaskIds, setToastTaskIds] = useState<TaskId[]>([]);
+  const [transition, setTransition] = useState<{ from: number; to: number } | null>(null);
+  const [previewClock, setPreviewClock] = useState(state.clockMinutes);
+  const transitionFrame = useRef<number | null>(null);
+  const transitionTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (state.recentlyCompleted.length > 0) {
+      setToastTaskIds(state.recentlyCompleted);
+    }
+  }, [state.recentlyCompleted]);
+
+  useEffect(() => {
+    if (!transition) return undefined;
+    const duration = 1800;
+    const startedAt = performance.now();
+    const animate = (now: number) => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setPreviewClock(Math.round(transition.from + (transition.to - transition.from) * eased));
+      if (progress < 1) transitionFrame.current = requestAnimationFrame(animate);
+    };
+
+    transitionFrame.current = requestAnimationFrame(animate);
+    transitionTimer.current = window.setTimeout(() => {
+      setPreviewClock(transition.to);
+      dispatch({ type: "ADVANCE_TO_NEXT_COMPLETION" });
+      setTransition(null);
+    }, duration);
+
+    return () => {
+      if (transitionFrame.current !== null) cancelAnimationFrame(transitionFrame.current);
+      if (transitionTimer.current !== null) window.clearTimeout(transitionTimer.current);
+    };
+  }, [dispatch, transition]);
+
+  const nextStep = getNextCompletionMinutes(state);
+  const isAdvancing = transition !== null;
+  const displayClockMinutes = isAdvancing ? previewClock : state.clockMinutes;
+  const transitionProgress = transition && transition.to > transition.from
+    ? Math.max(0, Math.min(1, (previewClock - transition.from) / (transition.to - transition.from)))
+    : 0;
+
+  const beginTimeAdvance = () => {
+    if (transition || nextStep === null) return;
+    setPreviewClock(state.clockMinutes);
+    setTransition({ from: state.clockMinutes, to: state.clockMinutes + nextStep });
+  };
+
+  const openResultViewer = (taskId: TaskId) => {
+    setActiveSupportTab("results");
+    setOpenResult([taskId]);
+  };
 
   return (
     <main className="report-shell">
@@ -613,8 +994,8 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
         </div>
         <div className="report-topbar-right">
           <span>현재 시각</span>
-          <time>{formatClock(state.clockMinutes)}</time>
-          <button type="button" onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
+          <time>{formatClock(displayClockMinutes)}</time>
+          <button type="button" disabled={isAdvancing} onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
         </div>
       </header>
       <div className="report-workspace">
@@ -623,8 +1004,37 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
             <FieldDocument state={state} onOpenAttachment={setOpenAttachment} />
           </div>
         </section>
-        <PlanningPanel state={state} dispatch={dispatch} onOpenAttachment={setOpenAttachment} />
+        <PlanningPanel
+          state={state}
+          dispatch={dispatch}
+          onOpenAttachment={setOpenAttachment}
+          displayClockMinutes={displayClockMinutes}
+          transitionProgress={transitionProgress}
+          isAdvancing={isAdvancing}
+          activeSupportTab={activeSupportTab}
+          onSupportTabChange={setActiveSupportTab}
+          onOpenResult={openResultViewer}
+          onAdvance={beginTimeAdvance}
+        />
       </div>
+      <CompletionToast
+        taskIds={toastTaskIds}
+        onOpen={() => {
+          if (toastTaskIds.length > 0) {
+            setActiveSupportTab("results");
+            setOpenResult(toastTaskIds);
+            setToastTaskIds([]);
+          }
+        }}
+        onDismiss={() => setToastTaskIds([])}
+      />
+      {openResult && (
+        <ResultViewer
+          taskIds={openResult}
+          onClose={() => setOpenResult(null)}
+          onOpenAttachment={setOpenAttachment}
+        />
+      )}
       {openAttachment && <AttachmentViewer attachment={openAttachment} onClose={() => setOpenAttachment(null)} />}
     </main>
   );
