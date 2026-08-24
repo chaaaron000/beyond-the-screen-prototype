@@ -7,9 +7,15 @@ import { createInitialState } from "./game/state";
 export default function App() {
   const [state, dispatch] = useReducer(gameReducer, createInitialState());
 
-  return state.view === "vn" ? (
-    <VNScene state={state} dispatch={dispatch} />
-  ) : (
-    <ReportScreen state={state} dispatch={dispatch} />
+  return (
+    <div className="game-viewport">
+      <div className="game-screen">
+        {state.view === "vn" ? (
+          <VNScene state={state} dispatch={dispatch} />
+        ) : (
+          <ReportScreen state={state} dispatch={dispatch} />
+        )}
+      </div>
+    </div>
   );
 }

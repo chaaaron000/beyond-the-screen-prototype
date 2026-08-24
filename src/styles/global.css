@@ -25,12 +25,16 @@
 html,
 body,
 #root {
+  width: 100%;
   min-width: 320px;
   min-height: 100%;
   margin: 0;
 }
 
 body {
+  display: grid;
+  overflow: hidden;
+  place-items: center;
   min-height: 100vh;
   background: #171818;
 }
@@ -44,15 +48,38 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
+.game-viewport {
+  display: grid;
+  width: 100%;
+  height: 100dvh;
+  place-items: center;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(50, 54, 53, 0.34), transparent 42rem),
+    #0d0f14;
+}
+
+.game-screen {
+  position: relative;
+  width: min(1600px, calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(231, 228, 220, 0.18);
+  background: #171818;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.35);
+  container-type: inline-size;
+  isolation: isolate;
+}
+
 .vn-shell,
 .report-shell {
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 .vn-shell {
   position: relative;
   display: grid;
-  min-height: 100dvh;
   place-items: center;
   overflow: hidden;
   background: #070a12;
@@ -68,7 +95,7 @@ button:focus-visible {
 .notice-mark {
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  font-size: 0.68rem;
+  font-size: clamp(0.45rem, 0.68cqw, 0.68rem);
 }
 
 .eyebrow {
@@ -82,11 +109,11 @@ button:focus-visible {
   align-items: flex-start;
   justify-content: space-between;
   gap: 2rem;
-  padding: 1.55rem clamp(1.2rem, 4vw, 4.5rem);
+  padding: clamp(0.65rem, 2.2cqw, 1.55rem) clamp(0.85rem, 4cqw, 4.5rem);
 }
 
 .vn-topbar {
-  position: fixed;
+  position: absolute;
   z-index: 3;
   top: 0;
   right: 0;
@@ -98,7 +125,7 @@ button:focus-visible {
   margin: 0;
   color: #f1eee6;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-size: clamp(0.82rem, 2cqw, 1.7rem);
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -127,13 +154,12 @@ button:focus-visible {
 .vn-stage {
   position: relative;
   display: flex;
-  width: min(100vw, calc(100dvh * 16 / 9));
-  height: min(100dvh, calc(100vw * 9 / 16));
-  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   align-items: flex-end;
   justify-content: center;
-  padding: 0 clamp(1rem, 5vw, 6rem);
+  padding: 0 clamp(0.7rem, 5cqw, 6rem);
   background:
     radial-gradient(circle at 25% 23%, rgba(154, 182, 180, 0.13), transparent 27rem),
     linear-gradient(148deg, #454440 0%, #2d2e2b 48%, #1e2020 100%);
@@ -163,7 +189,7 @@ button:focus-visible {
 .stage-label {
   position: absolute;
   top: clamp(5rem, 10%, 7rem);
-  left: clamp(1.2rem, 4vw, 4.5rem);
+  left: clamp(0.85rem, 4cqw, 4.5rem);
   z-index: 1;
   color: rgba(241, 238, 230, 0.52);
 }
@@ -172,8 +198,8 @@ button:focus-visible {
   position: absolute;
   top: 14%;
   right: 17%;
-  width: min(31vw, 430px);
-  height: min(36vw, 460px);
+  width: min(31cqw, 430px);
+  height: min(36cqw, 460px);
   border: 1px solid rgba(231, 228, 220, 0.14);
   background: rgba(12, 15, 15, 0.11);
   box-shadow: 0 0 0 14px rgba(16, 18, 18, 0.05);
@@ -277,8 +303,8 @@ button:focus-visible {
   z-index: 3;
   display: flex;
   align-items: flex-end;
-  gap: clamp(1.5rem, 4vw, 4.5rem);
-  padding: 0 clamp(2rem, 8vw, 10rem) clamp(1.8rem, 5%, 3.8rem);
+  gap: clamp(1rem, 4cqw, 4.5rem);
+  padding: 0 clamp(1rem, 8cqw, 10rem) clamp(0.8rem, 5%, 3.8rem);
 }
 
 .dialogue-box {
@@ -293,7 +319,7 @@ button:focus-visible {
   align-items: center;
   gap: 0.55rem;
   color: var(--accent-soft);
-  font-size: clamp(0.78rem, 1vw, 1rem);
+  font-size: clamp(0.64rem, 1cqw, 1rem);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
@@ -332,7 +358,7 @@ button:focus-visible {
   min-height: 3.4rem;
   margin: 0.75rem 0 0.65rem;
   color: #f0ede5;
-  font-size: clamp(1.05rem, 1.8vw, 1.55rem);
+  font-size: clamp(0.75rem, 1.8cqw, 1.55rem);
   line-height: 1.65;
   letter-spacing: -0.025em;
   text-shadow: 0 0.12rem 0.6rem rgba(0, 0, 0, 0.45);
@@ -365,7 +391,7 @@ button:focus-visible {
   gap: 0.42rem;
   margin-bottom: 0.15rem;
   color: rgba(241, 238, 230, 0.62);
-  font-size: clamp(0.64rem, 0.85vw, 0.82rem);
+  font-size: clamp(0.54rem, 0.85cqw, 0.82rem);
   line-height: 1.2;
 }
 
@@ -391,39 +417,41 @@ button:focus-visible {
 }
 
 .report-shell {
-  width: min(1380px, 100%);
-  margin: 0 auto;
-  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   color: var(--ink);
 }
 
 .report-header {
+  flex: 0 0 auto;
   align-items: flex-end;
-  padding-top: 3.2rem;
+  padding-top: clamp(0.4rem, 0.9cqw, 1.4rem);
+  padding-bottom: clamp(0.3rem, 0.8cqw, 0.8rem);
   border-bottom: 1px solid var(--line);
 }
 
 .report-header h1 {
-  font-size: clamp(2rem, 4vw, 3.35rem);
+  font-size: clamp(0.82rem, 2.5cqw, 2.6rem);
 }
 
 .report-subtitle {
-  margin: 0.65rem 0 0;
+  margin: clamp(0.2rem, 0.65cqw, 0.65rem) 0 0;
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: clamp(0.45rem, 0.7cqw, 0.7rem);
 }
 
 .report-header-actions {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: clamp(0.45rem, 1.2cqw, 1.2rem);
 }
 
 .clock-readout {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  min-width: 6.4rem;
+  min-width: clamp(4rem, 6.4cqw, 6.4rem);
 }
 
 .clock-readout span {
@@ -433,26 +461,27 @@ button:focus-visible {
 .clock-readout strong {
   color: var(--accent-soft);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.8rem;
+  font-size: clamp(0.82rem, 1.8cqw, 1.8rem);
   font-weight: 400;
 }
 
 .status-strip {
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  margin: 2rem clamp(1.2rem, 4vw, 4.5rem) 0;
+  margin: clamp(0.3rem, 0.6cqw, 1rem) clamp(0.85rem, 4cqw, 4.5rem) 0;
   border: 1px solid var(--line);
   background: var(--line);
 }
 
 .status-card {
   display: flex;
-  min-height: 7.2rem;
+  min-height: clamp(2.4rem, 4.2cqw, 4.2rem);
   flex-direction: column;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 1.1rem 1.25rem;
+  gap: clamp(0.15rem, 0.35cqw, 0.35rem);
+  padding: clamp(0.35rem, 0.65cqw, 0.65rem) clamp(0.4rem, 0.85cqw, 0.85rem);
   background: var(--panel);
 }
 
@@ -463,25 +492,32 @@ button:focus-visible {
 .status-card strong {
   color: var(--paper);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.12rem;
+  font-size: clamp(0.62rem, 1.12cqw, 1.12rem);
   font-weight: 400;
 }
 
 .status-card small {
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: clamp(0.45rem, 0.74cqw, 0.74rem);
   line-height: 1.5;
 }
 
 .report-grid {
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
-  gap: clamp(2rem, 5vw, 5rem);
-  padding: 3rem clamp(1.2rem, 4vw, 4.5rem) 0;
+  gap: clamp(0.8rem, 5cqw, 5rem);
+  overflow: hidden;
+  padding: clamp(0.65rem, 3cqw, 3rem) clamp(0.85rem, 4cqw, 4.5rem) 0;
 }
 
 .report-column {
   min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-color: rgba(215, 156, 97, 0.55) transparent;
+  scrollbar-width: thin;
 }
 
 .section-heading {
@@ -502,13 +538,13 @@ button:focus-visible {
   margin: 0;
   color: var(--paper);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.45rem;
+  font-size: clamp(0.72rem, 1.45cqw, 1.45rem);
   font-weight: 400;
   letter-spacing: -0.02em;
 }
 
 .section-rule {
-  width: 3.4rem;
+  width: clamp(1.2rem, 3.4cqw, 3.4rem);
   height: 1px;
   margin-bottom: 0.25rem;
   background: var(--accent);
@@ -525,16 +561,16 @@ button:focus-visible {
 
 .fact-list li {
   position: relative;
-  padding: 1rem 0 1rem 1.2rem;
+  padding: clamp(0.4rem, 1cqw, 1rem) 0 clamp(0.4rem, 1cqw, 1rem) clamp(0.65rem, 1.2cqw, 1.2rem);
   border-bottom: 1px solid rgba(231, 228, 220, 0.08);
   color: #c7c4bb;
-  font-size: 0.88rem;
+  font-size: clamp(0.5rem, 0.88cqw, 0.88rem);
   line-height: 1.65;
 }
 
 .fact-list li::before {
   position: absolute;
-  top: 1.45rem;
+  top: clamp(0.75rem, 1.45cqw, 1.45rem);
   left: 0;
   width: 0.34rem;
   height: 0.34rem;
@@ -544,17 +580,17 @@ button:focus-visible {
 
 .section-heading--evidence,
 .section-heading--investigations {
-  margin-top: 2.8rem;
+  margin-top: clamp(1rem, 2.8cqw, 2.8rem);
 }
 
 .evidence-list {
   display: grid;
-  gap: 0.75rem;
-  padding-top: 1rem;
+  gap: clamp(0.35rem, 0.75cqw, 0.75rem);
+  padding-top: clamp(0.45rem, 1cqw, 1rem);
 }
 
 .evidence-card {
-  padding: 1rem 1.1rem 1.1rem;
+  padding: clamp(0.45rem, 1cqw, 1rem) clamp(0.5rem, 1.1cqw, 1.1rem) clamp(0.45rem, 1.1cqw, 1.1rem);
   border-left: 2px solid var(--mira);
   background: rgba(154, 182, 180, 0.07);
 }
@@ -575,9 +611,9 @@ button:focus-visible {
 }
 
 .evidence-card h3 {
-  margin: 0.7rem 0 0.4rem;
+  margin: clamp(0.3rem, 0.7cqw, 0.7rem) 0 clamp(0.2rem, 0.4cqw, 0.4rem);
   color: var(--paper);
-  font-size: 0.95rem;
+  font-size: clamp(0.54rem, 0.95cqw, 0.95rem);
   font-weight: 600;
 }
 
@@ -585,7 +621,7 @@ button:focus-visible {
 .empty-state {
   margin: 0;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: clamp(0.46rem, 0.78cqw, 0.78rem);
   line-height: 1.7;
 }
 
@@ -596,19 +632,19 @@ button:focus-visible {
 
 .active-task-list {
   display: grid;
-  gap: 0.5rem;
-  padding: 1rem 0;
+  gap: clamp(0.25rem, 0.5cqw, 0.5rem);
+  padding: clamp(0.45rem, 1cqw, 1rem) 0;
 }
 
 .active-task-row {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  min-height: 2.3rem;
-  padding: 0.5rem 0.65rem;
+  min-height: clamp(1.65rem, 2.3cqw, 2.3rem);
+  padding: clamp(0.3rem, 0.5cqw, 0.5rem) clamp(0.4rem, 0.65cqw, 0.65rem);
   color: #c7c4bb;
   background: rgba(231, 228, 220, 0.045);
-  font-size: 0.78rem;
+  font-size: clamp(0.46rem, 0.78cqw, 0.78rem);
 }
 
 .active-task-row strong {
@@ -618,9 +654,9 @@ button:focus-visible {
 }
 
 .actor-mark {
-  min-width: 3rem;
+  min-width: clamp(2.1rem, 3cqw, 3rem);
   color: var(--mira);
-  font-size: 0.68rem;
+  font-size: clamp(0.46rem, 0.68cqw, 0.68rem);
   font-weight: 700;
 }
 
@@ -639,11 +675,11 @@ button:focus-visible {
   width: 100%;
   gap: 1rem;
   border: 1px solid var(--accent);
-  padding: 0.9rem 1rem;
+  padding: clamp(0.45rem, 0.9cqw, 0.9rem) clamp(0.5rem, 1cqw, 1rem);
   color: var(--paper-ink);
   background: var(--accent);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: clamp(0.48rem, 0.8cqw, 0.8rem);
   transition: background 160ms ease, color 160ms ease;
 }
 
@@ -666,19 +702,20 @@ button:focus-visible {
 }
 
 .time-note {
-  margin: 0.55rem 0 0;
+  margin: clamp(0.25rem, 0.55cqw, 0.55rem) 0 0;
   color: var(--faint);
-  font-size: 0.7rem;
+  font-size: clamp(0.43rem, 0.7cqw, 0.7rem);
 }
 
 .task-list {
   display: grid;
-  gap: 0.65rem;
-  padding-top: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.3rem, 0.65cqw, 0.65rem);
+  padding-top: clamp(0.45rem, 1cqw, 1rem);
 }
 
 .task-card {
-  padding: 1rem 1.05rem 1.05rem;
+  padding: clamp(0.45rem, 1cqw, 1rem) clamp(0.45rem, 1.05cqw, 1.05rem) clamp(0.45rem, 1.05cqw, 1.05rem);
   border: 1px solid var(--line);
   background: var(--panel);
   transition: border-color 160ms ease, background 160ms ease;
@@ -719,28 +756,28 @@ button:focus-visible {
 }
 
 .task-card h3 {
-  margin: 0.65rem 0 0.4rem;
+  margin: clamp(0.3rem, 0.65cqw, 0.65rem) 0 clamp(0.2rem, 0.4cqw, 0.4rem);
   color: var(--paper);
-  font-size: 0.95rem;
+  font-size: clamp(0.52rem, 0.95cqw, 0.95rem);
   font-weight: 600;
 }
 
 .task-card p {
-  min-height: 2.6rem;
-  margin: 0 0 0.85rem;
+  min-height: clamp(1.7rem, 2.6cqw, 2.6rem);
+  margin: 0 0 clamp(0.35rem, 0.85cqw, 0.85rem);
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: clamp(0.44rem, 0.76cqw, 0.76rem);
   line-height: 1.6;
 }
 
 .task-start-button {
   width: 100%;
   border: 1px solid rgba(231, 228, 220, 0.2);
-  padding: 0.58rem 0.7rem;
+  padding: clamp(0.3rem, 0.58cqw, 0.58rem) clamp(0.35rem, 0.7cqw, 0.7rem);
   color: var(--ink);
   background: transparent;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: clamp(0.44rem, 0.75cqw, 0.75rem);
   text-align: left;
   transition: background 160ms ease, border-color 160ms ease;
 }
@@ -757,13 +794,14 @@ button:focus-visible {
 }
 
 .completion-notice {
+  flex: 0 0 auto;
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  margin: 2.8rem clamp(1.2rem, 4vw, 4.5rem) 0;
+  margin: clamp(0.5rem, 1.8cqw, 2.8rem) clamp(0.85rem, 4cqw, 4.5rem) 0;
   border-top: 1px solid var(--mira);
   border-bottom: 1px solid var(--line);
-  padding: 1rem 0;
+  padding: clamp(0.45rem, 1cqw, 1rem) 0;
 }
 
 .notice-mark {
@@ -772,9 +810,9 @@ button:focus-visible {
 }
 
 .completion-notice p {
-  margin: 0 0 0.35rem;
+  margin: 0 0 clamp(0.15rem, 0.35cqw, 0.35rem);
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: clamp(0.46rem, 0.8cqw, 0.8rem);
   line-height: 1.5;
 }
 
@@ -788,8 +826,9 @@ button:focus-visible {
 }
 
 .opinion-section {
-  margin: 3rem clamp(1.2rem, 4vw, 4.5rem) 0;
-  padding: 1.35rem;
+  flex: 0 0 auto;
+  margin: clamp(0.25rem, 0.8cqw, 1.2rem) clamp(0.85rem, 4cqw, 4.5rem) 0;
+  padding: clamp(0.3rem, 0.7cqw, 0.75rem);
   background: var(--paper);
   color: var(--paper-ink);
 }
@@ -807,10 +846,10 @@ button:focus-visible {
 }
 
 .opinion-note {
-  max-width: 20rem;
+  max-width: clamp(10rem, 20cqw, 20rem);
   margin: 0;
   color: #67665e;
-  font-size: 0.73rem;
+  font-size: clamp(0.44rem, 0.73cqw, 0.73rem);
   line-height: 1.5;
   text-align: right;
 }
@@ -818,18 +857,18 @@ button:focus-visible {
 .opinion-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.6rem;
-  padding-top: 1rem;
+  gap: clamp(0.25rem, 0.6cqw, 0.6rem);
+  padding-top: clamp(0.45rem, 1cqw, 1rem);
 }
 
 .opinion-button {
   display: flex;
-  min-height: 6.2rem;
+  min-height: clamp(2rem, 3.2cqw, 3.2rem);
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   border: 1px solid rgba(36, 37, 34, 0.22);
-  padding: 0.9rem;
+  padding: clamp(0.35rem, 0.9cqw, 0.9rem);
   color: var(--paper-ink);
   background: rgba(255, 255, 255, 0.24);
   cursor: pointer;
@@ -843,27 +882,18 @@ button:focus-visible {
 }
 
 .opinion-button strong {
-  font-size: 0.86rem;
+  font-size: clamp(0.46rem, 0.86cqw, 0.86rem);
   font-weight: 700;
   letter-spacing: -0.03em;
 }
 
 .opinion-button span {
   color: #77756c;
-  font-size: 0.7rem;
+  font-size: clamp(0.4rem, 0.7cqw, 0.7rem);
   line-height: 1.45;
 }
 
 @media (max-width: 900px) {
-  .report-grid {
-    grid-template-columns: 1fr;
-    gap: 2.8rem;
-  }
-
-  .opinion-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .character--mira {
     left: 4%;
   }
@@ -874,153 +904,128 @@ button:focus-visible {
 }
 
 @media (max-width: 620px) {
+  .game-viewport {
+    padding: 0.5rem;
+  }
+
   .vn-topbar,
   .report-header {
-    padding-right: 1rem;
-    padding-left: 1rem;
+    gap: 0.5rem;
   }
 
-  .vn-topbar .quiet-button {
+  .vn-topbar .quiet-button,
+  .report-header .quiet-button {
     max-width: 7rem;
-    font-size: 0.68rem;
-  }
-
-  .vn-stage {
-    min-height: 680px;
-    padding: 5.8rem 0.8rem 1rem;
-  }
-
-  .stage-label {
-    top: 5.8rem;
-    left: 1rem;
-  }
-
-  .stage-window {
-    top: 13%;
-    right: 8%;
-    width: 54vw;
-    height: 38vw;
-  }
-
-  .character {
-    bottom: 10.7rem;
-    height: 47vh;
-    max-height: 390px;
+    padding: 0.3rem 0.45rem;
+    font-size: 0.48rem;
   }
 
   .character--mira {
-    left: -4%;
-    bottom: calc(10.7rem - 1.4%);
+    left: 1%;
   }
 
   .character--seoyun {
-    right: -5%;
-  }
-
-  .dialogue-layer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.8rem;
-    padding: 0.9rem 1rem 1rem;
-  }
-
-  .stage-floor {
-    bottom: 8.3rem;
-  }
-
-  .dialogue-box {
-    width: 100%;
-    min-height: 0;
-    padding: 0;
-  }
-
-  .dialogue-text {
-    margin-top: 0.7rem;
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-  .stage-controls {
-    display: flex;
-    flex-basis: auto;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0.45rem 0.9rem;
-    margin: 0;
-  }
-
-  .control-row {
-    gap: 0.35rem;
+    right: 1%;
   }
 
   .report-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1.4rem;
+    align-items: center;
+    padding: 0.35rem 0.65rem 0.25rem;
+  }
+
+  .report-header h1 {
+    font-size: 0.75rem;
+  }
+
+  .report-subtitle {
+    margin-top: 0.15rem;
+    font-size: 0.4rem;
   }
 
   .report-header-actions {
-    justify-content: space-between;
-    width: 100%;
+    flex-shrink: 0;
+    gap: 0.25rem;
+  }
+
+  .report-header-actions .clock-readout {
+    min-width: 2.8rem;
+    gap: 0.05rem;
+  }
+
+  .report-header-actions .clock-readout span {
+    font-size: 0.38rem;
+  }
+
+  .report-header-actions .clock-readout strong {
+    font-size: 0.7rem;
   }
 
   .status-strip {
-    grid-template-columns: 1fr;
-    margin-top: 1.3rem;
+    margin: 0.3rem 0.65rem 0;
   }
 
   .status-card {
-    min-height: 5.8rem;
+    min-height: 2.1rem;
+    gap: 0.1rem;
+    padding: 0.2rem 0.25rem;
+    overflow: hidden;
+  }
+
+  .status-card strong {
+    font-size: 0.48rem;
+  }
+
+  .status-card small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.35rem;
+    white-space: nowrap;
   }
 
   .report-grid {
-    padding-top: 2.2rem;
-  }
-
-  .report-grid,
-  .status-strip {
-    margin-right: 1rem;
-    margin-left: 1rem;
-  }
-
-  .report-grid {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .completion-notice,
-  .opinion-section {
-    margin-right: 1rem;
-    margin-left: 1rem;
+    flex: 1 1 0;
+    min-height: 2.5rem;
+    gap: 0.55rem;
+    padding-top: 0.55rem;
   }
 
   .completion-notice {
-    flex-direction: column;
-    gap: 0.55rem;
-  }
-
-  .opinion-section {
-    padding: 1rem;
+    gap: 0.5rem;
   }
 
   .opinion-section .section-heading {
     align-items: flex-start;
-    flex-direction: column;
+    gap: 0.35rem;
   }
 
   .opinion-note {
-    max-width: none;
-    text-align: left;
+    display: none;
+  }
+
+  .opinion-section {
+    margin: 0.3rem 0.65rem 0;
+    padding: 0.35rem;
+  }
+
+  .opinion-grid {
+    gap: 0.15rem;
+    padding-top: 0.25rem;
+  }
+
+  .opinion-button {
+    min-height: 2rem;
+    gap: 0.1rem;
+    padding: 0.2rem;
   }
 }
 
 @media (max-width: 420px) {
-  .opinion-grid {
-    grid-template-columns: 1fr;
+  .report-grid {
+    gap: 0.35rem;
   }
 
   .opinion-button {
-    min-height: 4.5rem;
-    gap: 0.7rem;
+    min-height: 2rem;
+    gap: 0.25rem;
   }
 }
