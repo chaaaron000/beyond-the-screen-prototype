@@ -45,9 +45,28 @@ const OPINIONS: { id: Opinion; label: string; detail: string }[] = [
   { id: "investigate", label: "조금 더 조사하자", detail: "판단 전에 새 정보를 요청한다" },
 ];
 
-function getTimelineBlocks(state: GameState, actor: Actor): TimelineBlock[] {
+function getTimelineBlocks(state: GameState, actor: Actor, previewProgress = 0): TimelineBlock[] {
   const blocks: TimelineBlock[] = [];
-  const activeTask = state.activeTasks[actor];
+  let activeTask = state.activeTasks[actor];
+  let plannedTaskIds = state.queuedTasks[actor];
+  const previewStep = getNextCompletionMinutes(state) ?? 0;
+
+  // During the presentation-only transition, preview the first planned task
+  // as running without mutating the real reducer state.
+  if (!activeTask && previewProgress > 0 && plannedTaskIds.length > 0) {
+    const plannedTask = getTask(plannedTaskIds[0]);
+    activeTask = {
+      taskId: plannedTask.id,
+      actor,
+      remainingMinutes: Math.max(1, Math.round(plannedTask.durationMinutes - previewStep * previewProgress)),
+    };
+    plannedTaskIds = plannedTaskIds.slice(1);
+  } else if (activeTask && previewProgress > 0) {
+    activeTask = {
+      ...activeTask,
+      remainingMinutes: Math.max(1, Math.round(activeTask.remainingMinutes - previewStep * previewProgress)),
+    };
+  }
   let cursor = 0;
 
   if (activeTask) {
@@ -56,7 +75,7 @@ function getTimelineBlocks(state: GameState, actor: Actor): TimelineBlock[] {
     cursor = activeTask.remainingMinutes;
   }
 
-  state.queuedTasks[actor].forEach((taskId) => {
+  plannedTaskIds.forEach((taskId) => {
     const task = getTask(taskId);
     blocks.push({ task, start: cursor, end: cursor + task.durationMinutes, active: false });
     cursor += task.durationMinutes;
@@ -172,16 +191,16 @@ function Timeline({
         )}
         {["mira", "seoyun"].map((actor) => {
           const typedActor = actor as Actor;
-          const blocks = getTimelineBlocks(state, typedActor);
+          const blocks = getTimelineBlocks(state, typedActor, transitionProgress);
           return (
             <div className={`timeline-lane timeline-lane--${typedActor}`} key={typedActor}>
               <div className="timeline-lane-label">
                 <span>{ACTOR_LABEL[typedActor]}</span>
                 <small>
-                  {state.activeTasks[typedActor]
+                  {state.activeTasks[typedActor] || (transitionProgress > 0 && state.queuedTasks[typedActor].length > 0)
                     ? "진행 중"
                     : state.queuedTasks[typedActor].length > 0
-                      ? "예약 대기"
+                      ? "조사 예정"
                       : "대기 중"}
                 </small>
               </div>
@@ -194,7 +213,7 @@ function Timeline({
                     aria-hidden="true"
                   />
                 ))}
-                {blocks.length === 0 && <span className="timeline-empty">예약된 작업 없음</span>}
+                {blocks.length === 0 && <span className="timeline-empty">조사 예정 없음</span>}
                 {blocks.map((block) => {
                   const safeWidth = getSafeWidth(block, deadlineOffset);
                   const isAtRisk = deadlineOffset !== null && block.end > deadlineOffset;
@@ -249,7 +268,7 @@ function QueueList({
   }
 
   return (
-    <ol className="queue-list" aria-label={`${ACTOR_LABEL[actor]} 예약 대기열`}>
+    <ol className="queue-list" aria-label={`${ACTOR_LABEL[actor]} 조사 예정 목록`}>
       {queue.map((taskId, index) => (
         <li key={taskId}>
           <span className="queue-index">{index + 1}</span>
@@ -260,28 +279,28 @@ function QueueList({
               disabled={disabled || index === 0}
               aria-label={`${getTask(taskId).title} 위로 이동`}
               onClick={() =>
-                dispatch({ type: "MOVE_QUEUED_TASK", actor, fromIndex: index, toIndex: index - 1 })
+                dispatch({ type: "MOVE_PLANNED_TASK", actor, fromIndex: index, toIndex: index - 1 })
               }
             >
-              위
+              ↑
             </button>
             <button
               type="button"
               disabled={disabled || index === queue.length - 1}
               aria-label={`${getTask(taskId).title} 아래로 이동`}
               onClick={() =>
-                dispatch({ type: "MOVE_QUEUED_TASK", actor, fromIndex: index, toIndex: index + 1 })
+                dispatch({ type: "MOVE_PLANNED_TASK", actor, fromIndex: index, toIndex: index + 1 })
               }
             >
-              아래
+              ↓
             </button>
             <button
               type="button"
               disabled={disabled}
-              aria-label={`${getTask(taskId).title} 예약 취소`}
-              onClick={() => dispatch({ type: "CANCEL_QUEUED_TASK", taskId })}
+              aria-label={`${getTask(taskId).title} 조사 예정에서 제거`}
+              onClick={() => dispatch({ type: "REMOVE_PLANNED_TASK", taskId })}
             >
-              취소
+              ×
             </button>
           </span>
         </li>
@@ -295,68 +314,104 @@ function ActorPlanningCard({
   state,
   dispatch,
   disabled = false,
+  transitionProgress = 0,
 }: {
   actor: Actor;
   state: GameState;
   dispatch: Dispatch<GameAction>;
   disabled?: boolean;
+  transitionProgress?: number;
 }) {
-  const activeTask = state.activeTasks[actor];
+  const nextStep = getNextCompletionMinutes(state) ?? 0;
+  let activeTask = state.activeTasks[actor];
+  let plannedTaskIds = state.queuedTasks[actor];
+  if (!activeTask && transitionProgress > 0 && plannedTaskIds.length > 0) {
+    const plannedTask = getTask(plannedTaskIds[0]);
+    activeTask = {
+      taskId: plannedTask.id,
+      actor,
+      remainingMinutes: Math.max(1, Math.round(plannedTask.durationMinutes - nextStep * transitionProgress)),
+    };
+    plannedTaskIds = plannedTaskIds.slice(1);
+  } else if (activeTask && transitionProgress > 0) {
+    activeTask = {
+      ...activeTask,
+      remainingMinutes: Math.max(1, Math.round(activeTask.remainingMinutes - nextStep * transitionProgress)),
+    };
+  }
   const availableTasks = getAvailableTasks(state).filter((task) => task.actor === actor);
-  const avatar = actor === "mira" ? "/assets/characters/미라.png" : "/assets/characters/서윤.png";
+  const assetBaseUrl = import.meta.env.BASE_URL;
+  const avatar = actor === "mira"
+    ? `${assetBaseUrl}assets/characters/미라.png`
+    : `${assetBaseUrl}assets/characters/서윤.png`;
 
   return (
     <article className={`actor-planning-card actor-planning-card--${actor}`}>
-      <header className="actor-planning-header">
-        <img src={avatar} alt="" className="actor-avatar" />
-        <div>
-          <p className="actor-planning-kicker">조사 담당</p>
-          <h3>{ACTOR_LABEL[actor]}</h3>
-        </div>
-        <span className="actor-planning-count">{availableTasks.length}건 가능</span>
-      </header>
-
-      <section className="actor-current-work" aria-label={`${ACTOR_LABEL[actor]} 현재 진행 중`}>
-        <div className="actor-subheading">
-          <span>현재 진행 중</span>
-          {activeTask && <strong>{formatDuration(activeTask.remainingMinutes)} 남음</strong>}
-        </div>
-        {activeTask ? (
-          <p className="actor-current-task">{getTask(activeTask.taskId).title}</p>
-        ) : (
-          <p className="actor-current-task actor-current-task--empty">현재 진행 중인 작업 없음</p>
-        )}
-      </section>
-
-      <section className="actor-queue-section" aria-label={`${ACTOR_LABEL[actor]} 조사 예정`}>
-        <div className="actor-subheading"><span>조사 예정</span><small>순서를 바꿀 수 있어요</small></div>
-        <QueueList actor={actor} state={state} dispatch={dispatch} disabled={disabled} />
-      </section>
-
-      <section className="actor-available-section" aria-label={`${ACTOR_LABEL[actor]} 가능한 조사`}>
-        <div className="actor-subheading"><span>가능한 조사</span><small>선택하면 마지막에 추가</small></div>
-        {availableTasks.length === 0 ? (
-          <p className="actor-empty-message">지금 확인할 수 있는 새 조사가 없습니다.</p>
-        ) : (
-          <div className="actor-available-list">
-            {availableTasks.map((task) => (
-              <button
-                key={task.id}
-                className="actor-available-task"
-                type="button"
-                disabled={disabled}
-                onClick={() => dispatch({ type: "START_TASK", taskId: task.id })}
-              >
-                <span>
-                  <strong>{task.title}</strong>
-                  <small>{formatDuration(task.durationMinutes)} · {task.description}</small>
-                </span>
-                <em>{activeTask ? "예약" : "시작"}</em>
-              </button>
-            ))}
+      <div className="actor-planning-row">
+        <div className="actor-planning-profile">
+          <div className="actor-planning-identity">
+            <img src={avatar} alt="" className="actor-avatar" />
+            <div>
+              <p className="actor-planning-kicker">조사 담당</p>
+              <h3>{ACTOR_LABEL[actor]}</h3>
+            </div>
           </div>
-        )}
-      </section>
+          <span className="actor-planning-count">{availableTasks.length}건 가능</span>
+
+          <section className="actor-current-work" aria-label={`${ACTOR_LABEL[actor]} 현재 진행 중`}>
+            <div className="actor-subheading">
+              <span>현재 진행 중</span>
+              {activeTask && <strong>{formatDuration(activeTask.remainingMinutes)} 남음</strong>}
+            </div>
+            {activeTask ? (
+              <p className="actor-current-task">{getTask(activeTask.taskId).title}</p>
+            ) : (
+              <p className="actor-current-task actor-current-task--empty">현재 진행 중인 작업 없음</p>
+            )}
+          </section>
+        </div>
+
+        <section className="actor-available-section" aria-label={`${ACTOR_LABEL[actor]} 가능한 조사`}>
+          <div className="actor-subheading">
+            <span>가능한 조사</span>
+            <small>클릭하면 오른쪽 끝에 계획</small>
+          </div>
+          {availableTasks.length === 0 ? (
+            <p className="actor-empty-message">지금 확인할 수 있는 새 조사가 없습니다.</p>
+          ) : (
+            <div className="actor-available-list">
+              {availableTasks.map((task) => (
+                <button
+                  key={task.id}
+                  className="actor-available-task"
+                  type="button"
+                  disabled={disabled}
+                  aria-label={`${task.title} 조사 예정에 추가`}
+                  onClick={() => dispatch({ type: "PLAN_TASK", taskId: task.id })}
+                >
+                  <span>
+                    <strong>{task.title}</strong>
+                    <small>{formatDuration(task.durationMinutes)} · {task.description}</small>
+                  </span>
+                  <em>계획 +</em>
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <div className="actor-planning-arrow" aria-hidden="true">→</div>
+
+        <section className="actor-queue-section" aria-label={`${ACTOR_LABEL[actor]} 조사 예정`}>
+          <div className="actor-subheading"><span>조사 예정</span><small>시작 전까지 수정 가능</small></div>
+          <QueueList
+            actor={actor}
+            state={{ ...state, queuedTasks: { ...state.queuedTasks, [actor]: plannedTaskIds } }}
+            dispatch={dispatch}
+            disabled={disabled}
+          />
+        </section>
+      </div>
     </article>
   );
 }
@@ -365,10 +420,12 @@ function InvestigationPlanner({
   state,
   dispatch,
   disabled = false,
+  transitionProgress = 0,
 }: {
   state: GameState;
   dispatch: Dispatch<GameAction>;
   disabled?: boolean;
+  transitionProgress?: number;
 }) {
   return (
     <section className="investigation-planner" aria-label="캐릭터별 조사 큐">
@@ -380,8 +437,8 @@ function InvestigationPlanner({
         <span>예약은 시간을 소비하지 않아요</span>
       </div>
       <div className="actor-planning-grid">
-        <ActorPlanningCard actor="mira" state={state} dispatch={dispatch} disabled={disabled} />
-        <ActorPlanningCard actor="seoyun" state={state} dispatch={dispatch} disabled={disabled} />
+        <ActorPlanningCard actor="mira" state={state} dispatch={dispatch} disabled={disabled} transitionProgress={transitionProgress} />
+        <ActorPlanningCard actor="seoyun" state={state} dispatch={dispatch} disabled={disabled} transitionProgress={transitionProgress} />
       </div>
     </section>
   );
@@ -432,9 +489,9 @@ function TaskPicker({ state, dispatch }: { state: GameState; dispatch: Dispatch<
                 </div>
                 <button
                   type="button"
-                  onClick={() => dispatch({ type: "START_TASK", taskId: task.id })}
+                  onClick={() => dispatch({ type: "PLAN_TASK", taskId: task.id })}
                 >
-                  {actorBusy ? "뒤에 예약" : "지금 맡기기"}
+                  {actorBusy ? "뒤에 계획" : "계획에 추가"}
                 </button>
               </article>
             );
@@ -881,7 +938,7 @@ function PlanningPanel({
           </div>
           <div className="planning-clock">
             <span>현재 시각</span>
-            <strong>{formatClock(state.clockMinutes)}</strong>
+            <strong>{formatClock(displayClockMinutes)}</strong>
           </div>
         </header>
 
@@ -896,7 +953,12 @@ function PlanningPanel({
           )}
         </div>
 
-        <InvestigationPlanner state={state} dispatch={dispatch} disabled={isAdvancing} />
+        <InvestigationPlanner
+          state={state}
+          dispatch={dispatch}
+          disabled={isAdvancing}
+          transitionProgress={transitionProgress}
+        />
 
         <button
           className="advance-time-control"

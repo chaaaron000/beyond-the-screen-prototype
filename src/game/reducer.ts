@@ -35,9 +35,17 @@ export function getScheduledTaskIds(state: GameState): TaskId[] {
 }
 
 export function getNextCompletionMinutes(state: GameState): number | null {
-  const remaining = Object.values(state.activeTasks)
-    .filter((task): task is NonNullable<typeof task> => task !== null)
-    .map((task) => task.remainingMinutes);
+  // A planned task for an idle actor starts when the player presses the
+  // advance button. Include its duration in the preview so the button can be
+  // enabled before anything is active, without mutating game state.
+  const remaining = (Object.keys(state.activeTasks) as Actor[])
+    .map((actor) => {
+      const activeTask = state.activeTasks[actor];
+      if (activeTask) return activeTask.remainingMinutes;
+      const nextTaskId = state.queuedTasks[actor][0];
+      return nextTaskId ? getTask(nextTaskId).durationMinutes : null;
+    })
+    .filter((minutes): minutes is number => minutes !== null);
   return remaining.length > 0 ? Math.min(...remaining) : null;
 }
 
@@ -60,39 +68,27 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, dialogueIndex: state.dialogueIndex + 1 };
     }
 
-    case "START_TASK":
-    case "QUEUE_TASK": {
+    case "PLAN_TASK": {
       const task = getTask(action.taskId);
       const canStart = getAvailableTasks(state).some((item) => item.id === task.id);
       if (!canStart) return state;
 
-      // Scheduling only records work. The clock moves in ADVANCE_TO_NEXT_COMPLETION.
-      const activeTask = state.activeTasks[task.actor];
-      const queuedTasks = {
-        ...state.queuedTasks,
-        [task.actor]: activeTask
-          ? [...state.queuedTasks[task.actor], task.id]
-          : state.queuedTasks[task.actor],
-      };
-
+      // Planning only records work. The clock and activeTasks move only in
+      // ADVANCE_TO_NEXT_COMPLETION.
       return {
         ...state,
-        activeTasks: {
-          ...state.activeTasks,
-          [task.actor]: activeTask
-            ? activeTask
-            : {
-                taskId: task.id,
-                actor: task.actor,
-                remainingMinutes: task.durationMinutes,
-              },
+        queuedTasks: {
+          ...state.queuedTasks,
+          [task.actor]: [...state.queuedTasks[task.actor], task.id],
         },
-        queuedTasks,
+        // A new plan means the previous completion toast is no longer the
+        // current planning context. The completed result remains available
+        // through completedTaskIds/discoveredEvidence.
         recentlyCompleted: [],
       };
     }
 
-    case "CANCEL_QUEUED_TASK": {
+    case "REMOVE_PLANNED_TASK": {
       const task = getTask(action.taskId);
       const queue = state.queuedTasks[task.actor];
       if (!queue.includes(action.taskId)) return state;
@@ -106,7 +102,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       };
     }
 
-    case "MOVE_QUEUED_TASK": {
+    case "MOVE_PLANNED_TASK": {
       const queue = state.queuedTasks[action.actor];
       const { fromIndex, toIndex } = action;
       if (
@@ -133,20 +129,37 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case "ADVANCE_TO_NEXT_COMPLETION": {
-      const step = getNextCompletionMinutes(state);
-      if (step === null) return state;
-
-      const completedNow = (Object.entries(state.activeTasks) as [
-        Actor,
-        GameState["activeTasks"][Actor],
-      ][]).filter(([, task]) => task !== null && task.remainingMinutes === step);
-      const completedTaskIds = [...state.completedTaskIds];
-      const discoveredEvidence = [...state.discoveredEvidence];
+      // Starting planned work and advancing the clock are one explicit player
+      // action. Start at most one queued task for each idle actor, at the
+      // current clock time; never start work while planning it.
       const activeTasks = { ...state.activeTasks };
       const queuedTasks = {
         mira: [...state.queuedTasks.mira],
         seoyun: [...state.queuedTasks.seoyun],
       };
+
+      (Object.keys(activeTasks) as Actor[]).forEach((actor) => {
+        if (activeTasks[actor] !== null) return;
+        const nextTaskId = queuedTasks[actor].shift();
+        if (!nextTaskId) return;
+        const nextTask = getTask(nextTaskId);
+        activeTasks[actor] = {
+          taskId: nextTask.id,
+          actor,
+          remainingMinutes: nextTask.durationMinutes,
+        };
+      });
+
+      const startedState = { ...state, activeTasks, queuedTasks };
+      const step = getNextCompletionMinutes(startedState);
+      if (step === null) return state;
+
+      const completedNow = (Object.entries(startedState.activeTasks) as [
+        Actor,
+        GameState["activeTasks"][Actor],
+      ][]).filter(([, task]) => task !== null && task.remainingMinutes <= step);
+      const completedTaskIds = [...state.completedTaskIds];
+      const discoveredEvidence = [...state.discoveredEvidence];
 
       completedNow.forEach(([actor, activeTask]) => {
         if (!activeTask) return;
@@ -171,18 +184,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             remainingMinutes: task.remainingMinutes - step,
           };
         }
-      });
-
-      // A queued task begins at the exact completion time, without another clock step.
-      completedNow.forEach(([actor]) => {
-        const nextTaskId = queuedTasks[actor].shift();
-        if (!nextTaskId) return;
-        const nextTask = getTask(nextTaskId);
-        activeTasks[actor] = {
-          taskId: nextTask.id,
-          actor,
-          remainingMinutes: nextTask.durationMinutes,
-        };
       });
 
       return {

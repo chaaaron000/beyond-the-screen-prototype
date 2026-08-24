@@ -3469,7 +3469,7 @@ body {
   display: grid;
   flex: 1 1 auto;
   min-height: 0;
-  grid-template-columns: minmax(0, 1.55fr) minmax(18rem, 0.85fr);
+  grid-template-columns: minmax(0, 1.36fr) minmax(22rem, 0.98fr);
   overflow: hidden;
 }
 
@@ -4647,5 +4647,111 @@ body {
   .task-option button,
   .opinion-drawer-list button {
     transition: none;
+  }
+}
+
+/* Planning semantics: each actor owns one visible handoff lane.
+   Keep the profile, candidates, and planned queue in one horizontal row so
+   clicking a candidate reads as moving it into that actor's plan. */
+.actor-planning-card {
+  overflow: hidden;
+}
+
+.actor-planning-row {
+  display: grid;
+  grid-template-columns: minmax(5.9rem, 0.42fr) minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.55rem;
+  padding: 0.62rem;
+}
+
+.actor-planning-profile {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border-right: 1px solid var(--plan-line);
+  padding-right: 0.55rem;
+}
+
+.actor-planning-identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.actor-planning-identity > div {
+  min-width: 0;
+}
+
+.actor-planning-profile .actor-planning-count {
+  margin: 0.55rem 0 0;
+}
+
+.actor-planning-profile .actor-current-work {
+  margin-top: auto;
+  border-top: 1px solid rgba(236, 231, 220, 0.08);
+  border-bottom: 0;
+  padding: 0.62rem 0 0;
+}
+
+.actor-planning-row .actor-available-section,
+.actor-planning-row .actor-queue-section {
+  min-width: 0;
+  border: 0;
+  padding: 0.05rem 0;
+}
+
+.actor-planning-row .actor-subheading {
+  min-height: 1.05rem;
+}
+
+.actor-planning-row .actor-subheading > span {
+  color: var(--plan-ink);
+  font-family: inherit;
+  font-size: clamp(0.52rem, 0.64cqw, 0.64rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-transform: none;
+}
+
+.actor-planning-row .actor-subheading small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actor-planning-arrow {
+  align-self: center;
+  color: var(--plan-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.actor-planning-row .actor-available-task {
+  min-height: 2.25rem;
+}
+
+.actor-planning-row .actor-queue-section .queue-list {
+  gap: 0.28rem;
+}
+
+.actor-planning-row .actor-queue-section .queue-list li {
+  min-height: 2.25rem;
+  border: 1px solid rgba(236, 231, 220, 0.1);
+  padding: 0.25rem 0.3rem;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.actor-planning-row .queue-actions button {
+  min-width: 1.05rem;
+  min-height: 1.05rem;
+}
+
+@media (max-width: 760px) {
+  .actor-planning-row {
+    grid-template-columns: minmax(5.4rem, 0.42fr) minmax(8.5rem, 1fr) auto minmax(8.5rem, 1fr);
+    overflow-x: auto;
   }
 }

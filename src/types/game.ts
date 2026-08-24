@@ -70,10 +70,12 @@ export interface GameState {
 
 export type GameAction =
   | { type: "ADVANCE_DIALOGUE" }
-  | { type: "START_TASK"; taskId: TaskId }
-  | { type: "QUEUE_TASK"; taskId: TaskId }
-  | { type: "CANCEL_QUEUED_TASK"; taskId: TaskId }
-  | { type: "MOVE_QUEUED_TASK"; actor: Actor; fromIndex: number; toIndex: number }
+  /** Add an available task to its actor's planned queue. Does not start it. */
+  | { type: "PLAN_TASK"; taskId: TaskId }
+  /** Remove a task that has not started from its actor's planned queue. */
+  | { type: "REMOVE_PLANNED_TASK"; taskId: TaskId }
+  /** Move a task within its actor's planned queue. */
+  | { type: "MOVE_PLANNED_TASK"; actor: Actor; fromIndex: number; toIndex: number }
   | { type: "ADVANCE_TO_NEXT_COMPLETION" }
   | { type: "CHOOSE_OPINION"; opinion: Opinion }
   | { type: "RESTART" };

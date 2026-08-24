@@ -35,7 +35,7 @@ export function TaskCard({ task, state, dispatch }: TaskCardProps) {
         className="task-request-button"
         type="button"
         disabled={isScheduled || isComplete}
-        onClick={() => dispatch({ type: "START_TASK", taskId: task.id })}
+        onClick={() => dispatch({ type: "PLAN_TASK", taskId: task.id })}
       >
         {isActive
           ? `진행 중 · ${formatDuration(activeTask.remainingMinutes)} 남음`
