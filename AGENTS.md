@@ -1,0 +1,34 @@
+# Agent Instructions
+
+## Project Scope
+- This repository is a prototype for testing features planned for a visual novel (VN).
+- Prioritize validating the intended VN flow and interaction behavior over production hardening.
+- Mobile portrait-ratio testing is not required unless the user explicitly requests it.
+
+## Package Manager
+- Use **npm**; `package-lock.json` is the lockfile.
+- Install dependencies with `npm install`.
+
+## Commands
+| Task | Command |
+|------|---------|
+| Start host in background (PowerShell) | `$hostProcess = Start-Process cmd.exe -ArgumentList "/c","npm run dev" -PassThru` |
+| Build and type-check | `npm run build` |
+| Preview production build | `npm run preview` |
+
+## Development Host Lifecycle
+- Never run `npm run dev` in the foreground during browser or manual testing.
+- Keep the PID returned in `$hostProcess` so the process can be cleaned up.
+- Stop the host and its child processes after testing, including when testing fails:
+  `taskkill /PID $hostProcess.Id /T /F`
+- Do not leave a Vite host running after the task is complete.
+
+## Key Conventions
+- `src/game/` contains game state, reducer, and time logic.
+- `src/content/` contains dialogue, task, report, and evidence data.
+- Add character, background, UI, and evidence assets under `public/assets/` in their matching directories.
+
+## External References
+| Need | File |
+|------|------|
+| Project flow, structure, and design direction | `README.md` |
