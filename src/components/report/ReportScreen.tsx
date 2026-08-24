@@ -1,10 +1,5 @@
 import type { Dispatch } from "react";
-import {
-  formatClock,
-  formatDuration,
-  formatRemainingPreservation,
-  REFRIGERATION_DEADLINE_MINUTES,
-} from "../../game/clock";
+import { formatClock, formatDuration } from "../../game/clock";
 import {
   getAvailableTasks,
   getNextCompletionMinutes,
@@ -34,14 +29,18 @@ const OPINIONS: { id: Opinion; label: string; detail: string }[] = [
 function ActiveTaskRow({ actor, state }: { actor: Actor; state: GameState }) {
   const task = state.activeTasks[actor];
   return (
-    <div className="active-task-row">
-      <span className={`actor-mark actor-mark--${actor}`}>{ACTOR_LABEL[actor]}</span>
+    <div className={`work-entry work-entry--${actor}`}>
+      <div className="work-entry-heading">
+        <span className={`work-actor work-actor--${actor}`}>{ACTOR_LABEL[actor]}</span>
+        <span className="work-status">{task ? "진행 중" : "대기 중"}</span>
+      </div>
       {task ? (
-        <span>
-          {getTask(task.taskId).title} <strong>{formatDuration(task.remainingMinutes)} 남음</strong>
-        </span>
+        <p className="work-entry-detail">
+          {getTask(task.taskId).title}
+          <strong>{formatDuration(task.remainingMinutes)} 남음</strong>
+        </p>
       ) : (
-        <span className="muted">대기 중</span>
+        <p className="work-entry-detail muted">아직 맡은 조사가 없습니다.</p>
       )}
     </div>
   );
@@ -50,90 +49,97 @@ function ActiveTaskRow({ actor, state }: { actor: Actor; state: GameState }) {
 export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   const availableTasks = getAvailableTasks(state);
   const nextStep = getNextCompletionMinutes(state);
-  const knowsFridgeDeadline = state.discoveredEvidence.includes("refrigerationLimit");
   const nextClock = nextStep === null ? null : state.clockMinutes + nextStep;
 
   return (
     <main className="report-shell">
-      <header className="report-header">
-        <div>
-          <p className="eyebrow">OASIS / INTERNAL BRIEF / 2120-03-21</p>
-          <h1>시설 정보</h1>
-          <p className="report-subtitle">판단에 필요한 기록을 모으고, 다음 행동을 함께 정한다.</p>
-        </div>
-        <div className="report-header-actions">
-          <div className="clock-readout">
-            <span>현재 시각</span>
-            <strong>{formatClock(state.clockMinutes)}</strong>
+      <article className="report-document">
+        <header className="document-header">
+          <div className="document-header-topline">
+            <span className="document-eyebrow">OASIS / SHARED FIELD NOTE</span>
+            <button
+              className="document-restart"
+              type="button"
+              onClick={() => dispatch({ type: "RESTART" })}
+            >
+              처음부터
+            </button>
           </div>
-          <button
-            className="quiet-button quiet-button--dark"
-            type="button"
-            onClick={() => dispatch({ type: "RESTART" })}
-          >
-            처음부터
-          </button>
-        </div>
-      </header>
-
-      <section className="status-strip" aria-label="현재 상황 요약">
-        <div className="status-card">
-          <span className="status-kicker">냉장 설비</span>
-          <strong>{knowsFridgeDeadline ? "비상 전원 운전 중" : "상태 분석 전"}</strong>
-          <small>
-            {knowsFridgeDeadline
-              ? `${formatClock(REFRIGERATION_DEADLINE_MINUTES)} · ${formatRemainingPreservation(
-                  REFRIGERATION_DEADLINE_MINUTES - state.clockMinutes,
-                )}`
-              : "온도 상승 기록만 확인됨"}
-          </small>
-        </div>
-        <div className="status-card">
-          <span className="status-kicker">주 발전 계통</span>
-          <strong>오프라인</strong>
-          <small>고장 원인과 접근 조건 미확인</small>
-        </div>
-        <div className="status-card">
-          <span className="status-kicker">작업 진행</span>
-          <strong>{nextStep === null ? "예약된 작업 없음" : "명시적 진행 대기"}</strong>
-          <small>읽기와 생각만으로는 시간이 줄지 않음</small>
-        </div>
-      </section>
-
-      <div className="report-grid">
-        <section className="report-column report-column--facts">
-          <div className="section-heading">
+          <div className="document-title-row">
             <div>
-              <p className="section-kicker">01 / 상황</p>
-              <h2>현재 알고 있는 것</h2>
+              <p className="document-date">2120-03-21</p>
+              <h1>시설 정보</h1>
+              <p className="document-subtitle">
+                두 사람이 보내온 자료를 읽고, 다음 행동을 정한다.
+              </p>
             </div>
-            <span className="section-rule" />
+            <time className="document-clock">
+              <span>현재 시각</span>
+              <strong>{formatClock(state.clockMinutes)}</strong>
+            </time>
           </div>
-          <ul className="fact-list">
+        </header>
+
+        <div className="document-rule" />
+
+        <section className="report-section report-section--situation">
+          <div className="report-section-heading">
+            <p className="report-section-label">상황</p>
+            <h2>현재 상황</h2>
+          </div>
+          <div className="situation-copy">
             {KNOWN_FACTS.map((fact) => (
-              <li key={fact}>{fact}</li>
+              <p key={fact}>{fact}</p>
             ))}
-          </ul>
-
-          <div className="section-heading section-heading--evidence">
-            <div>
-              <p className="section-kicker">02 / 기록</p>
-              <h2>확보한 추가 정보</h2>
-            </div>
-            <span className="section-rule" />
           </div>
-          <div className="evidence-list">
+        </section>
+
+        <section className="report-section report-section--opinions">
+          <div className="report-section-heading">
+            <p className="report-section-label">두 사람의 메모</p>
+            <h2>각자의 의견</h2>
+          </div>
+          <div className="opinion-notes">
+            <blockquote className="opinion-note opinion-note--mira">
+              <p>“주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”</p>
+              <cite>미라</cite>
+            </blockquote>
+            <blockquote className="opinion-note opinion-note--seoyun">
+              <p>“난 바이크부터 보고 싶은데?”</p>
+              <cite>한서윤</cite>
+            </blockquote>
+          </div>
+        </section>
+
+        <section className="report-section report-section--evidence">
+          <div className="report-section-heading">
+            <p className="report-section-label">기록</p>
+            <h2>확보한 정보</h2>
+          </div>
+          <div className="evidence-feed" aria-live="polite">
+            {state.recentlyCompleted.length > 0 && (
+              <div className="new-record-note">
+                <span>방금 도착한 기록</span>
+                {state.recentlyCompleted.map((taskId) => {
+                  const task = getTask(taskId);
+                  return (
+                    <p key={taskId}>
+                      <strong>{TASK_RESULT_LABELS[taskId]}</strong>
+                      <br />
+                      {task.result.summary}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
             {state.discoveredEvidence.length === 0 ? (
-              <p className="empty-state">아직 별도로 확보한 정보가 없습니다.</p>
+              <p className="empty-record">아직 추가로 확인한 정보 없음.</p>
             ) : (
               state.discoveredEvidence.map((evidenceId) => {
                 const evidence = EVIDENCE[evidenceId];
                 return (
-                  <article className="evidence-card" key={evidenceId}>
-                    <div className="evidence-card-topline">
-                      <span className="evidence-pin" />
-                      <span>{evidence.source}</span>
-                    </div>
+                  <article className="evidence-fragment" key={evidenceId}>
+                    <p className="evidence-source">{evidence.source}</p>
                     <h3>{evidence.title}</h3>
                     <p>{evidence.detail}</p>
                   </article>
@@ -141,17 +147,29 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
               })
             )}
           </div>
+          <p className="section-footnote">
+            조사가 완료될 때마다 이 위치에 새로운 문단, 인용 블록 또는 기록 조각이 추가된다.
+          </p>
         </section>
 
-        <section className="report-column report-column--work">
-          <div className="section-heading">
-            <div>
-              <p className="section-kicker">03 / 진행 중</p>
-              <h2>두 사람의 작업</h2>
-            </div>
-            <span className="section-rule" />
+        <section className="report-section report-section--investigations">
+          <div className="report-section-heading">
+            <p className="report-section-label">다음으로 확인할 것</p>
+            <h2>조사 가능한 항목</h2>
           </div>
-          <div className="active-task-list">
+          <div className="task-list">
+            {availableTasks.map((task) => (
+              <TaskCard key={task.id} task={task} state={state} dispatch={dispatch} />
+            ))}
+          </div>
+        </section>
+
+        <section className="report-section report-section--work">
+          <div className="report-section-heading">
+            <p className="report-section-label">현재 기록</p>
+            <h2>진행 중인 작업</h2>
+          </div>
+          <div className="work-log">
             <ActiveTaskRow actor="mira" state={state} />
             <ActiveTaskRow actor="seoyun" state={state} />
           </div>
@@ -162,67 +180,37 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
             onClick={() => dispatch({ type: "ADVANCE_TO_NEXT_COMPLETION" })}
           >
             <span>
-              {nextClock === null
-                ? "진행할 작업이 없습니다"
-                : "다음 작업 완료까지 시간 진행"}
+              {nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}
             </span>
             {nextClock !== null && <strong>{formatClock(nextClock)}까지</strong>}
           </button>
           <p className="time-note">작업을 시작하는 순간에는 시각이 바뀌지 않습니다.</p>
+        </section>
 
-          <div className="section-heading section-heading--investigations">
-            <div>
-              <p className="section-kicker">04 / 조사 요청</p>
-              <h2>새 정보 요청하기</h2>
-            </div>
-            <span className="section-rule" />
+        <section className="report-section report-section--decision">
+          <div className="report-section-heading">
+            <p className="report-section-label">당신의 판단</p>
+            <h2>어디부터 볼까?</h2>
           </div>
-          <div className="task-list">
-            {availableTasks.map((task) => (
-              <TaskCard key={task.id} task={task} state={state} dispatch={dispatch} />
+          <p className="decision-intro">읽은 내용을 바탕으로 다음 순서를 정한다.</p>
+          <div className="decision-list">
+            {OPINIONS.map((opinion) => (
+              <button
+                className="decision-option"
+                type="button"
+                key={opinion.id}
+                onClick={() => dispatch({ type: "CHOOSE_OPINION", opinion: opinion.id })}
+              >
+                <span className="decision-arrow" aria-hidden="true">↳</span>
+                <span className="decision-copy">
+                  <strong>{opinion.label}</strong>
+                  <small>{opinion.detail}</small>
+                </span>
+              </button>
             ))}
           </div>
         </section>
-      </div>
-
-      {state.recentlyCompleted.length > 0 && (
-        <section className="completion-notice" aria-live="polite">
-          <span className="notice-mark">새 기록</span>
-          <div>
-            {state.recentlyCompleted.map((taskId) => {
-              const task = getTask(taskId);
-              return (
-                <p key={taskId}>
-                  <strong>{TASK_RESULT_LABELS[taskId]}</strong> · {task.result.summary}
-                </p>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      <section className="opinion-section">
-        <div className="section-heading">
-          <div>
-            <p className="section-kicker">05 / 판단</p>
-            <h2>어느 쪽을 먼저 볼까?</h2>
-          </div>
-          <p className="opinion-note">의견은 언제나 말할 수 있습니다. 두 사람이 납득하는지는 별개의 일입니다.</p>
-        </div>
-        <div className="opinion-grid">
-          {OPINIONS.map((opinion) => (
-            <button
-              className="opinion-button"
-              type="button"
-              key={opinion.id}
-              onClick={() => dispatch({ type: "CHOOSE_OPINION", opinion: opinion.id })}
-            >
-              <strong>{opinion.label}</strong>
-              <span>{opinion.detail}</span>
-            </button>
-          ))}
-        </div>
-      </section>
+      </article>
     </main>
   );
 }

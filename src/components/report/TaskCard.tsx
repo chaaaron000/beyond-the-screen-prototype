@@ -21,15 +21,17 @@ export function TaskCard({ task, state, dispatch }: TaskCardProps) {
   const isComplete = state.completedTaskIds.includes(task.id);
 
   return (
-    <article className={`task-card task-card--${task.actor}`}>
-      <div className="task-card-heading">
-        <span className="actor-label">{ACTOR_LABEL[task.actor]}</span>
-        <span className="task-duration">{formatDuration(task.durationMinutes)}</span>
+    <article className={`report-task-row report-task-row--${task.actor}`}>
+      <div className="report-task-meta">
+        <span className={`task-actor task-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]}</span>
+        <span>{formatDuration(task.durationMinutes)}</span>
       </div>
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
+      <div className="report-task-main">
+        <h3>{task.title}</h3>
+        <p>{task.description}</p>
+      </div>
       <button
-        className="task-start-button"
+        className="task-request-button"
         type="button"
         disabled={isActive || actorBusy || isComplete}
         onClick={() => dispatch({ type: "START_TASK", taskId: task.id })}
@@ -38,7 +40,9 @@ export function TaskCard({ task, state, dispatch }: TaskCardProps) {
           ? `진행 중 · ${formatDuration(activeTask.remainingMinutes)} 남음`
           : actorBusy
             ? "현재 다른 작업 중"
-            : "이 작업 시작"}
+            : task.actor === "mira"
+              ? "조사 요청"
+              : "현장 확인 요청"}
       </button>
     </article>
   );
