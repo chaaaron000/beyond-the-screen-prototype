@@ -23,6 +23,7 @@ export function VNScene({ state, dispatch }: VNSceneProps) {
   const line = state.dialogue[state.dialogueIndex];
   const isLastLine = state.dialogueIndex >= state.dialogue.length - 1;
   const activeSpeaker = line?.speaker ?? "narrator";
+  const assetBaseUrl = import.meta.env.BASE_URL;
 
   return (
     <main className="vn-shell">
@@ -52,14 +53,14 @@ export function VNScene({ state, dispatch }: VNSceneProps) {
             activeSpeaker === "mira" ? "character--active" : "character--resting"
           }`}
         >
-          <img src="/assets/characters/미라.png" alt="미라" />
+          <img src={`${assetBaseUrl}assets/characters/미라.png`} alt="미라" />
         </div>
         <div
           className={`character character--seoyun ${
             activeSpeaker === "seoyun" ? "character--active" : "character--resting"
           }`}
         >
-          <img src="/assets/characters/서윤.png" alt="한서윤" />
+          <img src={`${assetBaseUrl}assets/characters/서윤.png`} alt="한서윤" />
         </div>
         <div className="stage-floor" aria-hidden="true" />
       </section>
