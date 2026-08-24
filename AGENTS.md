@@ -25,8 +25,10 @@
 
 ## Playtest Screenshots
 - Capture representative play screens while testing the implemented VN flow, including the VN scene and report screen when available.
+- For the report screen, scroll from top to bottom and capture each viewport or section separately so the full report is visible; do not rely on one cropped image.
 - Store committed screenshots under `docs/screenshots/` with stable, descriptive filenames.
 - Add or update a `## Screenshots` section in `README.md` with relative Markdown image links to the current screenshots.
+- Add every report screenshot to `README.md` in top-to-bottom order.
 - After each feature or visual change, retake affected screenshots and replace the README references so they show the current implementation.
 - Do not use `.openchamber/screenshots/` as README assets because `.openchamber/` is ignored.
 
