@@ -16,4 +16,13 @@
 - `public/assets/ui/` — 아이콘, 장식, UI 이미지
 - `public/assets/evidence/` — 보고서에 띄울 사진/지도/도표
 
-현재는 폴더 구조만 잡아둔 상태입니다.
+현재는 Day 1 냉장 설비·발전소·바이크 갈등을 검증하는 플레이 가능한 수직 슬라이스입니다.
+
+## 실행
+
+```bash
+npm install
+npm run dev
+```
+
+`npm run build`로 프로덕션 번들을 확인할 수 있습니다.
