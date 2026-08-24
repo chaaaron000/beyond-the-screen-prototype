@@ -23,6 +23,13 @@
   `taskkill /PID $hostProcess.Id /T /F`
 - Do not leave a Vite host running after the task is complete.
 
+## Playtest Screenshots
+- Capture representative play screens while testing the implemented VN flow, including the VN scene and report screen when available.
+- Store committed screenshots under `docs/screenshots/` with stable, descriptive filenames.
+- Add or update a `## Screenshots` section in `README.md` with relative Markdown image links to the current screenshots.
+- After each feature or visual change, retake affected screenshots and replace the README references so they show the current implementation.
+- Do not use `.openchamber/screenshots/` as README assets because `.openchamber/` is ignored.
+
 ## Key Conventions
 - `src/game/` contains game state, reducer, and time logic.
 - `src/content/` contains dialogue, task, report, and evidence data.
