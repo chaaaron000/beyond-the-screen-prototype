@@ -1,6 +1,6 @@
-# [배포 URL: https://chaaaron000.github.io/beyond-the-screen-prototype/](https://chaaaron000.github.io/beyond-the-screen-prototype/)
+# 화면 너머의 너 사양 프로토타입
 
-# 화면 너머의 너
+## [배포 URL: https://chaaaron000.github.io/beyond-the-screen-prototype/](https://chaaaron000.github.io/beyond-the-screen-prototype/)
 
 OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시설을 조사하고, 확보한 정보로 다음 행동을 판단하는 비주얼 노벨 프로토타입입니다.
 
@@ -14,6 +14,12 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 4. 작업을 시작하는 순간에는 시간이 바뀌지 않습니다. 예약된 작업의 다음 완료 시점까지 명시적으로 시간을 진행합니다.
 5. 작업이 완료되면 새로운 근거가 보고서에 추가되고, 확보한 정보에 따라 시작 가능한 조사와 대사 분기가 달라집니다.
 6. 판단을 선택하면 해당 의견에 대한 새로운 VN 대화가 시작됩니다.
+
+## Screenshots
+
+![VN scene](docs/screenshots/vn-scene.png)
+
+![Report screen](docs/screenshots/report-screen.png)
 
 ## 실행
 
