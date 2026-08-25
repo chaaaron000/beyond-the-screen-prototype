@@ -16,6 +16,16 @@
 | Build and type-check | `npm run build` |
 | Preview production build | `npm run preview` |
 
+## Verification
+- Changes are incomplete until they are verified.
+- Always run relevant automated tests and `npm run build` before completion.
+- Existing tests covering changed behavior must continue to pass.
+- Changes to `src/game/`, scheduling, time progression, evidence, proposal evaluation, or knowledge state require deterministic automated tests.
+- Add or update tests when changing game logic.
+- Prefer automated component or E2E tests for testable UI interactions.
+- Use browser or manual testing for visual and end-to-end checks such as layout, typography, responsive behavior, animations, and complete player flows.
+- Before reporting completion, fix failures caused by the change and briefly report what was verified.
+
 ## Development Host Lifecycle
 - Never run `npm run dev` in the foreground during browser or manual testing.
 - Keep the PID returned in `$hostProcess` so the process can be cleaned up.

@@ -2,7 +2,12 @@ import { useEffect, useRef, useState, type CSSProperties, type Dispatch } from "
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
 import { getProposal, PROPOSALS, type ProposalDefinition } from "../../content/proposals";
-import { formatClock, formatDuration, REFRIGERATION_DEADLINE_MINUTES } from "../../game/clock";
+import {
+  formatClock,
+  formatDuration,
+  formatRemainingPreservation,
+  REFRIGERATION_DEADLINE_MINUTES,
+} from "../../game/clock";
 import {
   getAvailableTasks,
   getNextCompletionMinutes,
@@ -103,6 +108,118 @@ function getSafeWidth(block: TimelineBlock, deadlineOffset: number | null): numb
   return ((deadlineOffset - block.start) / (block.end - block.start)) * 100;
 }
 
+function getPlannedScheduleEnd(state: GameState): number {
+  return (Object.keys(ACTOR_LABEL) as Actor[]).reduce((latest, actor) => {
+    const blocks = getTimelineBlocks(state, actor);
+    return Math.max(latest, blocks.at(-1)?.end ?? 0);
+  }, 0);
+}
+
+interface DeadlineSummaryItem {
+  id: string;
+  title: string;
+  context: string;
+  deadlineMinutes: number | null;
+  remainingMinutes: number | null;
+  reason: string;
+  statusLabel: string;
+  isWarning: boolean;
+  planRunsPastDeadline: boolean;
+}
+
+function getDeadlineSummaryItems(
+  state: GameState,
+  displayClockMinutes: number,
+): DeadlineSummaryItem[] {
+  const knowsDeadline = state.discoveredEvidence.includes("refrigerationLimit");
+  const remainingMinutes = REFRIGERATION_DEADLINE_MINUTES - displayClockMinutes;
+  const planRunsPastDeadline = knowsDeadline && getPlannedScheduleEnd(state) > Math.max(0, remainingMinutes);
+  const isWarning = knowsDeadline && (remainingMinutes <= 120 || planRunsPastDeadline);
+
+  // Keep the summary data-driven: adding a later deadline only requires another
+  // item here, while each item still respects the player's discovered evidence.
+  return [
+    {
+      id: "refrigeration",
+      title: "냉장 시설",
+      context: "비상 전원 운전 중",
+      deadlineMinutes: knowsDeadline ? REFRIGERATION_DEADLINE_MINUTES : null,
+      remainingMinutes: knowsDeadline ? remainingMinutes : null,
+      reason: knowsDeadline
+        ? "비상 전원 출력이 계속 떨어져 온도가 상승하고 있다. 한계 이후에는 식품 보존을 보장하기 어렵다."
+        : "냉장 설비의 온도가 상승하고 있다. 정확한 보존 가능 시간은 아직 분석되지 않았다.",
+      statusLabel: !knowsDeadline
+        ? "분석 필요"
+        : remainingMinutes <= 0
+          ? "한계 도달"
+          : isWarning
+            ? "주의"
+            : "알려짐",
+      isWarning,
+      planRunsPastDeadline,
+    },
+  ];
+}
+
+function DeadlineSummary({
+  state,
+  displayClockMinutes = state.clockMinutes,
+}: {
+  state: GameState;
+  displayClockMinutes?: number;
+}) {
+  const items = getDeadlineSummaryItems(state, displayClockMinutes);
+  const allDeadlinesUnknown = items.every((item) => item.deadlineMinutes === null);
+  const hasWarning = items.some((item) => item.isWarning);
+
+  return (
+    <section
+      className={`deadline-summary${allDeadlinesUnknown ? " deadline-summary--unknown" : ""}${hasWarning ? " deadline-summary--warning" : ""}`}
+      aria-labelledby="deadline-summary-heading"
+      aria-live="polite"
+    >
+      <div className="deadline-summary-heading">
+        <p id="deadline-summary-heading" className="deadline-summary-label">시간 제한</p>
+        <span className="deadline-summary-count">{items.length}개 추적 중</span>
+      </div>
+      <div className="deadline-summary-list">
+        {items.map((item) => (
+          <article
+            className={`deadline-summary-item${item.deadlineMinutes === null ? " deadline-summary-item--unknown" : ""}${item.isWarning ? " deadline-summary-item--warning" : ""}`}
+            key={item.id}
+          >
+            <div className="deadline-summary-heading">
+              <h3>{item.title} <span>· {item.context}</span></h3>
+              <span className="deadline-summary-status">{item.statusLabel}</span>
+            </div>
+
+            {item.deadlineMinutes !== null && item.remainingMinutes !== null ? (
+              <div className="deadline-summary-metrics">
+                <div>
+                  <span>예상 보존 한계</span>
+                  <strong>{formatClock(item.deadlineMinutes)}</strong>
+                </div>
+                <div>
+                  <span>남은 시간</span>
+                  <strong>{formatRemainingPreservation(item.remainingMinutes)}</strong>
+                </div>
+              </div>
+            ) : (
+              <p className="deadline-summary-unknown-value">보존 가능 시간 미확인</p>
+            )}
+
+            <p className="deadline-summary-reason">{item.reason}</p>
+
+            {item.planRunsPastDeadline && (
+              <p className="deadline-summary-plan-warning">현재 조사 일정이 알려진 보존 한계를 넘습니다. 순서를 먼저 조정하세요.</p>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <header className="field-section-heading">
@@ -147,7 +264,7 @@ function Timeline({
           <h3>두 사람의 다음 움직임</h3>
         </div>
         {knowsDeadline ? (
-          <span className="deadline-key">보존 한계 13:20</span>
+          <span className="deadline-key">냉장 보존 한계 · 13:20</span>
         ) : (
           <span className="deadline-unknown">보존 한계 미확인</span>
         )}
@@ -177,11 +294,11 @@ function Timeline({
               aria-hidden="true"
             />
             <div
-              className="deadline-line"
+              className={`deadline-line${deadlinePosition > 70 ? " deadline-line--near-right" : ""}`}
               style={{ left: `${deadlinePosition}%` }}
               aria-label="냉장 보존 한계 13:20"
             >
-              <span>13:20</span>
+              <span>냉장 보존 한계 · 13:20</span>
             </div>
           </>
         )}
@@ -1066,16 +1183,9 @@ function PlanningPanel({
           </div>
         </header>
 
-        <Timeline state={state} displayClockMinutes={displayClockMinutes} transitionProgress={transitionProgress} />
+        <DeadlineSummary state={state} displayClockMinutes={displayClockMinutes} />
 
-        <div className="deadline-readout">
-          <span>중요한 시간 제한</span>
-          {state.discoveredEvidence.includes("refrigerationLimit") ? (
-            <strong>냉장 보존 한계 / {formatClock(REFRIGERATION_DEADLINE_MINUTES)}</strong>
-          ) : (
-            <strong className="is-unknown">아직 분석되지 않음</strong>
-          )}
-        </div>
+        <Timeline state={state} displayClockMinutes={displayClockMinutes} transitionProgress={transitionProgress} />
 
         <InvestigationPlanner
           state={state}
