@@ -1,4 +1,4 @@
-import { OPENING_DIALOGUE } from "../content/dialogue/opening";
+import { getDialogue } from "../content/field-mission/dialogue/loader";
 import { INITIAL_CLOCK_MINUTES } from "./clock";
 import type { GameState } from "../types/game";
 
@@ -17,7 +17,7 @@ export function createInitialState(): GameState {
     completedTaskIds: [],
     discoveredEvidence: [],
     recentlyCompleted: [],
-    dialogue: OPENING_DIALOGUE,
+    dialogue: getDialogue("opening"),
     dialogueIndex: 0,
     lastOpinion: null,
     rejectionPressure: 0,

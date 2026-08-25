@@ -1,0 +1,54 @@
+# power.rawLog.default
+
+MIRA: 주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.
+SEOYUN: 거기 지금 바로 들어갈 수 있는지도 모르잖아.
+MIRA: 발전소 고치면 냉장고도 조명도 같이 해결돼요. 시간 충분한데요?
+SEOYUN: 너 그거 확실해?
+MIRA: 지금 가진 정보로는요.
+
+
+# power.proposal.noEvidence
+
+PLAYER: 발전소부터 보자.
+MIRA: 그게 맞죠! 선배 최고. 주 전원이 살아야 나머지도 살릴 수 있어요.
+SEOYUN: ……알겠어. 발전소부터 확인하자.
+
+
+# power.proposal.related
+
+PLAYER: 발전소부터 보자.
+SEOYUN: 이 기록까지 있으면 발전소부터 보는 게 맞겠네. 인정할게.
+MIRA: 그렇죠? 제가 뭐랬어요. 선배, 이제야 제 말 듣네요.
+
+
+# power.proposal.irrelevant
+
+PLAYER: 발전소부터 보자.
+MIRA: 엥? 그게 발전소 접근이랑 무슨 상관이에요?
+SEOYUN: 그 기록으로는 입구를 열 수 없어. 다른 근거가 필요해.
+
+
+# power.field.entry
+
+PLAYER: 발전 구역 입구에 도착했다.
+SEOYUN: 입구가 닫혀 있어. 이 격리·접근 지점에서 막혔네.
+MIRA: 문과 접근 절차 안내를 확인해 볼게요.
+MIRA: 문 자체가 고장 난 게 아니라 격리 절차가 걸려 있어요. 해제 조건을 더 확인해 볼게요.
+
+
+# power.field.terminal.first
+
+SEOYUN: 단말기? 발전 구역 입구를 여는 데 현장 단말이 필요하다고?
+MIRA: 절차서에도 로컬 인증 단말 없이는 격리를 해제할 수 없다고 되어 있어요.
+
+
+# power.field.terminal.second
+
+SEOYUN: 아, 씨발. 또 단말기야? 문 하나 확인하는 데도?
+MIRA: 이번엔 발전 구역 접근 절차가 단말 인증에 묶인 거예요.
+
+
+# power.field.terminal.third
+
+SEOYUN: 진짜 죄다 그거네. 발전소도 단말기 없이는 시작도 못 해.
+MIRA: 입구와 설비가 모두 같은 현장 제어망을 타고 있어요.

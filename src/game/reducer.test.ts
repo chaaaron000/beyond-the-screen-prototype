@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { FIELD_ROUTE_CONTENT } from "../content/field-mission/routes";
+import { getDialogue } from "../content/field-mission/dialogue/loader";
 import {
   getAutonomousTaskIds,
   getProposalPresentation,
@@ -106,7 +107,7 @@ describe("proposal contract", () => {
     const reaction = getProposalReaction(createInitialState(), "motorcycle", [
       "powerGridStatus",
     ]);
-    const dialogue = reaction.dialogue.map((line) => line.text).join(" ");
+    const dialogue = getDialogue(reaction.dialogueId).map((line) => line.text).join(" ");
 
     expect(reaction.outcome).toBe("accepted");
     expect(dialogue).toContain("아무 상관도 없는데요");
@@ -128,10 +129,11 @@ describe("proposal contract", () => {
 
   it("uses deadline-neutral refrigeration copy before analysis", () => {
     const presentation = getProposalPresentation(createInitialState(), "refrigeration");
+    const rawDialogue = getDialogue(presentation.rawDialogueId);
     const copy = [
-      presentation.seoyunSummary,
-      presentation.miraSummary,
-      ...presentation.rawDialogue.map((line) => line.text),
+      rawDialogue[presentation.summaryLineIndices.seoyun].text,
+      rawDialogue[presentation.summaryLineIndices.mira].text,
+      ...rawDialogue.map((line) => line.text),
     ].join(" ");
 
     expect(copy).not.toMatch(/13:20|네 시간|\d+시간/);
@@ -144,9 +146,10 @@ describe("proposal contract", () => {
       discoveredEvidence: ["refrigerationLimit"] as EvidenceId[],
     };
     const presentation = getProposalPresentation(state, "refrigeration");
+    const rawDialogue = getDialogue(presentation.rawDialogueId);
     const copy = [
-      presentation.seoyunSummary,
-      ...presentation.rawDialogue.map((line) => line.text),
+      rawDialogue[presentation.summaryLineIndices.seoyun].text,
+      ...rawDialogue.map((line) => line.text),
     ].join(" ");
 
     expect(copy).toContain("13:20");
@@ -318,7 +321,11 @@ describe("field route time and lifecycle", () => {
   });
 
   it("keeps MIRAGE remote sensing separate from Seoyun physical perception", () => {
-    const dialogue = FIELD_ROUTE_CONTENT.refrigeration.fieldDialogue[1]
+    const route = FIELD_ROUTE_CONTENT.refrigeration;
+    const dialogue = [
+      ...getDialogue(route.fieldEntryDialogueId),
+      ...getDialogue(route.fieldDialogueIds[1]),
+    ]
       .map((line) => `${line.speaker}:${line.text}`)
       .join(" ");
 

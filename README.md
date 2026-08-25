@@ -58,13 +58,19 @@ npm run dev
 npm run build
 ```
 
+## 대사 수정 방법
+
+1. `src/content/field-mission/dialogue/`에서 공통 또는 장소별 `.txt` 파일을 엽니다.
+2. 원하는 `# section.id` 아래의 `SPEAKER: text`를 수정합니다.
+3. 저장하면 TypeScript 코드 수정 없이 Vite HMR을 통해 개발 화면에 반영됩니다.
+
 ## 주요 구조
 
 - `src/App.tsx` — 게임 상태에 따른 VN/보고서 화면 전환
 - `src/components/vn/` — 비주얼 노벨 장면과 대화 UI
 - `src/components/report/` — 내부 운영 보고서, 조사 작업, 판단 UI
 - `src/game/` — 상태, 리듀서, 시간 계산 로직
-- `src/content/dialogue/` — 시작 대사와 판단별 대사 분기
+- `src/content/field-mission/dialogue/` — 시작·판단·현장·RAW LOG 대사 원고
 - `src/content/reports/` — 알려진 사실, 조사 결과, 확보 가능한 근거
 - `public/assets/characters/` — 한서윤·미라 스탠딩 이미지
 - `public/assets/backgrounds/` — VN 배경 에셋 위치

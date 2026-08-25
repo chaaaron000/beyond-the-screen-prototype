@@ -1,5 +1,5 @@
 import {
-  AUTONOMOUS_TAKEOVER_DIALOGUE,
+  AUTONOMOUS_TAKEOVER_DIALOGUE_ID,
   getAutonomousTaskIds,
   getProposalReaction,
 } from "../content/proposals";
@@ -7,6 +7,7 @@ import {
   getFieldRouteContent,
   getNextTerminalEncounterPosition,
 } from "../content/field-mission/routes";
+import { getDialogue } from "../content/field-mission/dialogue/loader";
 import { TASKS } from "../content/tasks";
 import { createInitialState } from "./state";
 import type {
@@ -275,21 +276,23 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       }
 
       const route = getFieldRouteContent(action.proposalId);
+      const reactionDialogue = getDialogue(reaction.dialogueId);
       const dialogue =
         reaction.outcome === "accepted"
           ? [
-              ...reaction.dialogue,
-              ...route.fieldDialogue[
-                getNextTerminalEncounterPosition(state)
-              ],
+              ...reactionDialogue,
+              ...getDialogue(route.fieldEntryDialogueId),
+              ...getDialogue(
+                route.fieldDialogueIds[getNextTerminalEncounterPosition(state)],
+              ),
             ]
-          : reaction.dialogue;
+          : reactionDialogue;
 
       return {
         ...state,
         view: "vn",
         dialogue: shouldTakeOver
-          ? [...dialogue, ...AUTONOMOUS_TAKEOVER_DIALOGUE]
+          ? [...dialogue, ...getDialogue(AUTONOMOUS_TAKEOVER_DIALOGUE_ID)]
           : dialogue,
         dialogueIndex: 0,
         lastOpinion: action.proposalId,

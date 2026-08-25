@@ -10,6 +10,7 @@ import {
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
 import { getFieldRouteContent } from "../../content/field-mission/routes";
+import { getDialogue } from "../../content/field-mission/dialogue/loader";
 import {
   getProposal,
   getProposalPresentation,
@@ -1029,6 +1030,7 @@ function ProposalLedger({
       <div className="proposal-list">
         {PROPOSALS.map((proposal) => {
           const presentation = getProposalPresentation(state, proposal.id);
+          const rawDialogue = getDialogue(presentation.rawDialogueId);
           return (
           <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
             <header className="proposal-entry-header">
@@ -1054,11 +1056,11 @@ function ProposalLedger({
             <div className="proposal-positions">
               <blockquote className="proposal-position proposal-position--seoyun">
                 <cite>한서윤</cite>
-                <p>“{presentation.seoyunSummary}”</p>
+                <p>“{rawDialogue[presentation.summaryLineIndices.seoyun].text}”</p>
               </blockquote>
               <blockquote className="proposal-position proposal-position--mira">
                 <cite>MIRAGE</cite>
-                <p>“{presentation.miraSummary}”</p>
+                <p>“{rawDialogue[presentation.summaryLineIndices.mira].text}”</p>
               </blockquote>
             </div>
 
@@ -1313,7 +1315,7 @@ function RawLogViewer({
       onFocus={onFocus}
     >
       <div className="raw-log-window-lines">
-        {presentation.rawDialogue.map((line, index) => (
+        {getDialogue(presentation.rawDialogueId).map((line, index) => (
           <p key={`${proposal.id}-window-raw-${index}`}>
             <strong>{rawSpeakerLabel(line.speaker)}</strong>
             <span>{line.text}</span>
