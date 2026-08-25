@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type Dispatch } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type Dispatch,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
 import { getProposal, PROPOSALS, type ProposalDefinition } from "../../content/proposals";
@@ -45,6 +52,78 @@ const ACTOR_COLOR: Record<Actor, string> = {
   mira: "var(--plan-mira)",
   seoyun: "var(--plan-seoyun)",
 };
+
+let floatingWindowLayer = 30;
+
+function useDraggableWindow() {
+  const windowRef = useRef<HTMLElement | null>(null);
+  const dragState = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+    initialRect: DOMRect;
+  } | null>(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [zIndex, setZIndex] = useState(() => ++floatingWindowLayer);
+
+  const bringToFront = () => setZIndex(++floatingWindowLayer);
+
+  const startDrag = (event: ReactPointerEvent<HTMLElement>) => {
+    if ((event.target as HTMLElement).closest("button")) return;
+    const windowElement = windowRef.current;
+    if (!windowElement) return;
+
+    dragState.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: offset.x,
+      originY: offset.y,
+      initialRect: windowElement.getBoundingClientRect(),
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+
+  const moveDrag = (event: ReactPointerEvent<HTMLElement>) => {
+    const drag = dragState.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const desiredLeft = drag.initialRect.left + event.clientX - drag.startX;
+    const desiredTop = drag.initialRect.top + event.clientY - drag.startY;
+    const left = Math.max(8, Math.min(window.innerWidth - drag.initialRect.width - 8, desiredLeft));
+    const top = Math.max(8, Math.min(window.innerHeight - drag.initialRect.height - 8, desiredTop));
+    setOffset({
+      x: drag.originX + left - drag.initialRect.left,
+      y: drag.originY + top - drag.initialRect.top,
+    });
+  };
+
+  const stopDrag = (event: ReactPointerEvent<HTMLElement>) => {
+    if (dragState.current?.pointerId !== event.pointerId) return;
+    dragState.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  return {
+    windowRef,
+    windowStyle: {
+      zIndex,
+      transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+    } satisfies CSSProperties,
+    bringToFront,
+    dragHandleProps: {
+      onPointerDown: startDrag,
+      onPointerMove: moveDrag,
+      onPointerUp: stopDrag,
+      onPointerCancel: stopDrag,
+    },
+  };
+}
 
 function getTimelineBlocks(state: GameState, actor: Actor, previewProgress = 0): TimelineBlock[] {
   const blocks: TimelineBlock[] = [];
@@ -466,7 +545,7 @@ function ActorPlanningCard({
             <img src={avatar} alt="" className="actor-avatar" />
             <div>
               <p className="actor-planning-kicker">조사 담당</p>
-              <h3>{ACTOR_LABEL[actor]}</h3>
+              <h3>{actor === "mira" ? "MIRAGE" : ACTOR_LABEL[actor]}</h3>
             </div>
           </div>
           <span className="actor-planning-count">{availableTasks.length}건 가능</span>
@@ -794,26 +873,30 @@ function AttachmentViewer({
   attachment: AttachmentDefinition;
   onClose: () => void;
 }) {
+  const draggable = useDraggableWindow();
+
   return (
-    <div className="attachment-backdrop" role="presentation" onClick={onClose}>
-      <section
-        className="attachment-viewer"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="attachment-title"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <header className="attachment-viewer-header">
-          <div>
-            <p>OASIS / ATTACHMENT</p>
-            <h2 id="attachment-title">{attachment.title}</h2>
-          </div>
+    <section
+      ref={draggable.windowRef}
+      className="floating-window floating-window--attachment attachment-viewer"
+      role="dialog"
+      aria-labelledby="attachment-title"
+      style={draggable.windowStyle}
+      onPointerDown={draggable.bringToFront}
+    >
+      <header className="floating-window-header attachment-viewer-header" {...draggable.dragHandleProps}>
+        <div>
+          <p>OASIS / ATTACHMENT</p>
+          <h2 id="attachment-title">{attachment.title}</h2>
+        </div>
+        <div className="floating-window-actions">
+          <span className="floating-window-drag-hint" aria-hidden="true"><i />잡고 이동</span>
           <button type="button" onClick={onClose} aria-label="첨부 자료 닫기">닫기</button>
-        </header>
-        <AttachmentVisual attachment={attachment} />
-        <p className="attachment-caption">{attachment.caption}</p>
-      </section>
-    </div>
+        </div>
+      </header>
+      <AttachmentVisual attachment={attachment} />
+      <p className="attachment-caption">{attachment.caption}</p>
+    </section>
   );
 }
 
@@ -971,7 +1054,7 @@ function CompletionNote({ state }: { state: GameState }) {
   );
 }
 
-type SupportTab = "evidence" | "results";
+type PlanningTab = "schedule" | "collected";
 
 function ResultHistory({
   state,
@@ -1026,94 +1109,152 @@ function ResultViewer({
   onClose: () => void;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
 }) {
+  const draggable = useDraggableWindow();
+
   return (
-    <div className="result-backdrop" role="presentation" onClick={onClose}>
-      <section
-        className="result-viewer"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="result-viewer-title"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <header className="result-viewer-header">
-          <div>
-            <p className="panel-eyebrow">WORK COMPLETE / REPORT IN</p>
-            <h2 id="result-viewer-title">조사 결과</h2>
-          </div>
-          <button type="button" onClick={onClose}>닫기</button>
-        </header>
-        <div className="result-viewer-list">
-          {taskIds.map((taskId) => {
-            const task = getTask(taskId);
-            const evidence = task.result.evidenceId ? EVIDENCE[task.result.evidenceId] : null;
-            const attachment = task.result.evidenceId ? ATTACHMENTS[task.result.evidenceId] : null;
-            return (
-              <article className="result-viewer-entry" key={taskId}>
-                <p className={`result-viewer-actor result-viewer-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]} · 완료</p>
-                <h3>{task.title}</h3>
-                <p className="result-viewer-summary">{task.result.summary}</p>
-                {evidence && (
-                  <div className="result-viewer-evidence">
-                    <strong>{evidence.title}</strong>
-                    <p>{evidence.detail}</p>
-                    {attachment && (
-                      <button type="button" onClick={() => onOpenAttachment(attachment)}>
-                        {attachment.label}
-                      </button>
-                    )}
-                  </div>
-                )}
-              </article>
-            );
-          })}
+    <section
+      ref={draggable.windowRef}
+      className="floating-window floating-window--result result-viewer"
+      role="dialog"
+      aria-labelledby="result-viewer-title"
+      style={draggable.windowStyle}
+      onPointerDown={draggable.bringToFront}
+    >
+      <header className="floating-window-header result-viewer-header" {...draggable.dragHandleProps}>
+        <div>
+          <p className="panel-eyebrow">WORK COMPLETE / REPORT IN</p>
+          <h2 id="result-viewer-title">조사 결과</h2>
         </div>
-      </section>
-    </div>
+        <div className="floating-window-actions">
+          <span className="floating-window-drag-hint" aria-hidden="true"><i />잡고 이동</span>
+          <button type="button" onClick={onClose}>닫기</button>
+        </div>
+      </header>
+      <div className="result-viewer-list">
+        {taskIds.map((taskId) => {
+          const task = getTask(taskId);
+          const evidence = task.result.evidenceId ? EVIDENCE[task.result.evidenceId] : null;
+          const attachment = task.result.evidenceId ? ATTACHMENTS[task.result.evidenceId] : null;
+          return (
+            <article className="result-viewer-entry" key={taskId}>
+              <p className={`result-viewer-actor result-viewer-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]} · 완료</p>
+              <h3>{task.title}</h3>
+              <p className="result-viewer-summary">{task.result.summary}</p>
+              {evidence && (
+                <div className="result-viewer-evidence">
+                  <strong>{evidence.title}</strong>
+                  <p>{evidence.detail}</p>
+                  {attachment && (
+                    <button type="button" onClick={() => onOpenAttachment(attachment)}>
+                      {attachment.label}
+                    </button>
+                  )}
+                </div>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
-function SupportTabs({
+function PlanningTabs({
   state,
   activeTab,
   onChange,
+  dispatch,
   onOpenAttachment,
   onOpenResult,
+  onAdvance,
+  nextStep,
+  nextClock,
+  displayClockMinutes,
+  transitionProgress,
   disabled = false,
 }: {
   state: GameState;
-  activeTab: SupportTab;
-  onChange: (tab: SupportTab) => void;
+  activeTab: PlanningTab;
+  onChange: (tab: PlanningTab) => void;
+  dispatch: Dispatch<GameAction>;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onOpenResult: (taskId: TaskId) => void;
+  onAdvance: () => void;
+  nextStep: number | null;
+  nextClock: number | null;
+  displayClockMinutes: number;
+  transitionProgress: number;
   disabled?: boolean;
 }) {
   return (
-    <section className={`support-tabs${disabled ? " support-tabs--disabled" : ""}`} aria-label="보조 정보">
-      <nav className="support-tab-list" aria-label="보조 정보 탭">
+    <section className={`planning-tabs${disabled ? " planning-tabs--disabled" : ""}`} aria-label="조사 계획 상세">
+      <nav className="planning-tab-list" aria-label="조사 계획 탭" role="tablist">
         {([
-          ["evidence", "확보한 정보"],
-          ["results", "최근 결과"],
-        ] as [SupportTab, string][]).map(([tab, label]) => (
+          ["schedule", "조사 일정"],
+          ["collected", "추가 수집한 정보"],
+        ] as [PlanningTab, string][]).map(([tab, label]) => (
           <button
             type="button"
             className={activeTab === tab ? "is-active" : ""}
             aria-selected={activeTab === tab}
+            aria-controls={`planning-tab-${tab}`}
+            id={`planning-tab-button-${tab}`}
             role="tab"
             key={tab}
             disabled={disabled}
             onClick={() => onChange(tab)}
           >
             {label}
-            {tab === "results" && state.completedTaskIds.length > 0 && (
+            {tab === "collected" && state.completedTaskIds.length > 0 && (
               <span>{state.completedTaskIds.length}</span>
             )}
           </button>
         ))}
       </nav>
-      <div className="support-tab-content">
-        {activeTab === "evidence" && <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} disabled={disabled} />}
-        {activeTab === "results" && <ResultHistory state={state} onOpenResult={onOpenResult} disabled={disabled} />}
-      </div>
+      {activeTab === "schedule" ? (
+        <div
+          className="planning-tab-content planning-tab-content--schedule"
+          id="planning-tab-schedule"
+          role="tabpanel"
+          aria-labelledby="planning-tab-button-schedule"
+        >
+          <InvestigationPlanner
+            state={state}
+            dispatch={dispatch}
+            disabled={disabled}
+            transitionProgress={transitionProgress}
+          />
+
+          <button
+            className="advance-time-control"
+            type="button"
+            disabled={nextStep === null || disabled}
+            onClick={onAdvance}
+          >
+            <span>
+              <b>{disabled ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}</b>
+              {nextClock !== null && !disabled && <small>다음 완료: {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
+              {disabled && <small>작업 완료 시점으로 이동하고 있습니다</small>}
+            </span>
+            {nextClock !== null && <strong>{formatClock(disabled ? displayClockMinutes : nextClock)}</strong>}
+          </button>
+          <p className="advance-time-note">작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.</p>
+        </div>
+      ) : (
+        <div
+          className="planning-tab-content planning-tab-content--collected"
+          id="planning-tab-collected"
+          role="tabpanel"
+          aria-labelledby="planning-tab-button-collected"
+        >
+          <header className="collected-information-heading">
+            <p className="panel-eyebrow">FIELD NOTES / COLLECTED</p>
+            <h3>조사로 새로 얻은 근거와 기록</h3>
+          </header>
+          <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} disabled={disabled} />
+          <ResultHistory state={state} onOpenResult={onOpenResult} disabled={disabled} />
+        </div>
+      )}
     </section>
   );
 }
@@ -1150,8 +1291,8 @@ function PlanningPanel({
   displayClockMinutes = state.clockMinutes,
   transitionProgress = 0,
   isAdvancing = false,
-  activeSupportTab,
-  onSupportTabChange,
+  activePlanningTab,
+  onPlanningTabChange,
   onOpenResult,
   onAdvance,
 }: {
@@ -1161,8 +1302,8 @@ function PlanningPanel({
   displayClockMinutes?: number;
   transitionProgress?: number;
   isAdvancing?: boolean;
-  activeSupportTab: SupportTab;
-  onSupportTabChange: (tab: SupportTab) => void;
+  activePlanningTab: PlanningTab;
+  onPlanningTabChange: (tab: PlanningTab) => void;
   onOpenResult: (taskId: TaskId) => void;
   onAdvance: () => void;
 }) {
@@ -1187,34 +1328,18 @@ function PlanningPanel({
 
         <Timeline state={state} displayClockMinutes={displayClockMinutes} transitionProgress={transitionProgress} />
 
-        <InvestigationPlanner
+        <PlanningTabs
           state={state}
+          activeTab={activePlanningTab}
+          onChange={onPlanningTabChange}
           dispatch={dispatch}
-          disabled={isAdvancing}
-          transitionProgress={transitionProgress}
-        />
-
-        <button
-          className="advance-time-control"
-          type="button"
-          disabled={nextStep === null || isAdvancing}
-          onClick={onAdvance}
-        >
-          <span>
-            <b>{isAdvancing ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}</b>
-            {nextClock !== null && !isAdvancing && <small>다음 완료: {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
-            {isAdvancing && <small>작업 완료 시점으로 이동하고 있습니다</small>}
-          </span>
-          {nextClock !== null && <strong>{formatClock(isAdvancing ? displayClockMinutes : nextClock)}</strong>}
-        </button>
-        <p className="advance-time-note">작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.</p>
-
-        <SupportTabs
-          state={state}
-          activeTab={activeSupportTab}
-          onChange={onSupportTabChange}
           onOpenAttachment={onOpenAttachment}
           onOpenResult={onOpenResult}
+          onAdvance={onAdvance}
+          nextStep={nextStep}
+          nextClock={nextClock}
+          displayClockMinutes={displayClockMinutes}
+          transitionProgress={transitionProgress}
           disabled={isAdvancing}
         />
       </div>
@@ -1226,7 +1351,7 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   const [openAttachment, setOpenAttachment] = useState<AttachmentDefinition | null>(null);
   const [openResult, setOpenResult] = useState<TaskId[] | null>(null);
   const [proposalDialog, setProposalDialog] = useState<{ id: ProposalId; evidenceIds: EvidenceId[] } | null>(null);
-  const [activeSupportTab, setActiveSupportTab] = useState<SupportTab>("evidence");
+  const [activePlanningTab, setActivePlanningTab] = useState<PlanningTab>("schedule");
   const [toastTaskIds, setToastTaskIds] = useState<TaskId[]>([]);
   const [transition, setTransition] = useState<{ from: number; to: number } | null>(null);
   const [previewClock, setPreviewClock] = useState(state.clockMinutes);
@@ -1277,7 +1402,7 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   };
 
   const openResultViewer = (taskId: TaskId) => {
-    setActiveSupportTab("results");
+    setActivePlanningTab("collected");
     setOpenResult([taskId]);
   };
 
@@ -1328,8 +1453,8 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
           displayClockMinutes={displayClockMinutes}
           transitionProgress={transitionProgress}
           isAdvancing={isAdvancing}
-          activeSupportTab={activeSupportTab}
-          onSupportTabChange={setActiveSupportTab}
+          activePlanningTab={activePlanningTab}
+          onPlanningTabChange={setActivePlanningTab}
           onOpenResult={openResultViewer}
           onAdvance={beginTimeAdvance}
         />
@@ -1338,7 +1463,7 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
         taskIds={toastTaskIds}
         onOpen={() => {
           if (toastTaskIds.length > 0) {
-            setActiveSupportTab("results");
+            setActivePlanningTab("collected");
             setOpenResult(toastTaskIds);
             setToastTaskIds([]);
           }

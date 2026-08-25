@@ -25,7 +25,15 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report document bottom](docs/screenshots/report-document-bottom.png)
 
-![Planning pane bottom](docs/screenshots/report-planning-bottom.png)
+![Planning pane schedule top](docs/screenshots/planning-pane-top.png)
+
+![Planning pane schedule bottom](docs/screenshots/planning-pane-schedule-bottom.png)
+
+![Planning pane collected information top](docs/screenshots/planning-pane-results.png)
+
+![Planning pane collected information bottom](docs/screenshots/planning-pane-collected-bottom.png)
+
+![Draggable investigation result and graph windows](docs/screenshots/floating-investigation-windows.png)
 
 ## 실행
 
