@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getAutonomousTaskIds, getProposalReaction } from "../content/proposals";
 import { FIELD_ROUTE_CONTENT } from "../content/field-mission/routes";
+import {
+  getAutonomousTaskIds,
+  getProposalPresentation,
+  getProposalReaction,
+} from "../content/proposals";
 import { ATTACHMENTS } from "../content/reports/attachments";
 import { EVIDENCE } from "../content/reports/facts";
 import { createInitialState } from "./state";
@@ -33,179 +37,181 @@ function completeRoute(
   evidenceIds: EvidenceId[] = [],
 ): GameState {
   return finishDialogue(
-    gameReducer(state, {
-      type: "PROPOSE_ACTION",
-      proposalId,
-      evidenceIds,
-    }),
+    gameReducer(state, { type: "PROPOSE_ACTION", proposalId, evidenceIds }),
   );
 }
 
-describe("first field mission proposal contract", () => {
-  it("accepts a motorcycle proposal without evidence", () => {
-    const reaction = getProposalReaction(createInitialState(), "motorcycle", []);
+function completeTask(state: GameState, taskId: "powerAnalysis" | "refrigerationAnalysis") {
+  const planned = gameReducer(state, { type: "PLAN_TASK", taskId });
+  return gameReducer(planned, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+}
 
-    expect(reaction.outcome).toBe("accepted");
+describe("first field mission investigation contract", () => {
+  it("keeps terminal knowledge hidden after power analysis", () => {
+    const completed = completeTask(openReport(), "powerAnalysis");
+
+    expect(completed.discoveredEvidence).toContain("powerGridStatus");
+    expect(completed.discoveredEvidence).not.toContain("powerTerminalRequirement");
+    expect(completed.discoveredTerminalConcept).toBe(false);
+    expect(getAvailableTasks(completed).map((task) => task.id)).not.toContain(
+      "terminalLocationSearch",
+    );
+    expect(EVIDENCE.powerGridStatus.detail).not.toMatch(/단말|인증|접근/);
+    expect(ATTACHMENTS.powerGridStatus.caption).not.toMatch(/단말|인증|접근/);
   });
 
-  it("accepts irrelevant motorcycle evidence through the rationalization branch", () => {
-    const reaction = getProposalReaction(createInitialState(), "motorcycle", ["refrigerationLimit"]);
+  it("discovers terminal requirements only at the power field route", () => {
+    const completed = completeRoute(openReport(), "power");
 
-    expect(reaction.outcome).toBe("accepted");
-    const dialogue = reaction.dialogue.map((line) => line.text).join(" ");
-    expect(dialogue).toContain("합리화");
-    expect(dialogue).toContain("그래도 난 바이크부터 갈래");
+    expect(completed.discoveredEvidence).toEqual(
+      expect.arrayContaining(["powerEntranceStatus", "powerTerminalRequirement"]),
+    );
+    expect(completed.discoveredTerminalConcept).toBe(true);
+    expect(getAvailableTasks(completed).map((task) => task.id)).toContain(
+      "terminalLocationSearch",
+    );
   });
 
-  it("accepts power with zero or related evidence, but rejects irrelevant evidence", () => {
-    const state = createInitialState();
+  it("does not expose legacy Seoyun field checks as investigation tasks", () => {
+    const availableIds = getAvailableTasks(openReport()).map((task) => task.id as string);
 
-    expect(getProposalReaction(state, "power", []).outcome).toBe("accepted");
-    expect(
-      getProposalReaction(state, "power", ["powerTerminalRequirement"]).outcome,
-    ).toBe("accepted");
-    expect(getProposalReaction(state, "power", ["motorcycleCondition"]).outcome).toBe("rejected");
-    expect(
-      getProposalReaction(state, "power", ["powerTerminalRequirement", "motorcycleCondition"]).outcome,
-    ).toBe("rejected");
+    expect(availableIds).not.toContain("motorcycleInspection");
+    expect(availableIds).not.toContain("powerEntranceInspection");
+    expect(availableIds).toEqual(
+      expect.arrayContaining(["powerAnalysis", "refrigerationAnalysis"]),
+    );
   });
 
-  it("rejects refrigeration without evidence, accepts related evidence, and rejects irrelevant evidence", () => {
-    const state = createInitialState();
+  it("never opens terminal location work from analysis evidence alone", () => {
+    const state = {
+      ...openReport(),
+      discoveredEvidence: ["powerGridStatus"] as EvidenceId[],
+    };
 
-    expect(getProposalReaction(state, "refrigeration", []).outcome).toBe("rejected");
-    expect(getProposalReaction(state, "refrigeration", ["refrigerationLimit"]).outcome).toBe("accepted");
-    expect(getProposalReaction(state, "refrigeration", ["motorcycleCondition"]).outcome).toBe("rejected");
-    expect(
-      getProposalReaction(state, "refrigeration", ["refrigerationLimit", "motorcycleCondition"]).outcome,
-    ).toBe("rejected");
+    expect(getAutonomousTaskIds(state)).not.toContain("terminalLocationSearch");
+    expect(getAvailableTasks(state).map((task) => task.id)).not.toContain(
+      "terminalLocationSearch",
+    );
   });
 });
 
-describe("field mission lifecycle", () => {
-  it("gates terminal location investigation on internal terminal discovery and keeps stage two hidden", () => {
-    const initial = openReport();
-    expect(getAvailableTasks(initial).some((task) => task.id === "terminalLocationSearch")).toBe(false);
-    expect(getAvailableTasks(initial).some((task) => task.id === "terminalSearch")).toBe(false);
-    expect(getAutonomousTaskIds({ ...initial, discoveredEvidence: ["powerTerminalRequirement"] })).not.toContain(
-      "terminalLocationSearch",
+describe("proposal contract", () => {
+  it("accepts a motorcycle proposal without evidence", () => {
+    expect(getProposalReaction(createInitialState(), "motorcycle", []).outcome).toBe(
+      "accepted",
     );
-
-    const afterRoute = completeRoute(initial, "motorcycle");
-    const availableIds = getAvailableTasks(afterRoute).map((task) => task.id);
-    expect(availableIds).toContain("terminalLocationSearch");
-    expect(availableIds).not.toContain("terminalSearch");
-    expect(
-      getAvailableTasks(afterRoute).find((task) => task.id === "terminalLocationSearch")?.durationMinutes,
-    ).toBe(20);
   });
 
-  it("records the first terminal source once and selects first, second, and third encounters deterministically", () => {
-    let state = openReport();
-    const firstProposal = gameReducer(state, {
-      type: "PROPOSE_ACTION",
-      proposalId: "motorcycle",
-      evidenceIds: [],
-    });
-    const firstDialogue = firstProposal.dialogue.map((line) => line.text).join(" ");
-    expect(firstDialogue).toContain("보관 구역에 도착");
-    expect(firstDialogue).toContain("바이크를 제대로 볼 수가 없어");
-    expect(firstDialogue).toContain("단말기?");
-    expect(firstDialogue).not.toContain("진짜 죄다 그거네");
-    state = finishDialogue(firstProposal);
-    expect(state.firstTerminalDiscoverySource).toBe("motorcycle");
-    expect(state.discoveredTerminalConcept).toBe(true);
+  it("accepts any motorcycle evidence only as rationalization", () => {
+    const reaction = getProposalReaction(createInitialState(), "motorcycle", [
+      "powerGridStatus",
+    ]);
+    const dialogue = reaction.dialogue.map((line) => line.text).join(" ");
 
-    const secondProposal = gameReducer(state, {
-      type: "PROPOSE_ACTION",
-      proposalId: "power",
-      evidenceIds: [],
-    });
-    const secondDialogue = secondProposal.dialogue.map((line) => line.text).join(" ");
-    expect(secondDialogue).toContain("발전 구역 입구에 도착");
-    expect(secondDialogue).toContain("아, 씨발. 또 단말기야?");
-    expect(secondDialogue).not.toContain("진짜 죄다 그거네");
-    state = finishDialogue(secondProposal);
-    expect(state.firstTerminalDiscoverySource).toBe("motorcycle");
+    expect(reaction.outcome).toBe("accepted");
+    expect(dialogue).toContain("아무 상관도 없는데요");
+    expect(dialogue).toContain("그래도 난 바이크부터 갈래");
+    expect(FIELD_ROUTE_CONTENT.motorcycle.relatedEvidenceIds).toEqual([]);
+  });
 
-    const thirdProposal = gameReducer(state, {
+  it("accepts power with no evidence or grid status and rejects unrelated evidence", () => {
+    const state = createInitialState();
+
+    expect(getProposalReaction(state, "power", []).outcome).toBe("accepted");
+    expect(getProposalReaction(state, "power", ["powerGridStatus"]).outcome).toBe(
+      "accepted",
+    );
+    expect(
+      getProposalReaction(state, "power", ["refrigerationLimit"]).outcome,
+    ).toBe("rejected");
+  });
+
+  it("uses deadline-neutral refrigeration copy before analysis", () => {
+    const presentation = getProposalPresentation(createInitialState(), "refrigeration");
+    const copy = [
+      presentation.seoyunSummary,
+      presentation.miraSummary,
+      ...presentation.rawDialogue.map((line) => line.text),
+    ].join(" ");
+
+    expect(copy).not.toMatch(/13:20|네 시간|\d+시간/);
+    expect(copy).toContain("정확히 얼마나 버티는지");
+  });
+
+  it("uses deadline-aware refrigeration copy after analysis", () => {
+    const state = {
+      ...createInitialState(),
+      discoveredEvidence: ["refrigerationLimit"] as EvidenceId[],
+    };
+    const presentation = getProposalPresentation(state, "refrigeration");
+    const copy = [
+      presentation.seoyunSummary,
+      ...presentation.rawDialogue.map((line) => line.text),
+    ].join(" ");
+
+    expect(copy).toContain("13:20");
+    expect(copy).toContain("네 시간");
+  });
+
+  it("rejects refrigeration without evidence and leaves no field result", () => {
+    const state = openReport();
+    const proposed = gameReducer(state, {
       type: "PROPOSE_ACTION",
       proposalId: "refrigeration",
-      evidenceIds: ["refrigerationLimit"],
-    });
-    const thirdDialogue = thirdProposal.dialogue.map((line) => line.text).join(" ");
-    expect(thirdDialogue).toContain("지하 1층 식당 구역에 도착");
-    expect(thirdDialogue).toContain("상하기 쉬운 식품");
-    expect(thirdDialogue).toContain("주거용 냉장고");
-    expect(thirdDialogue).toContain("온도 제어 패널");
-    expect(thirdDialogue).toContain("진짜 죄다 그거네");
-    state = finishDialogue(thirdProposal);
-    expect(state.firstTerminalDiscoverySource).toBe("motorcycle");
-    expect(Object.values(state.exploredRoutes).filter(Boolean)).toHaveLength(3);
-  });
-
-  it("completes each route once while leaving the other routes available", () => {
-    const initial = openReport();
-    const rejectedPower = finishDialogue(
-      gameReducer(initial, {
-        type: "PROPOSE_ACTION",
-        proposalId: "power",
-        evidenceIds: ["motorcycleCondition"],
-      }),
-    );
-    expect(rejectedPower.exploredRoutes.power).toBe(false);
-    expect(rejectedPower.discoveredTerminalConcept).toBe(false);
-
-    const completed = completeRoute(initial, "motorcycle");
-    const replay = gameReducer(completed, {
-      type: "PROPOSE_ACTION",
-      proposalId: "motorcycle",
       evidenceIds: [],
     });
+    const completed = finishDialogue(proposed);
 
-    expect(replay).toBe(completed);
-    expect(completed.exploredRoutes.motorcycle).toBe(true);
-    expect(completed.exploredRoutes.power).toBe(false);
+    expect(proposed.pendingFieldVisit).toBeNull();
+    expect(completed.clockMinutes).toBe(state.clockMinutes);
     expect(completed.exploredRoutes.refrigeration).toBe(false);
-
-    const powerProposal = gameReducer(completed, {
-      type: "PROPOSE_ACTION",
-      proposalId: "power",
-      evidenceIds: [],
-    });
-    expect(powerProposal.pendingFieldVisit).toBe("power");
-    expect(powerProposal.exploredRoutes.motorcycle).toBe(true);
+    expect(completed.refrigerationEmergencyMitigated).toBe(false);
   });
 
-  it("hides the matching legacy field-check task after each route is explored", () => {
-    const initial = openReport();
-    const initialAvailableIds = getAvailableTasks(initial).map((task) => task.id);
-    expect(initialAvailableIds).toEqual(
-      expect.arrayContaining(["motorcycleInspection", "powerEntranceInspection"]),
-    );
+  it("blocks a field proposal while Seoyun has active work", () => {
+    const state: GameState = {
+      ...openReport(),
+      activeTasks: {
+        mira: null,
+        seoyun: {
+          actor: "seoyun",
+          taskId: "terminalSearch",
+          remainingMinutes: 10,
+        },
+      },
+    };
 
-    const afterMotorcycle = completeRoute(initial, "motorcycle");
-    const afterMotorcycleIds = getAvailableTasks(afterMotorcycle).map((task) => task.id);
-    expect(afterMotorcycleIds).not.toContain("motorcycleInspection");
-    expect(afterMotorcycleIds).toContain("powerEntranceInspection");
-
-    const afterPower = completeRoute(afterMotorcycle, "power");
-    const afterPowerIds = getAvailableTasks(afterPower).map((task) => task.id);
-    expect(afterPowerIds).not.toContain("motorcycleInspection");
-    expect(afterPowerIds).not.toContain("powerEntranceInspection");
+    expect(
+      gameReducer(state, {
+        type: "PROPOSE_ACTION",
+        proposalId: "motorcycle",
+        evidenceIds: [],
+      }),
+    ).toBe(state);
   });
+});
 
-  it("records refrigeration emergency mitigation and visible route evidence", () => {
+describe("field route time and lifecycle", () => {
+  it("advances the clock by the motorcycle route duration", () => {
     const state = openReport();
-    const completed = completeRoute(state, "refrigeration", ["refrigerationLimit"]);
+    const completed = completeRoute(state, "motorcycle");
 
-    expect(completed.refrigerationEmergencyMitigated).toBe(true);
-    expect(Object.keys(FIELD_ROUTE_CONTENT.refrigeration.reportResult)).toEqual([
-      "summary",
-      "fieldNote",
-      "facts",
-      "evidenceIds",
+    expect(FIELD_ROUTE_CONTENT.motorcycle.durationMinutes).toBe(20);
+    expect(completed.clockMinutes).toBe(
+      state.clockMinutes + FIELD_ROUTE_CONTENT.motorcycle.durationMinutes,
+    );
+  });
+
+  it("advances refrigeration time and records emergency mitigation", () => {
+    const state = openReport();
+    const completed = completeRoute(state, "refrigeration", [
+      "refrigerationLimit",
     ]);
+
+    expect(completed.clockMinutes).toBe(
+      state.clockMinutes + FIELD_ROUTE_CONTENT.refrigeration.durationMinutes,
+    );
+    expect(completed.refrigerationEmergencyMitigated).toBe(true);
     expect(completed.discoveredEvidence).toEqual(
       expect.arrayContaining([
         "refrigerationWarmingConfirmed",
@@ -214,54 +220,157 @@ describe("field mission lifecycle", () => {
       ]),
     );
     expect(completed.discoveredEvidence).not.toContain("powerTerminalRequirement");
-    expect(FIELD_ROUTE_CONTENT.refrigeration.reportResult.fieldNote).toContain("주거용 냉장고");
-    expect(EVIDENCE.refrigerationControlDependency.source).toContain("지하 1층 · 식당 구역");
-    expect(EVIDENCE.refrigerationControlDependency.detail).not.toContain("발전소");
-    expect(ATTACHMENTS.refrigerationControlDependency.title).toContain("냉장 제어 단말");
   });
 
-  it("keeps route display locations and storage-area evidence site-specific", () => {
-    expect(FIELD_ROUTE_CONTENT.motorcycle.location).toBe("보관 구역");
-    expect(FIELD_ROUTE_CONTENT.power.location).toBe("발전 구역");
-    expect(FIELD_ROUTE_CONTENT.refrigeration.location).toBe("지하 1층 · 식당 구역");
-    expect(EVIDENCE.motorcycleLightingDependency.title).toContain("보관 구역 조명");
-    expect(ATTACHMENTS.motorcycleLightingDependency.caption).toContain("보관 구역 조명");
-  });
-
-  it("does not advance the clock when an accepted field route completes", () => {
-    const state = openReport();
+  it("progresses an active MIRAGE task during a field visit", () => {
+    const state: GameState = {
+      ...openReport(),
+      activeTasks: {
+        mira: {
+          actor: "mira",
+          taskId: "refrigerationAnalysis",
+          remainingMinutes: 15,
+        },
+        seoyun: null,
+      },
+    };
     const completed = completeRoute(state, "motorcycle");
 
-    expect(completed.clockMinutes).toBe(state.clockMinutes);
+    expect(completed.clockMinutes).toBe(state.clockMinutes + 20);
+    expect(completed.activeTasks.mira).toBeNull();
+    expect(completed.completedTaskIds).toContain("refrigerationAnalysis");
+    expect(completed.discoveredEvidence).toContain("refrigerationLimit");
+    expect(completed.recentlyCompleted).toContain("refrigerationAnalysis");
   });
 
-  it("preserves planning, queue reorder, and time advancement semantics", () => {
+  it("does not auto-start MIRAGE queued work during a longer field visit", () => {
+    const state: GameState = {
+      ...openReport(),
+      activeTasks: {
+        mira: {
+          actor: "mira",
+          taskId: "refrigerationAnalysis",
+          remainingMinutes: 10,
+        },
+        seoyun: null,
+      },
+      queuedTasks: { mira: ["powerAnalysis"], seoyun: [] },
+    };
+    const completed = completeRoute(state, "motorcycle");
+
+    expect(completed.activeTasks.mira).toBeNull();
+    expect(completed.queuedTasks.mira).toEqual(["powerAnalysis"]);
+    expect(completed.completedTaskIds).not.toContain("powerAnalysis");
+  });
+
+  it("records the first terminal source once across all three encounters", () => {
+    let state = completeRoute(openReport(), "motorcycle");
+    expect(state.firstTerminalDiscoverySource).toBe("motorcycle");
+
+    state = completeRoute(state, "power");
+    expect(state.firstTerminalDiscoverySource).toBe("motorcycle");
+
+    state = completeRoute(state, "refrigeration", ["refrigerationLimit"]);
+    expect(state.firstTerminalDiscoverySource).toBe("motorcycle");
+    expect(Object.values(state.exploredRoutes).filter(Boolean)).toHaveLength(3);
+  });
+
+  it("selects first, second, and third encounter dialogue deterministically", () => {
+    let state = openReport();
+    let proposal = gameReducer(state, {
+      type: "PROPOSE_ACTION",
+      proposalId: "motorcycle",
+      evidenceIds: [],
+    });
+    expect(proposal.dialogue.map((line) => line.text).join(" ")).toContain("단말기?");
+    state = finishDialogue(proposal);
+
+    proposal = gameReducer(state, {
+      type: "PROPOSE_ACTION",
+      proposalId: "power",
+      evidenceIds: [],
+    });
+    expect(proposal.dialogue.map((line) => line.text).join(" ")).toContain(
+      "또 단말기야?",
+    );
+    state = finishDialogue(proposal);
+
+    proposal = gameReducer(state, {
+      type: "PROPOSE_ACTION",
+      proposalId: "refrigeration",
+      evidenceIds: ["refrigerationLimit"],
+    });
+    expect(proposal.dialogue.map((line) => line.text).join(" ")).toContain(
+      "진짜 죄다 그거네",
+    );
+  });
+
+  it("does not allow a completed route to be revisited", () => {
+    const completed = completeRoute(openReport(), "motorcycle");
+
+    expect(
+      gameReducer(completed, {
+        type: "PROPOSE_ACTION",
+        proposalId: "motorcycle",
+        evidenceIds: [],
+      }),
+    ).toBe(completed);
+  });
+
+  it("keeps MIRAGE remote sensing separate from Seoyun physical perception", () => {
+    const dialogue = FIELD_ROUTE_CONTENT.refrigeration.fieldDialogue[1]
+      .map((line) => `${line.speaker}:${line.text}`)
+      .join(" ");
+
+    expect(dialogue).toContain("seoyun:……야. 여기 생각보다 하나도 안 차가운데.");
+    expect(dialogue).toContain("mira:잠깐. 센서값도 생각보다 훨씬 올라갔는데요.");
+    expect(dialogue).not.toContain("mira:……왜 이렇게 따뜻해?");
+  });
+});
+
+describe("planning and explicit time advancement", () => {
+  it("keeps PLAN_TASK free and preserves queue reorder", () => {
     let state = openReport();
     const startClock = state.clockMinutes;
-    state = gameReducer(state, { type: "PLAN_TASK", taskId: "motorcycleInspection" });
-    state = gameReducer(state, { type: "PLAN_TASK", taskId: "powerEntranceInspection" });
+    state = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    state = gameReducer(state, {
+      type: "PLAN_TASK",
+      taskId: "refrigerationAnalysis",
+    });
+
     expect(state.clockMinutes).toBe(startClock);
-    expect(state.queuedTasks.seoyun).toEqual([
-      "motorcycleInspection",
-      "powerEntranceInspection",
+    expect(state.queuedTasks.mira).toEqual([
+      "powerAnalysis",
+      "refrigerationAnalysis",
     ]);
 
     state = gameReducer(state, {
       type: "MOVE_PLANNED_TASK",
-      actor: "seoyun",
+      actor: "mira",
       fromIndex: 1,
       toIndex: 0,
     });
-    expect(state.queuedTasks.seoyun).toEqual([
-      "powerEntranceInspection",
-      "motorcycleInspection",
+    expect(state.queuedTasks.mira).toEqual([
+      "refrigerationAnalysis",
+      "powerAnalysis",
     ]);
-    expect(getNextCompletionMinutes(state)).toBe(35);
+    expect(getNextCompletionMinutes(state)).toBe(15);
+  });
+
+  it("ADVANCE_TO_NEXT_COMPLETION starts one planned task and not the next", () => {
+    let state = openReport();
+    state = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    state = gameReducer(state, {
+      type: "PLAN_TASK",
+      taskId: "refrigerationAnalysis",
+    });
+    const startClock = state.clockMinutes;
 
     state = gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" });
-    expect(state.clockMinutes).toBe(startClock + 35);
-    expect(state.completedTaskIds).toContain("powerEntranceInspection");
-    expect(state.activeTasks.seoyun).toBeNull();
-    expect(state.queuedTasks.seoyun).toEqual(["motorcycleInspection"]);
+
+    expect(state.clockMinutes).toBe(startClock + 10);
+    expect(state.completedTaskIds).toContain("powerAnalysis");
+    expect(state.activeTasks.mira).toBeNull();
+    expect(state.queuedTasks.mira).toEqual(["refrigerationAnalysis"]);
   });
 });

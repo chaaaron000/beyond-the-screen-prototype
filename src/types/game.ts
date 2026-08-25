@@ -12,12 +12,12 @@ export type EvidenceRelation = "supports" | "complicates" | "irrelevant";
 export type ProposalOutcome = "accepted" | "considering" | "rejected";
 
 export type EvidenceId =
+  | "powerGridStatus"
   | "refrigerationLimit"
   | "refrigerationWarmingConfirmed"
   | "refrigerationEmergencyMitigation"
   | "refrigerationControlDependency"
   | "powerTerminalRequirement"
-  | "motorcycleCondition"
   | "motorcycleLightingDependency"
   | "powerEntranceStatus"
   | "terminalLocation"
@@ -26,8 +26,6 @@ export type EvidenceId =
 export type TaskId =
   | "powerAnalysis"
   | "refrigerationAnalysis"
-  | "motorcycleInspection"
-  | "powerEntranceInspection"
   | "terminalLocationSearch"
   | "terminalSearch";
 

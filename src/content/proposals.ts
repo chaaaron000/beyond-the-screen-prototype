@@ -27,13 +27,19 @@ export interface ProposalDefinition {
   evidenceRelations: Record<EvidenceId, EvidenceRelation>;
 }
 
+export interface ProposalPresentation {
+  seoyunSummary: string;
+  miraSummary: string;
+  rawDialogue: DialogueLine[];
+}
+
 const ALL_EVIDENCE: EvidenceId[] = [
+  "powerGridStatus",
   "refrigerationLimit",
   "refrigerationWarmingConfirmed",
   "refrigerationEmergencyMitigation",
   "refrigerationControlDependency",
   "powerTerminalRequirement",
-  "motorcycleCondition",
   "motorcycleLightingDependency",
   "powerEntranceStatus",
   "terminalLocation",
@@ -85,24 +91,22 @@ export const PROPOSALS: ProposalDefinition[] = [
     id: "refrigeration",
     number: "03",
     title: "냉장 시설을 확인한다",
-    seoyunSummary: "네 시간 안쪽이면 그냥 넘기긴 좀 그런데.",
-    miraSummary: "발전소가 바로 되면 더 빠르긴 해요.",
+    seoyunSummary: "계속 온도가 오르는 건 좀 걸리는데.",
+    miraSummary: "아직 얼마나 급한지는 모르잖아요.",
     evidenceRelations: evidenceRelationsFor("refrigeration"),
     rawDialogue: [
-      mira("발전소 고치면 냉장고도 조명도 같이 해결돼요. 시간 충분한데요?"),
-      seoyun("너 그거 확실해?"),
-      mira("지금 가진 정보로는요."),
-      seoyun("네 시간 안쪽이면 그냥 넘기긴 좀 그런데."),
-      mira("발전소가 바로 되면 더 빠르긴 해요."),
-      seoyun("그러니까 확인만 먼저 해보자고."),
+      seoyun("계속 온도가 오르는 건 좀 걸리는데."),
+      seoyun("정확히 얼마나 버티는지부터 알아봐야 하지 않아?"),
+      mira("발전소부터 살리면 같이 해결될 가능성이 높아요."),
+      mira("아직 얼마나 급한지는 모르잖아요."),
     ],
   },
 ];
 
 export const AUTONOMOUS_PLAN_RULES: { requires: EvidenceId[]; taskIds: TaskId[] }[] = [
-  { requires: ["terminalLocation"], taskIds: ["terminalSearch", "powerEntranceInspection"] },
-  { requires: ["powerTerminalRequirement"], taskIds: ["terminalLocationSearch", "powerEntranceInspection"] },
-  { requires: [], taskIds: ["powerAnalysis", "powerEntranceInspection"] },
+  { requires: ["terminalLocation"], taskIds: ["terminalSearch"] },
+  { requires: ["powerTerminalRequirement"], taskIds: ["terminalLocationSearch"] },
+  { requires: [], taskIds: ["powerAnalysis"] },
 ];
 
 export const AUTONOMOUS_TAKEOVER_DIALOGUE: DialogueLine[] = [
@@ -114,6 +118,30 @@ export const AUTONOMOUS_TAKEOVER_DIALOGUE: DialogueLine[] = [
 
 export function getProposal(proposalId: ProposalId): ProposalDefinition {
   return PROPOSALS.find((proposal) => proposal.id === proposalId)!;
+}
+
+export function getProposalPresentation(
+  state: GameState,
+  proposalId: ProposalId,
+): ProposalPresentation {
+  const proposal = getProposal(proposalId);
+  if (
+    proposalId !== "refrigeration" ||
+    !state.discoveredEvidence.includes("refrigerationLimit")
+  ) {
+    return proposal;
+  }
+
+  return {
+    seoyunSummary: "13:20이면 생각보다 여유가 없네.",
+    miraSummary: "응급 조치는 지금 할 가치가 있어요.",
+    rawDialogue: [
+      seoyun("네 시간 안쪽이면 그냥 넘기긴 좀 그런데."),
+      seoyun("13:20이면 생각보다 여유가 없네."),
+      mira("맞아요. 응급 조치는 지금 할 가치가 있어요."),
+      mira("그래도 근본 해결은 발전소가 먼저예요."),
+    ],
+  };
 }
 
 export function getProposalReaction(

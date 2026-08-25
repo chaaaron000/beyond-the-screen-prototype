@@ -21,8 +21,9 @@ type PresentationTransition =
       kind: "vn-to-report";
       phase: "cover" | "field-log" | "reveal";
       proposalId: ProposalId;
-      label: string;
-      location: string;
+      showFieldLog: boolean;
+      label: string | null;
+      location: string | null;
     };
 
 function PresentationTransitionOverlay({ transition }: { transition: PresentationTransition }) {
@@ -65,6 +66,8 @@ export default function App() {
       } else {
         duration = reducedMotion ? 100 : 280;
       }
+    } else if (!transition.showFieldLog) {
+      duration = reducedMotion ? 100 : 240;
     } else if (transition.phase === "cover") {
       duration = reducedMotion ? 100 : 300;
     } else if (transition.phase === "field-log") {
@@ -85,7 +88,7 @@ export default function App() {
             if (!current || current.kind !== "report-to-vn") return current;
             return {
               ...current,
-              phase: "field-link",
+              phase: current.accepted ? "field-link" : "reveal",
             };
           });
         } else if (transition.phase === "field-link") {
@@ -98,8 +101,11 @@ export default function App() {
         }
       } else if (transition.phase === "cover") {
         dispatch({ type: "ADVANCE_DIALOGUE" });
-        setHighlightedRoute(transition.proposalId);
-        setTransition({ ...transition, phase: "field-log" });
+        if (transition.showFieldLog) setHighlightedRoute(transition.proposalId);
+        setTransition({
+          ...transition,
+          phase: transition.showFieldLog ? "field-log" : "reveal",
+        });
       } else if (transition.phase === "field-log") {
         setTransition({ ...transition, phase: "reveal" });
       } else {
@@ -122,7 +128,12 @@ export default function App() {
     : "";
 
   const handleProposal = (proposalId: ProposalId, evidenceIds: EvidenceId[]) => {
-    if (inputLocked || state.view !== "report" || state.exploredRoutes[proposalId]) return;
+    if (
+      inputLocked ||
+      state.view !== "report" ||
+      state.activeTasks.seoyun ||
+      state.exploredRoutes[proposalId]
+    ) return;
     const route = getFieldRouteContent(proposalId);
     const reaction = getProposalReaction(state, proposalId, evidenceIds);
     setTransition({
@@ -139,18 +150,26 @@ export default function App() {
   const handleAdvanceDialogue = () => {
     if (inputLocked || state.view !== "vn") return;
     const isLastLine = state.dialogueIndex >= state.dialogue.length - 1;
-    if (!isLastLine || !state.pendingFieldVisit) {
+    if (!isLastLine) {
       dispatch({ type: "ADVANCE_DIALOGUE" });
       return;
     }
 
-    const route = getFieldRouteContent(state.pendingFieldVisit);
+    const proposalId = state.pendingFieldVisit ?? state.lastOpinion;
+    if (!proposalId) {
+      dispatch({ type: "ADVANCE_DIALOGUE" });
+      return;
+    }
+
+    const route = getFieldRouteContent(proposalId);
+    const showFieldLog = state.pendingFieldVisit !== null;
     setTransition({
       kind: "vn-to-report",
       phase: "cover",
-      proposalId: state.pendingFieldVisit,
-      label: route.fieldLogUpdatedLabel,
-      location: route.location,
+      proposalId,
+      showFieldLog,
+      label: showFieldLog ? route.fieldLogUpdatedLabel : null,
+      location: showFieldLog ? route.location : null,
     });
   };
 

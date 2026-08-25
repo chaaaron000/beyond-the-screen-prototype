@@ -10,7 +10,12 @@ import {
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
 import { getFieldRouteContent } from "../../content/field-mission/routes";
-import { getProposal, PROPOSALS, type ProposalDefinition } from "../../content/proposals";
+import {
+  getProposal,
+  getProposalPresentation,
+  PROPOSALS,
+  type ProposalDefinition,
+} from "../../content/proposals";
 import {
   formatClock,
   formatDuration,
@@ -905,6 +910,16 @@ function EvidenceSidebar({
 }
 
 function AttachmentVisual({ attachment }: { attachment: AttachmentDefinition }) {
+  if (attachment.evidenceId === "powerGridStatus") {
+    return (
+      <div className="attachment-visual attachment-visual--log">
+        <p className="log-line"><b>주 발전</b><span>OFFLINE</span><em>확인</em></p>
+        <p className="log-line"><b>생활 구역</b><span>비상·제한 전력 의존</span><em>주의</em></p>
+        <p className="log-line"><b>지속성</b><span>장시간 유지 어려움</span><em>분석</em></p>
+      </div>
+    );
+  }
+
   if (attachment.kind === "trend") {
     return (
       <div className="attachment-visual attachment-visual--trend" aria-label="냉장 설비 출력 추세 placeholder">
@@ -931,7 +946,7 @@ function AttachmentVisual({ attachment }: { attachment: AttachmentDefinition }) 
   if (attachment.kind === "photo") {
     return (
       <div className="attachment-visual attachment-visual--photo">
-        <div className="photo-placeholder"><span>{attachment.evidenceId === "motorcycleCondition" ? "BIKE / STORAGE" : "DEVICE / C-12"}</span></div>
+        <div className="photo-placeholder"><span>{attachment.evidenceId === "terminalConfirmed" ? "DEVICE / C-12" : "FIELD / RECORD"}</span></div>
         <p>실제 에셋이 없는 기록을 위한 시각화 placeholder</p>
       </div>
     );
@@ -1001,6 +1016,7 @@ function ProposalLedger({
   activeProposal?: ProposalId | null;
   disabled?: boolean;
 }) {
+  const seoyunBusy = state.activeTasks.seoyun !== null;
   return (
     <section className="proposal-ledger" aria-label="행동별 논쟁">
       <header className="proposal-ledger-heading">
@@ -1011,7 +1027,9 @@ function ProposalLedger({
         <span>읽은 자리에서 바로 제안</span>
       </header>
       <div className="proposal-list">
-        {PROPOSALS.map((proposal) => (
+        {PROPOSALS.map((proposal) => {
+          const presentation = getProposalPresentation(state, proposal.id);
+          return (
           <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
             <header className="proposal-entry-header">
               <div className="proposal-entry-title">
@@ -1021,21 +1039,26 @@ function ProposalLedger({
               <button
                 type="button"
                 className="proposal-start-button"
-                disabled={disabled || state.exploredRoutes[proposal.id]}
+                disabled={disabled || seoyunBusy || state.exploredRoutes[proposal.id]}
+                title={seoyunBusy ? "한서윤이 현재 다른 현장 작업을 수행 중입니다." : undefined}
                 onClick={() => onStartProposal(proposal.id)}
               >
-                {state.exploredRoutes[proposal.id] ? "현장 확인 완료" : <>제안하기 <span aria-hidden="true">↗</span></>}
+                {state.exploredRoutes[proposal.id]
+                  ? "현장 확인 완료"
+                  : seoyunBusy
+                    ? "한서윤 작업 중"
+                    : <>제안하기 <span aria-hidden="true">↗</span></>}
               </button>
             </header>
 
             <div className="proposal-positions">
               <blockquote className="proposal-position proposal-position--seoyun">
                 <cite>한서윤</cite>
-                <p>“{proposal.seoyunSummary}”</p>
+                <p>“{presentation.seoyunSummary}”</p>
               </blockquote>
               <blockquote className="proposal-position proposal-position--mira">
                 <cite>MIRAGE</cite>
-                <p>“{proposal.miraSummary}”</p>
+                <p>“{presentation.miraSummary}”</p>
               </blockquote>
             </div>
 
@@ -1048,7 +1071,8 @@ function ProposalLedger({
               <span>대화 LOG RAW</span><small>독립 창으로 원문 열기</small><b aria-hidden="true">↗</b>
             </button>
           </article>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
@@ -1267,15 +1291,18 @@ function ResultViewer({
 
 function RawLogViewer({
   proposal,
+  state,
   windowState,
   onClose,
   onFocus,
 }: {
   proposal: ProposalDefinition;
+  state: GameState;
   windowState: FloatingWindowState;
   onClose: () => void;
   onFocus: () => void;
 }) {
+  const presentation = getProposalPresentation(state, proposal.id);
   return (
     <FloatingWindowFrame
       windowState={windowState}
@@ -1286,7 +1313,7 @@ function RawLogViewer({
       onFocus={onFocus}
     >
       <div className="raw-log-window-lines">
-        {proposal.rawDialogue.map((line, index) => (
+        {presentation.rawDialogue.map((line, index) => (
           <p key={`${proposal.id}-window-raw-${index}`}>
             <strong>{rawSpeakerLabel(line.speaker)}</strong>
             <span>{line.text}</span>
@@ -1630,7 +1657,7 @@ export function ReportScreen({
   };
 
   const startProposal = (proposalId: ProposalId) => {
-    if (isInputLocked || state.exploredRoutes[proposalId]) return;
+    if (isInputLocked || state.activeTasks.seoyun || state.exploredRoutes[proposalId]) return;
     setProposalDialog({ id: proposalId, evidenceIds: [] });
   };
 
@@ -1727,7 +1754,7 @@ export function ReportScreen({
           case "result":
             return <ResultViewer key={windowState.key} taskId={windowState.contentId} onOpenAttachment={openAttachmentViewer} {...commonProps} />;
           case "raw-log":
-            return <RawLogViewer key={windowState.key} proposal={getProposal(windowState.contentId)} {...commonProps} />;
+            return <RawLogViewer key={windowState.key} proposal={getProposal(windowState.contentId)} state={state} {...commonProps} />;
         }
       })}
       {proposalDialog && (
@@ -1738,7 +1765,7 @@ export function ReportScreen({
           onToggleEvidence={toggleProposalEvidence}
           onCancel={() => setProposalDialog(null)}
           onConfirm={() => {
-            if (isInputLocked) return;
+            if (isInputLocked || state.activeTasks.seoyun) return;
             if (onProposeAction) {
               onProposeAction(proposalDialog.id, proposalDialog.evidenceIds);
             } else {

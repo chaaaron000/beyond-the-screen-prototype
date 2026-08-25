@@ -13,6 +13,13 @@ export interface AttachmentDefinition {
 // These are small viewers for the records already present in the prototype.
 // They deliberately do not introduce a new clue or a new location.
 export const ATTACHMENTS: Record<EvidenceId, AttachmentDefinition> = {
+  powerGridStatus: {
+    evidenceId: "powerGridStatus",
+    label: "전력 상태 기록 보기",
+    title: "주 발전 계통 / 전력 상태",
+    kind: "trend",
+    caption: "주 발전 계통 정지 이후 생활 구역 설비가 비상·제한 전력에 의존하는 상태 기록이다.",
+  },
   refrigerationLimit: {
     evidenceId: "refrigerationLimit",
     label: "냉장 온도 추세 보기",
@@ -47,13 +54,6 @@ export const ATTACHMENTS: Record<EvidenceId, AttachmentDefinition> = {
     title: "주 발전 계통 / 접근 기록",
     kind: "log",
     caption: "원격 접근만으로는 부족하다는 판단이 남은 기록이다.",
-  },
-  motorcycleCondition: {
-    evidenceId: "motorcycleCondition",
-    label: "현장 사진 보기",
-    title: "보관 구역 / 바이크 기록",
-    kind: "photo",
-    caption: "서윤이 직접 확인한 외관과 이동 가능성 메모를 위한 자리다.",
   },
   motorcycleLightingDependency: {
     evidenceId: "motorcycleLightingDependency",

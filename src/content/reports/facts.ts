@@ -13,6 +13,12 @@ export const EVIDENCE: Record<EvidenceId, {
   source: string;
   detail: string;
 }> = {
+  powerGridStatus: {
+    title: "주 발전 계통 상태",
+    source: "미라 / 주 발전 계통 상태 분석",
+    detail:
+      "주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.",
+  },
   refrigerationLimit: {
     title: "냉장 보존 한계 추정",
     source: "미라 / 냉장 설비 상태 분석",
@@ -35,16 +41,10 @@ export const EVIDENCE: Record<EvidenceId, {
     detail: "냉장 설비의 온도 제어는 현장 인증 단말을 통해서만 가능하며, 응급 식품 이동만으로는 설비를 정상화할 수 없다.",
   },
   powerTerminalRequirement: {
-    title: "주 발전 계통 접근 조건",
-    source: "미라 / 발전소 상태·접근 조건 분석",
+    title: "발전 구역 현장 인증 조건",
+    source: "현장 확인 / 발전 구역 입구",
     detail:
-      "주 발전소는 원격 접근만으로 복구할 수 없다. 현장 유지보수·인증 단말이 필요하다.",
-  },
-  motorcycleCondition: {
-    title: "바이크 상태 확인",
-    source: "서윤 / 바이크 현장 확인",
-    detail:
-      "외관은 예상보다 멀쩡하다. 장기 방치 흔적은 있지만 이동 수단으로 살려볼 여지가 있다.",
+      "발전 구역 입구의 격리 절차는 현장 인증 단말 없이는 해제할 수 없다.",
   },
   motorcycleLightingDependency: {
     title: "보관 구역 조명 단말 의존성",
@@ -53,7 +53,7 @@ export const EVIDENCE: Record<EvidenceId, {
   },
   powerEntranceStatus: {
     title: "발전 구역 입구 현장 기록",
-    source: "서윤 / 발전 구역 입구 현장 확인",
+    source: "현장 확인 / 발전 구역 입구",
     detail:
       "입구 셔터는 내려가 있고 외부에서 내부 설비 상태는 확인할 수 없다.",
   },
@@ -72,10 +72,8 @@ export const EVIDENCE: Record<EvidenceId, {
 };
 
 export const TASK_RESULT_LABELS: Record<TaskId, string> = {
-  powerAnalysis: "발전소 상태 분석 완료",
+  powerAnalysis: "주 발전 계통 상태 분석 완료",
   refrigerationAnalysis: "냉장 설비 분석 완료",
-  motorcycleInspection: "바이크 현장 확인 완료",
-  powerEntranceInspection: "발전 구역 입구 확인 완료",
   terminalLocationSearch: "단말기 위치 조사 완료",
   terminalSearch: "단말기 후보 구역 수색 완료",
 };

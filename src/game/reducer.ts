@@ -29,8 +29,6 @@ export function getAvailableTasks(state: GameState): TaskDefinition[] {
       !state.completedTaskIds.includes(task.id) &&
       !scheduledTaskIds.has(task.id) &&
       (task.id !== "terminalLocationSearch" || state.discoveredTerminalConcept) &&
-      (task.id !== "motorcycleInspection" || !state.exploredRoutes.motorcycle) &&
-      (task.id !== "powerEntranceInspection" || !state.exploredRoutes.power) &&
       (task.requires ?? []).every((evidenceId) =>
         state.discoveredEvidence.includes(evidenceId),
       ),
@@ -65,29 +63,80 @@ export function isActorBusy(state: GameState, actor: Actor): boolean {
   return state.activeTasks[actor] !== null;
 }
 
+export function advanceElapsedTime(
+  state: GameState,
+  elapsedMinutes: number,
+): GameState {
+  if (elapsedMinutes <= 0) return state;
+
+  const activeTasks = { ...state.activeTasks };
+  const completedTaskIds = [...state.completedTaskIds];
+  const discoveredEvidence = [...state.discoveredEvidence];
+  const recentlyCompleted: TaskId[] = [];
+
+  (Object.entries(activeTasks) as [
+    Actor,
+    GameState["activeTasks"][Actor],
+  ][]).forEach(([actor, activeTask]) => {
+    if (!activeTask) return;
+    if (activeTask.remainingMinutes > elapsedMinutes) {
+      activeTasks[actor] = {
+        ...activeTask,
+        remainingMinutes: activeTask.remainingMinutes - elapsedMinutes,
+      };
+      return;
+    }
+
+    const task = getTask(activeTask.taskId);
+    if (!completedTaskIds.includes(task.id)) completedTaskIds.push(task.id);
+    if (
+      task.result.evidenceId &&
+      !discoveredEvidence.includes(task.result.evidenceId)
+    ) {
+      discoveredEvidence.push(task.result.evidenceId);
+    }
+    recentlyCompleted.push(task.id);
+    activeTasks[actor] = null;
+  });
+
+  return {
+    ...state,
+    clockMinutes: state.clockMinutes + elapsedMinutes,
+    activeTasks,
+    completedTaskIds,
+    discoveredEvidence,
+    recentlyCompleted,
+    rejectionPressure:
+      discoveredEvidence.length > state.discoveredEvidence.length
+        ? 0
+        : state.rejectionPressure,
+  };
+}
+
 function completeFieldVisit(state: GameState): GameState {
   const proposalId = state.pendingFieldVisit;
   if (!proposalId || state.exploredRoutes[proposalId]) return state;
 
   const route = getFieldRouteContent(proposalId);
-  const discoveredEvidence = [...state.discoveredEvidence];
+  const elapsedState = advanceElapsedTime(state, route.durationMinutes);
+  const discoveredEvidence = [...elapsedState.discoveredEvidence];
   route.reportResult.evidenceIds.forEach((evidenceId) => {
     if (!discoveredEvidence.includes(evidenceId)) discoveredEvidence.push(evidenceId);
   });
 
   return {
-    ...state,
+    ...elapsedState,
     exploredRoutes: {
-      ...state.exploredRoutes,
+      ...elapsedState.exploredRoutes,
       [proposalId]: true,
     },
     pendingFieldVisit: null,
     discoveredEvidence,
     discoveredTerminalConcept: true,
     firstTerminalDiscoverySource:
-      state.firstTerminalDiscoverySource ?? proposalId,
+      elapsedState.firstTerminalDiscoverySource ?? proposalId,
     refrigerationEmergencyMitigated:
-      state.refrigerationEmergencyMitigated || proposalId === "refrigeration",
+      elapsedState.refrigerationEmergencyMitigated || proposalId === "refrigeration",
   };
 }
 
@@ -193,54 +242,15 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const step = getNextCompletionMinutes(startedState);
       if (step === null) return state;
 
-      const completedNow = (Object.entries(startedState.activeTasks) as [
-        Actor,
-        GameState["activeTasks"][Actor],
-      ][]).filter(([, task]) => task !== null && task.remainingMinutes <= step);
-      const completedTaskIds = [...state.completedTaskIds];
-      const discoveredEvidence = [...state.discoveredEvidence];
-
-      completedNow.forEach(([actor, activeTask]) => {
-        if (!activeTask) return;
-        const task = getTask(activeTask.taskId);
-        if (!completedTaskIds.includes(task.id)) completedTaskIds.push(task.id);
-        if (
-          task.result.evidenceId &&
-          !discoveredEvidence.includes(task.result.evidenceId)
-        ) {
-          discoveredEvidence.push(task.result.evidenceId);
-        }
-        activeTasks[actor] = null;
-      });
-
-      const foundNewEvidence = discoveredEvidence.length > state.discoveredEvidence.length;
-
-      (Object.entries(activeTasks) as [
-        Actor,
-        GameState["activeTasks"][Actor],
-      ][]).forEach(([actor, task]) => {
-        if (task) {
-          activeTasks[actor] = {
-            ...task,
-            remainingMinutes: task.remainingMinutes - step,
-          };
-        }
-      });
-
-      return {
-        ...state,
-        clockMinutes: state.clockMinutes + step,
-        activeTasks,
-        queuedTasks,
-        completedTaskIds,
-        discoveredEvidence,
-        recentlyCompleted: completedNow.map(([, task]) => task!.taskId),
-        rejectionPressure: foundNewEvidence ? 0 : state.rejectionPressure,
-      };
+       return advanceElapsedTime(startedState, step);
     }
 
     case "PROPOSE_ACTION": {
-      if (state.pendingFieldVisit || state.exploredRoutes[action.proposalId]) {
+      if (
+        state.pendingFieldVisit ||
+        state.exploredRoutes[action.proposalId] ||
+        state.activeTasks.seoyun
+      ) {
         return state;
       }
 
