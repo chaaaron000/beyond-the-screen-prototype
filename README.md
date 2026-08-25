@@ -33,6 +33,8 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Planning pane collected information bottom](docs/screenshots/planning-pane-collected-bottom.png)
 
+![Independent conversation log windows](docs/screenshots/floating-raw-log-windows.png)
+
 ![Draggable investigation result and graph windows](docs/screenshots/floating-investigation-windows.png)
 
 ## 실행

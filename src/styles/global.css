@@ -5778,3 +5778,276 @@ body {
   color: #172125;
   background: var(--plan-accent);
 }
+
+/* Adjustable field desk and persistent deadline context. */
+.report-workspace {
+  grid-template-columns: var(--document-pane-width, 58%) 0.62rem minmax(0, 1fr);
+}
+
+.workspace-resizer {
+  position: relative;
+  z-index: 7;
+  min-width: 0;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  background: var(--plan-panel);
+}
+
+.workspace-resizer::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(204, 222, 226, 0.23);
+  content: "";
+  transform: translateX(-50%);
+  transition: background 140ms ease, box-shadow 140ms ease;
+}
+
+.workspace-resizer span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.28rem;
+  height: 2.7rem;
+  border-top: 1px solid var(--plan-accent);
+  border-bottom: 1px solid var(--plan-accent);
+  opacity: 0.55;
+  transform: translate(-50%, -50%);
+}
+
+.workspace-resizer:hover::before,
+.workspace-resizer:focus-visible::before,
+.report-workspace.is-resizing .workspace-resizer::before {
+  background: var(--plan-accent);
+  box-shadow: 0 0 0.8rem rgba(127, 165, 170, 0.35);
+}
+
+.workspace-resizer:focus-visible {
+  outline: 1px solid var(--plan-accent);
+  outline-offset: -2px;
+}
+
+.report-workspace.is-resizing,
+.report-workspace.is-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+.planning-overview-end {
+  height: 1px;
+}
+
+.deadline-reminder {
+  position: sticky;
+  z-index: 12;
+  top: 0;
+  display: flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.65rem;
+  margin: calc(-1 * clamp(1rem, 2.4cqw, 2.4rem)) calc(-1 * clamp(0.9rem, 2.1cqw, 2.1rem)) -2rem;
+  border-bottom: 1px solid rgba(127, 165, 170, 0.34);
+  padding: 0.42rem clamp(0.9rem, 2.1cqw, 2.1rem);
+  color: var(--plan-muted);
+  background: rgba(24, 34, 39, 0.96);
+  box-shadow: 0 0.65rem 1.2rem rgba(7, 12, 15, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-105%);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.deadline-reminder.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.deadline-reminder span {
+  flex: 0 0 auto;
+  color: var(--plan-accent);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  white-space: nowrap;
+}
+
+.deadline-reminder strong {
+  overflow: hidden;
+  color: var(--plan-ink);
+  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deadline-reminder--warning {
+  border-bottom-color: rgba(179, 107, 95, 0.62);
+}
+
+.deadline-reminder--warning span,
+.deadline-reminder--warning strong {
+  color: #d19a8e;
+}
+
+.planning-tab-list button {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.4rem;
+  font-size: clamp(0.68rem, 0.82cqw, 0.82rem);
+  font-weight: 600;
+}
+
+/* Every reference viewer shares one window chrome. */
+.floating-window {
+  overflow: auto;
+  max-height: calc(100vh - 2rem);
+  border: 1px solid rgba(204, 222, 226, 0.24);
+  border-left: 2px solid var(--plan-accent);
+  padding: clamp(1rem, 2cqw, 1.8rem);
+  color: var(--plan-ink);
+  background: #202b31;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.42);
+}
+
+.floating-window-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--plan-line);
+  padding-bottom: 0.8rem;
+}
+
+.floating-window-header p {
+  margin: 0;
+  color: var(--plan-accent);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.46rem, 0.58cqw, 0.58rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.floating-window-header h2 {
+  margin: 0.32rem 0 0;
+  color: var(--plan-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(1.05rem, 1.65cqw, 1.65rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.floating-window-header button {
+  border: 0;
+  border-bottom: 1px solid rgba(204, 222, 226, 0.3);
+  padding: 0 0 0.2rem;
+  color: var(--plan-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.55rem;
+}
+
+.floating-window-header button:hover {
+  border-color: var(--plan-accent);
+  color: var(--plan-accent);
+}
+
+.attachment-viewer,
+.result-viewer {
+  padding: clamp(1rem, 2cqw, 1.8rem);
+  background: #202b31;
+}
+
+.raw-log-viewer {
+  top: clamp(6rem, 17vh, 9rem);
+  left: clamp(1rem, 8vw, 7rem);
+  width: min(35rem, calc(100vw - 2rem));
+}
+
+.proposal-raw-log-button {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  border: 0;
+  border-top: 1px solid var(--document-line);
+  padding: 0.72rem 0.95rem;
+  color: var(--document-amber);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.proposal-raw-log-button:hover:not(:disabled) {
+  background: rgba(96, 133, 139, 0.07);
+}
+
+.proposal-raw-log-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.proposal-raw-log-button > span {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.61rem;
+  letter-spacing: 0.08em;
+}
+
+.proposal-raw-log-button small {
+  color: var(--document-muted);
+  font-size: 0.58rem;
+}
+
+.proposal-raw-log-button b {
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.raw-log-window-lines {
+  margin-top: 0.85rem;
+  border-top: 1px solid var(--plan-line);
+}
+
+.raw-log-window-lines p {
+  display: grid;
+  grid-template-columns: 4.8rem minmax(0, 1fr);
+  gap: 0.8rem;
+  margin: 0;
+  border-bottom: 1px solid var(--plan-line);
+  padding: 0.58rem 0;
+  color: var(--plan-muted);
+  font-size: clamp(0.62rem, 0.78cqw, 0.78rem);
+  line-height: 1.65;
+}
+
+.raw-log-window-lines strong {
+  color: var(--plan-accent);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.57rem;
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .report-workspace {
+    grid-template-columns: minmax(0, 1.1fr) minmax(15rem, 0.9fr);
+  }
+
+  .workspace-resizer {
+    display: none;
+  }
+
+  .deadline-reminder {
+    margin-right: -0.8rem;
+    margin-left: -0.8rem;
+    padding-right: 0.8rem;
+    padding-left: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-resizer::before,
+  .deadline-reminder {
+    transition: none;
+  }
+}

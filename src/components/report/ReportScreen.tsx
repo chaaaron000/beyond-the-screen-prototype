@@ -5,6 +5,7 @@ import {
   type CSSProperties,
   type Dispatch,
   type PointerEvent as ReactPointerEvent,
+  type ReactNode,
 } from "react";
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
@@ -53,9 +54,7 @@ const ACTOR_COLOR: Record<Actor, string> = {
   seoyun: "var(--plan-seoyun)",
 };
 
-let floatingWindowLayer = 30;
-
-function useDraggableWindow() {
+function useDraggableWindow(cascade: number) {
   const windowRef = useRef<HTMLElement | null>(null);
   const dragState = useRef<{
     pointerId: number;
@@ -65,10 +64,7 @@ function useDraggableWindow() {
     originY: number;
     initialRect: DOMRect;
   } | null>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [zIndex, setZIndex] = useState(() => ++floatingWindowLayer);
-
-  const bringToFront = () => setZIndex(++floatingWindowLayer);
+  const [offset, setOffset] = useState({ x: -cascade, y: cascade });
 
   const startDrag = (event: ReactPointerEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest("button")) return;
@@ -112,10 +108,8 @@ function useDraggableWindow() {
   return {
     windowRef,
     windowStyle: {
-      zIndex,
       transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
     } satisfies CSSProperties,
-    bringToFront,
     dragHandleProps: {
       onPointerDown: startDrag,
       onPointerMove: moveDrag,
@@ -123,6 +117,60 @@ function useDraggableWindow() {
       onPointerCancel: stopDrag,
     },
   };
+}
+
+type FloatingWindowRequest =
+  | { key: `attachment:${EvidenceId}`; type: "attachment"; contentId: EvidenceId }
+  | { key: `result:${TaskId}`; type: "result"; contentId: TaskId }
+  | { key: `raw-log:${ProposalId}`; type: "raw-log"; contentId: ProposalId };
+
+type FloatingWindowState = FloatingWindowRequest & {
+  zIndex: number;
+  cascade: number;
+};
+
+function FloatingWindowFrame({
+  windowState,
+  eyebrow,
+  title,
+  className,
+  onClose,
+  onFocus,
+  children,
+}: {
+  windowState: FloatingWindowState;
+  eyebrow: string;
+  title: string;
+  className: string;
+  onClose: () => void;
+  onFocus: () => void;
+  children: ReactNode;
+}) {
+  const draggable = useDraggableWindow(windowState.cascade);
+  const titleId = `floating-window-title-${windowState.key.replace(":", "-")}`;
+
+  return (
+    <section
+      ref={draggable.windowRef}
+      className={`floating-window ${className}`}
+      role="dialog"
+      aria-labelledby={titleId}
+      style={{ ...draggable.windowStyle, zIndex: windowState.zIndex }}
+      onPointerDown={onFocus}
+    >
+      <header className="floating-window-header" {...draggable.dragHandleProps}>
+        <div>
+          <p>{eyebrow}</p>
+          <h2 id={titleId}>{title}</h2>
+        </div>
+        <div className="floating-window-actions">
+          <span className="floating-window-drag-hint" aria-hidden="true"><i />잡고 이동</span>
+          <button type="button" onClick={onClose} aria-label={`${title} 닫기`}>닫기</button>
+        </div>
+      </header>
+      {children}
+    </section>
+  );
 }
 
 function getTimelineBlocks(state: GameState, actor: Actor, previewProgress = 0): TimelineBlock[] {
@@ -296,6 +344,36 @@ function DeadlineSummary({
         ))}
       </div>
     </section>
+  );
+}
+
+function DeadlineReminder({
+  state,
+  displayClockMinutes,
+  visible,
+}: {
+  state: GameState;
+  displayClockMinutes: number;
+  visible: boolean;
+}) {
+  const items = getDeadlineSummaryItems(state, displayClockMinutes);
+  const knownItems = items
+    .filter((item) => item.deadlineMinutes !== null)
+    .sort((left, right) => left.deadlineMinutes! - right.deadlineMinutes!);
+  const item = knownItems[0] ?? items[0];
+
+  return (
+    <div
+      className={`deadline-reminder${visible ? " is-visible" : ""}${item.isWarning ? " deadline-reminder--warning" : ""}`}
+      aria-hidden={!visible}
+    >
+      <span>현재 {formatClock(displayClockMinutes)}</span>
+      {item.deadlineMinutes !== null && item.remainingMinutes !== null ? (
+        <strong>{item.title} 보존 한계 {formatClock(item.deadlineMinutes)} · {formatRemainingPreservation(item.remainingMinutes)}</strong>
+      ) : (
+        <strong>{item.title} · 보존 가능 시간 미확인</strong>
+      )}
+    </div>
   );
 }
 
@@ -868,35 +946,27 @@ function AttachmentVisual({ attachment }: { attachment: AttachmentDefinition }) 
 
 function AttachmentViewer({
   attachment,
+  windowState,
   onClose,
+  onFocus,
 }: {
   attachment: AttachmentDefinition;
+  windowState: FloatingWindowState;
   onClose: () => void;
+  onFocus: () => void;
 }) {
-  const draggable = useDraggableWindow();
-
   return (
-    <section
-      ref={draggable.windowRef}
-      className="floating-window floating-window--attachment attachment-viewer"
-      role="dialog"
-      aria-labelledby="attachment-title"
-      style={draggable.windowStyle}
-      onPointerDown={draggable.bringToFront}
+    <FloatingWindowFrame
+      windowState={windowState}
+      eyebrow="OASIS / ATTACHMENT"
+      title={attachment.title}
+      className="floating-window--attachment attachment-viewer"
+      onClose={onClose}
+      onFocus={onFocus}
     >
-      <header className="floating-window-header attachment-viewer-header" {...draggable.dragHandleProps}>
-        <div>
-          <p>OASIS / ATTACHMENT</p>
-          <h2 id="attachment-title">{attachment.title}</h2>
-        </div>
-        <div className="floating-window-actions">
-          <span className="floating-window-drag-hint" aria-hidden="true"><i />잡고 이동</span>
-          <button type="button" onClick={onClose} aria-label="첨부 자료 닫기">닫기</button>
-        </div>
-      </header>
       <AttachmentVisual attachment={attachment} />
       <p className="attachment-caption">{attachment.caption}</p>
-    </section>
+    </FloatingWindowFrame>
   );
 }
 
@@ -915,9 +985,11 @@ function rawSpeakerLabel(speaker: DialogueLine["speaker"]): string {
 
 function ProposalLedger({
   onStartProposal,
+  onOpenRawLog,
   disabled = false,
 }: {
   onStartProposal: (proposalId: ProposalId) => void;
+  onOpenRawLog: (proposalId: ProposalId) => void;
   disabled?: boolean;
 }) {
   return (
@@ -958,17 +1030,14 @@ function ProposalLedger({
               </blockquote>
             </div>
 
-            <details className="proposal-raw-log">
-              <summary><span>대화 LOG RAW</span><small>요약 아래 원문 보기</small></summary>
-              <div className="proposal-raw-lines">
-                {proposal.rawDialogue.map((line, index) => (
-                  <p key={`${proposal.id}-raw-${index}`}>
-                    <strong>{rawSpeakerLabel(line.speaker)}</strong>
-                    <span>{line.text}</span>
-                  </p>
-                ))}
-              </div>
-            </details>
+            <button
+              type="button"
+              className="proposal-raw-log-button"
+              disabled={disabled}
+              onClick={() => onOpenRawLog(proposal.id)}
+            >
+              <span>대화 LOG RAW</span><small>독립 창으로 원문 열기</small><b aria-hidden="true">↗</b>
+            </button>
           </article>
         ))}
       </div>
@@ -980,11 +1049,13 @@ function FieldDocument({
   state,
   onOpenAttachment,
   onStartProposal,
+  onOpenRawLog,
   disabled = false,
 }: {
   state: GameState;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onStartProposal: (proposalId: ProposalId) => void;
+  onOpenRawLog: (proposalId: ProposalId) => void;
   disabled?: boolean;
 }) {
   return (
@@ -1005,7 +1076,7 @@ function FieldDocument({
         </div>
       </section>
 
-      <ProposalLedger onStartProposal={onStartProposal} disabled={disabled} />
+      <ProposalLedger onStartProposal={onStartProposal} onOpenRawLog={onOpenRawLog} disabled={disabled} />
 
       <section className="field-document-section">
         <SectionHeading eyebrow="조사 결과" title="도착한 기록" />
@@ -1101,61 +1172,78 @@ function ResultHistory({
 }
 
 function ResultViewer({
-  taskIds,
+  taskId,
+  windowState,
   onClose,
+  onFocus,
   onOpenAttachment,
 }: {
-  taskIds: TaskId[];
+  taskId: TaskId;
+  windowState: FloatingWindowState;
   onClose: () => void;
+  onFocus: () => void;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
 }) {
-  const draggable = useDraggableWindow();
+  const task = getTask(taskId);
+  const evidence = task.result.evidenceId ? EVIDENCE[task.result.evidenceId] : null;
+  const attachment = task.result.evidenceId ? ATTACHMENTS[task.result.evidenceId] : null;
 
   return (
-    <section
-      ref={draggable.windowRef}
-      className="floating-window floating-window--result result-viewer"
-      role="dialog"
-      aria-labelledby="result-viewer-title"
-      style={draggable.windowStyle}
-      onPointerDown={draggable.bringToFront}
+    <FloatingWindowFrame
+      windowState={windowState}
+      eyebrow="WORK COMPLETE / REPORT IN"
+      title="조사 결과"
+      className="floating-window--result result-viewer"
+      onClose={onClose}
+      onFocus={onFocus}
     >
-      <header className="floating-window-header result-viewer-header" {...draggable.dragHandleProps}>
-        <div>
-          <p className="panel-eyebrow">WORK COMPLETE / REPORT IN</p>
-          <h2 id="result-viewer-title">조사 결과</h2>
-        </div>
-        <div className="floating-window-actions">
-          <span className="floating-window-drag-hint" aria-hidden="true"><i />잡고 이동</span>
-          <button type="button" onClick={onClose}>닫기</button>
-        </div>
-      </header>
       <div className="result-viewer-list">
-        {taskIds.map((taskId) => {
-          const task = getTask(taskId);
-          const evidence = task.result.evidenceId ? EVIDENCE[task.result.evidenceId] : null;
-          const attachment = task.result.evidenceId ? ATTACHMENTS[task.result.evidenceId] : null;
-          return (
-            <article className="result-viewer-entry" key={taskId}>
-              <p className={`result-viewer-actor result-viewer-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]} · 완료</p>
-              <h3>{task.title}</h3>
-              <p className="result-viewer-summary">{task.result.summary}</p>
-              {evidence && (
-                <div className="result-viewer-evidence">
-                  <strong>{evidence.title}</strong>
-                  <p>{evidence.detail}</p>
-                  {attachment && (
-                    <button type="button" onClick={() => onOpenAttachment(attachment)}>
-                      {attachment.label}
-                    </button>
-                  )}
-                </div>
-              )}
-            </article>
-          );
-        })}
+        <article className="result-viewer-entry">
+          <p className={`result-viewer-actor result-viewer-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]} · 완료</p>
+          <h3>{task.title}</h3>
+          <p className="result-viewer-summary">{task.result.summary}</p>
+          {evidence && (
+            <div className="result-viewer-evidence">
+              <strong>{evidence.title}</strong>
+              <p>{evidence.detail}</p>
+              {attachment && <button type="button" onClick={() => onOpenAttachment(attachment)}>{attachment.label}</button>}
+            </div>
+          )}
+        </article>
       </div>
-    </section>
+    </FloatingWindowFrame>
+  );
+}
+
+function RawLogViewer({
+  proposal,
+  windowState,
+  onClose,
+  onFocus,
+}: {
+  proposal: ProposalDefinition;
+  windowState: FloatingWindowState;
+  onClose: () => void;
+  onFocus: () => void;
+}) {
+  return (
+    <FloatingWindowFrame
+      windowState={windowState}
+      eyebrow="OASIS / CONVERSATION LOG"
+      title={`${proposal.title} / 대화 기록`}
+      className="floating-window--raw-log raw-log-viewer"
+      onClose={onClose}
+      onFocus={onFocus}
+    >
+      <div className="raw-log-window-lines">
+        {proposal.rawDialogue.map((line, index) => (
+          <p key={`${proposal.id}-window-raw-${index}`}>
+            <strong>{rawSpeakerLabel(line.speaker)}</strong>
+            <span>{line.text}</span>
+          </p>
+        ))}
+      </div>
+    </FloatingWindowFrame>
   );
 }
 
@@ -1309,10 +1397,25 @@ function PlanningPanel({
 }) {
   const nextStep = getNextCompletionMinutes(state);
   const nextClock = nextStep === null ? null : state.clockMinutes + nextStep;
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const overviewEndRef = useRef<HTMLDivElement | null>(null);
+  const [showDeadlineReminder, setShowDeadlineReminder] = useState(false);
+
+  const updateDeadlineReminder = () => {
+    const scrollElement = scrollRef.current;
+    const overviewEnd = overviewEndRef.current;
+    if (!scrollElement || !overviewEnd) return;
+    setShowDeadlineReminder(overviewEnd.offsetTop <= scrollElement.scrollTop + 128);
+  };
 
   return (
     <aside className="planning-pane">
-      <div className="planning-scroll">
+      <div className="planning-scroll" ref={scrollRef} onScroll={updateDeadlineReminder}>
+        <DeadlineReminder
+          state={state}
+          displayClockMinutes={displayClockMinutes}
+          visible={showDeadlineReminder}
+        />
         <header className="planning-header">
           <div>
             <p className="panel-eyebrow">FIELD PLAN / LIVE</p>
@@ -1327,6 +1430,7 @@ function PlanningPanel({
         <DeadlineSummary state={state} displayClockMinutes={displayClockMinutes} />
 
         <Timeline state={state} displayClockMinutes={displayClockMinutes} transitionProgress={transitionProgress} />
+        <div className="planning-overview-end" ref={overviewEndRef} aria-hidden="true" />
 
         <PlanningTabs
           state={state}
@@ -1348,8 +1452,7 @@ function PlanningPanel({
 }
 
 export function ReportScreen({ state, dispatch }: ReportScreenProps) {
-  const [openAttachment, setOpenAttachment] = useState<AttachmentDefinition | null>(null);
-  const [openResult, setOpenResult] = useState<TaskId[] | null>(null);
+  const [openWindows, setOpenWindows] = useState<FloatingWindowState[]>([]);
   const [proposalDialog, setProposalDialog] = useState<{ id: ProposalId; evidenceIds: EvidenceId[] } | null>(null);
   const [activePlanningTab, setActivePlanningTab] = useState<PlanningTab>("schedule");
   const [toastTaskIds, setToastTaskIds] = useState<TaskId[]>([]);
@@ -1357,6 +1460,11 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   const [previewClock, setPreviewClock] = useState(state.clockMinutes);
   const transitionFrame = useRef<number | null>(null);
   const transitionTimer = useRef<number | null>(null);
+  const windowLayer = useRef(30);
+  const windowSpawn = useRef(0);
+  const [documentPanePercent, setDocumentPanePercent] = useState(58);
+  const [isResizing, setIsResizing] = useState(false);
+  const resizePointer = useRef<number | null>(null);
 
   useEffect(() => {
     if (state.recentlyCompleted.length > 0) {
@@ -1401,9 +1509,66 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
     setTransition({ from: state.clockMinutes, to: state.clockMinutes + nextStep });
   };
 
+  const openWindow = (request: FloatingWindowRequest) => {
+    const zIndex = ++windowLayer.current;
+    setOpenWindows((current) => {
+      if (current.some((windowState) => windowState.key === request.key)) {
+        return current.map((windowState) =>
+          windowState.key === request.key ? { ...windowState, zIndex } : windowState,
+        );
+      }
+      const cascade = (windowSpawn.current++ % 6) * 18;
+      return [...current, { ...request, zIndex, cascade }];
+    });
+  };
+
+  const focusWindow = (key: FloatingWindowState["key"]) => {
+    const zIndex = ++windowLayer.current;
+    setOpenWindows((current) => current.map((windowState) =>
+      windowState.key === key ? { ...windowState, zIndex } : windowState,
+    ));
+  };
+
+  const closeWindow = (key: FloatingWindowState["key"]) => {
+    setOpenWindows((current) => current.filter((windowState) => windowState.key !== key));
+  };
+
+  const openAttachmentViewer = (attachment: AttachmentDefinition) => {
+    openWindow({
+      key: `attachment:${attachment.evidenceId}`,
+      type: "attachment",
+      contentId: attachment.evidenceId,
+    });
+  };
+
   const openResultViewer = (taskId: TaskId) => {
     setActivePlanningTab("collected");
-    setOpenResult([taskId]);
+    openWindow({ key: `result:${taskId}`, type: "result", contentId: taskId });
+  };
+
+  const startResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    resizePointer.current = event.pointerId;
+    setIsResizing(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+
+  const moveResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (resizePointer.current !== event.pointerId) return;
+    const workspace = event.currentTarget.parentElement;
+    if (!workspace) return;
+    const rect = workspace.getBoundingClientRect();
+    const percent = ((event.clientX - rect.left) / rect.width) * 100;
+    setDocumentPanePercent(Math.max(35, Math.min(69, percent)));
+  };
+
+  const stopResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (resizePointer.current !== event.pointerId) return;
+    resizePointer.current = null;
+    setIsResizing(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
   };
 
   const startProposal = (proposalId: ProposalId) => {
@@ -1435,21 +1600,39 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
           <button type="button" disabled={isAdvancing} onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
         </div>
       </header>
-      <div className="report-workspace">
+      <div
+        className={`report-workspace${isResizing ? " is-resizing" : ""}`}
+        style={{ "--document-pane-width": `${documentPanePercent}%` } as CSSProperties}
+      >
         <section className="document-pane" aria-label="정보 문서">
           <div className="document-scroll">
             <FieldDocument
               state={state}
-              onOpenAttachment={setOpenAttachment}
+              onOpenAttachment={openAttachmentViewer}
               onStartProposal={startProposal}
+              onOpenRawLog={(proposalId) => openWindow({ key: `raw-log:${proposalId}`, type: "raw-log", contentId: proposalId })}
               disabled={isAdvancing}
             />
           </div>
         </section>
+        <div
+          className="workspace-resizer"
+          role="separator"
+          aria-label="보고서와 조사 계획 너비 조절"
+          aria-orientation="vertical"
+          aria-valuemin={35}
+          aria-valuemax={69}
+          aria-valuenow={Math.round(documentPanePercent)}
+          tabIndex={0}
+          onPointerDown={startResize}
+          onPointerMove={moveResize}
+          onPointerUp={stopResize}
+          onPointerCancel={stopResize}
+        ><span aria-hidden="true" /></div>
         <PlanningPanel
           state={state}
           dispatch={dispatch}
-          onOpenAttachment={setOpenAttachment}
+          onOpenAttachment={openAttachmentViewer}
           displayClockMinutes={displayClockMinutes}
           transitionProgress={transitionProgress}
           isAdvancing={isAdvancing}
@@ -1464,20 +1647,27 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
         onOpen={() => {
           if (toastTaskIds.length > 0) {
             setActivePlanningTab("collected");
-            setOpenResult(toastTaskIds);
+            toastTaskIds.forEach((taskId) => openWindow({ key: `result:${taskId}`, type: "result", contentId: taskId }));
             setToastTaskIds([]);
           }
         }}
         onDismiss={() => setToastTaskIds([])}
       />
-      {openResult && (
-        <ResultViewer
-          taskIds={openResult}
-          onClose={() => setOpenResult(null)}
-          onOpenAttachment={setOpenAttachment}
-        />
-      )}
-      {openAttachment && <AttachmentViewer attachment={openAttachment} onClose={() => setOpenAttachment(null)} />}
+      {openWindows.map((windowState) => {
+        const commonProps = {
+          windowState,
+          onClose: () => closeWindow(windowState.key),
+          onFocus: () => focusWindow(windowState.key),
+        };
+        switch (windowState.type) {
+          case "attachment":
+            return <AttachmentViewer key={windowState.key} attachment={ATTACHMENTS[windowState.contentId]} {...commonProps} />;
+          case "result":
+            return <ResultViewer key={windowState.key} taskId={windowState.contentId} onOpenAttachment={openAttachmentViewer} {...commonProps} />;
+          case "raw-log":
+            return <RawLogViewer key={windowState.key} proposal={getProposal(windowState.contentId)} {...commonProps} />;
+        }
+      })}
       {proposalDialog && (
         <ProposalEvidenceDialog
           proposal={getProposal(proposalDialog.id)}
