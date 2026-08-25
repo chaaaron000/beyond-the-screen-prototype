@@ -10,7 +10,7 @@ import type { EvidenceId, ProposalId } from "./types/game";
 type PresentationTransition =
   | {
       kind: "report-to-vn";
-      phase: "emphasis" | "field-link" | "vn-reveal";
+      phase: "cover" | "field-link" | "reveal";
       proposalId: ProposalId;
       evidenceIds: EvidenceId[];
       accepted: boolean;
@@ -19,7 +19,7 @@ type PresentationTransition =
     }
   | {
       kind: "vn-to-report";
-      phase: "hold" | "field-log" | "report-reveal";
+      phase: "cover" | "field-log" | "reveal";
       proposalId: ProposalId;
       label: string;
       location: string;
@@ -55,27 +55,27 @@ export default function App() {
   useEffect(() => {
     if (!transition) return undefined;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let duration = reducedMotion ? 100 : 300;
+    let duration = reducedMotion ? 100 : 280;
 
     if (transition.kind === "report-to-vn") {
-      if (transition.phase === "emphasis") {
-        duration = transition.accepted ? (reducedMotion ? 80 : 300) : (reducedMotion ? 60 : 160);
+      if (transition.phase === "cover") {
+        duration = reducedMotion ? 100 : 300;
       } else if (transition.phase === "field-link") {
-        duration = reducedMotion ? 90 : 220;
+        duration = reducedMotion ? 160 : 420;
       } else {
-        duration = reducedMotion ? 130 : 340;
+        duration = reducedMotion ? 100 : 280;
       }
-    } else if (transition.phase === "hold") {
-      duration = reducedMotion ? 70 : 170;
+    } else if (transition.phase === "cover") {
+      duration = reducedMotion ? 100 : 300;
     } else if (transition.phase === "field-log") {
-      duration = reducedMotion ? 100 : 260;
+      duration = reducedMotion ? 160 : 420;
     } else {
-      duration = reducedMotion ? 130 : 340;
+      duration = reducedMotion ? 100 : 280;
     }
 
     const timer = window.setTimeout(() => {
       if (transition.kind === "report-to-vn") {
-        if (transition.phase === "emphasis") {
+        if (transition.phase === "cover") {
           dispatch({
             type: "PROPOSE_ACTION",
             proposalId: transition.proposalId,
@@ -85,23 +85,23 @@ export default function App() {
             if (!current || current.kind !== "report-to-vn") return current;
             return {
               ...current,
-              phase: transition.accepted ? "field-link" : "vn-reveal",
+              phase: "field-link",
             };
           });
         } else if (transition.phase === "field-link") {
           setTransition((current) => {
             if (!current || current.kind !== "report-to-vn") return current;
-            return { ...current, phase: "vn-reveal" };
+            return { ...current, phase: "reveal" };
           });
         } else {
           setTransition(null);
         }
-      } else if (transition.phase === "hold") {
+      } else if (transition.phase === "cover") {
         dispatch({ type: "ADVANCE_DIALOGUE" });
         setHighlightedRoute(transition.proposalId);
         setTransition({ ...transition, phase: "field-log" });
       } else if (transition.phase === "field-log") {
-        setTransition({ ...transition, phase: "report-reveal" });
+        setTransition({ ...transition, phase: "reveal" });
       } else {
         setTransition(null);
       }
@@ -127,7 +127,7 @@ export default function App() {
     const reaction = getProposalReaction(state, proposalId, evidenceIds);
     setTransition({
       kind: "report-to-vn",
-      phase: "emphasis",
+      phase: "cover",
       proposalId,
       evidenceIds,
       accepted: reaction.outcome === "accepted",
@@ -147,7 +147,7 @@ export default function App() {
     const route = getFieldRouteContent(state.pendingFieldVisit);
     setTransition({
       kind: "vn-to-report",
-      phase: "hold",
+      phase: "cover",
       proposalId: state.pendingFieldVisit,
       label: route.fieldLogUpdatedLabel,
       location: route.location,

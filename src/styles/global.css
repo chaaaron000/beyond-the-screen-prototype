@@ -6057,7 +6057,7 @@ body {
   transition: opacity 260ms ease, filter 260ms ease, transform 260ms ease;
 }
 
-.game-screen.presentation-report-to-vn-emphasis > .report-shell {
+.game-screen.presentation-report-to-vn-cover > .report-shell {
   opacity: 0.62;
   filter: blur(2px);
   transform: scale(0.985);
@@ -6072,28 +6072,24 @@ body {
   justify-items: center;
   gap: 0.45rem;
   color: #dce7ea;
-  background: rgba(11, 18, 23, 0.92);
+  background: #0b1217;
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   pointer-events: auto;
   text-align: center;
   transition: opacity 240ms ease, background-color 240ms ease;
 }
 
-.presentation-transition--emphasis,
-.presentation-transition--hold {
-  background: rgba(11, 18, 23, 0.34);
+.presentation-transition--cover {
+  background: #0b1217;
 }
 
-.presentation-transition--emphasis .presentation-transition-label,
-.presentation-transition--emphasis .presentation-transition-location,
-.presentation-transition--hold .presentation-transition-label,
-.presentation-transition--hold .presentation-transition-location {
+.presentation-transition--cover .presentation-transition-label,
+.presentation-transition--cover .presentation-transition-location {
   opacity: 0;
 }
 
-.presentation-transition--vn-reveal,
-.presentation-transition--report-reveal {
-  background: rgba(11, 18, 23, 0.08);
+.presentation-transition--reveal {
+  background: #0b1217;
   opacity: 0;
   pointer-events: none;
 }
@@ -6211,7 +6207,7 @@ body {
     transition: none;
   }
 
-  .game-screen.presentation-report-to-vn-emphasis > .report-shell {
+  .game-screen.presentation-report-to-vn-cover > .report-shell {
     opacity: 0.72;
     filter: none;
     transform: none;
