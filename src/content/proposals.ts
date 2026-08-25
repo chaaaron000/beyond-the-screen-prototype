@@ -18,13 +18,13 @@ export interface ProposalDefinition {
   number: string;
   title: string;
   rawDialogueId: string;
-  summaryLineIndices: Record<"seoyun" | "mira", number>;
+  summaryDialogueIds: Record<"seoyun" | "mira", string>;
   evidenceRelations: Record<EvidenceId, EvidenceRelation>;
 }
 
 export interface ProposalPresentation {
   rawDialogueId: string;
-  summaryLineIndices: Record<"seoyun" | "mira", number>;
+  summaryDialogueIds: Record<"seoyun" | "mira", string>;
 }
 
 const ALL_EVIDENCE: EvidenceId[] = [
@@ -57,7 +57,10 @@ export const PROPOSALS: ProposalDefinition[] = [
     title: "발전소를 조사한다",
     evidenceRelations: evidenceRelationsFor("power"),
     rawDialogueId: "power.rawLog.default",
-    summaryLineIndices: { seoyun: 1, mira: 0 },
+    summaryDialogueIds: {
+      seoyun: "power.summary.seoyun",
+      mira: "power.summary.mira",
+    },
   },
   {
     id: "motorcycle",
@@ -65,7 +68,10 @@ export const PROPOSALS: ProposalDefinition[] = [
     title: "바이크를 확인한다",
     evidenceRelations: evidenceRelationsFor("motorcycle"),
     rawDialogueId: "motorcycle.rawLog.default",
-    summaryLineIndices: { seoyun: 0, mira: 1 },
+    summaryDialogueIds: {
+      seoyun: "motorcycle.summary.seoyun",
+      mira: "motorcycle.summary.mira",
+    },
   },
   {
     id: "refrigeration",
@@ -73,7 +79,10 @@ export const PROPOSALS: ProposalDefinition[] = [
     title: "냉장 시설을 확인한다",
     evidenceRelations: evidenceRelationsFor("refrigeration"),
     rawDialogueId: "refrigeration.rawLog.default",
-    summaryLineIndices: { seoyun: 0, mira: 3 },
+    summaryDialogueIds: {
+      seoyun: "refrigeration.summary.default.seoyun",
+      mira: "refrigeration.summary.default.mira",
+    },
   },
 ];
 
@@ -103,7 +112,10 @@ export function getProposalPresentation(
 
   return {
     rawDialogueId: "refrigeration.rawLog.deadlineAware",
-    summaryLineIndices: { seoyun: 1, mira: 2 },
+    summaryDialogueIds: {
+      seoyun: "refrigeration.summary.deadlineAware.seoyun",
+      mira: "refrigeration.summary.deadlineAware.mira",
+    },
   };
 }
 

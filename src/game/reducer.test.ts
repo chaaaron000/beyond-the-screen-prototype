@@ -131,8 +131,8 @@ describe("proposal contract", () => {
     const presentation = getProposalPresentation(createInitialState(), "refrigeration");
     const rawDialogue = getDialogue(presentation.rawDialogueId);
     const copy = [
-      rawDialogue[presentation.summaryLineIndices.seoyun].text,
-      rawDialogue[presentation.summaryLineIndices.mira].text,
+      ...getDialogue(presentation.summaryDialogueIds.seoyun).map((line) => line.text),
+      ...getDialogue(presentation.summaryDialogueIds.mira).map((line) => line.text),
       ...rawDialogue.map((line) => line.text),
     ].join(" ");
 
@@ -148,7 +148,7 @@ describe("proposal contract", () => {
     const presentation = getProposalPresentation(state, "refrigeration");
     const rawDialogue = getDialogue(presentation.rawDialogueId);
     const copy = [
-      rawDialogue[presentation.summaryLineIndices.seoyun].text,
+      ...getDialogue(presentation.summaryDialogueIds.seoyun).map((line) => line.text),
       ...rawDialogue.map((line) => line.text),
     ].join(" ");
 

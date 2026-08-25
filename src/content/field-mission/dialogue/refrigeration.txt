@@ -1,3 +1,23 @@
+# refrigeration.summary.default.seoyun
+
+SEOYUN: 계속 온도가 오르는 건 좀 걸리는데.
+
+
+# refrigeration.summary.default.mira
+
+MIRA: 아직 얼마나 급한지는 모르잖아요.
+
+
+# refrigeration.summary.deadlineAware.seoyun
+
+SEOYUN: 13:20이면 생각보다 여유가 없네.
+
+
+# refrigeration.summary.deadlineAware.mira
+
+MIRA: 응급 조치는 지금 할 가치가 있어요.
+
+
 # refrigeration.rawLog.default
 
 SEOYUN: 계속 온도가 오르는 건 좀 걸리는데.

@@ -30,4 +30,19 @@ MIRA: ……지금요? 발전소랑 냉장고 놔두고요?!`);
       "……지금요? 발전소랑 냉장고 놔두고요?!",
     );
   });
+
+  it("loads proposal summaries as explicit single-speaker sections", () => {
+    expect(getDialogue("power.summary.seoyun")).toEqual([
+      {
+        speaker: "seoyun",
+        text: "거기 지금 바로 들어갈 수 있는지도 모르잖아.",
+      },
+    ]);
+    expect(getDialogue("power.summary.mira")).toEqual([
+      {
+        speaker: "mira",
+        text: "주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.",
+      },
+    ]);
+  });
 });

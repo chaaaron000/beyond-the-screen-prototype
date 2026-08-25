@@ -1,3 +1,13 @@
+# motorcycle.summary.seoyun
+
+SEOYUN: 난 바이크부터 보고 싶은데?
+
+
+# motorcycle.summary.mira
+
+MIRA: 아닌데요? 발전소 가봐야 하는데.
+
+
 # motorcycle.rawLog.default
 
 SEOYUN: 난 바이크부터 보고 싶은데?

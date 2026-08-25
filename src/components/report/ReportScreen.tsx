@@ -1030,7 +1030,8 @@ function ProposalLedger({
       <div className="proposal-list">
         {PROPOSALS.map((proposal) => {
           const presentation = getProposalPresentation(state, proposal.id);
-          const rawDialogue = getDialogue(presentation.rawDialogueId);
+          const seoyunSummary = getDialogue(presentation.summaryDialogueIds.seoyun)[0];
+          const miraSummary = getDialogue(presentation.summaryDialogueIds.mira)[0];
           return (
           <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
             <header className="proposal-entry-header">
@@ -1056,11 +1057,11 @@ function ProposalLedger({
             <div className="proposal-positions">
               <blockquote className="proposal-position proposal-position--seoyun">
                 <cite>한서윤</cite>
-                <p>“{rawDialogue[presentation.summaryLineIndices.seoyun].text}”</p>
+                <p>“{seoyunSummary.text}”</p>
               </blockquote>
               <blockquote className="proposal-position proposal-position--mira">
                 <cite>MIRAGE</cite>
-                <p>“{rawDialogue[presentation.summaryLineIndices.mira].text}”</p>
+                <p>“{miraSummary.text}”</p>
               </blockquote>
             </div>
 
