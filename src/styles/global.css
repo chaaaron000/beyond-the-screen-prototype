@@ -95,7 +95,7 @@ button:focus-visible {
 .notice-mark {
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  font-size: clamp(0.45rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.675rem, 1.02cqw, 1.02rem);
 }
 
 .eyebrow {
@@ -125,7 +125,7 @@ button:focus-visible {
   margin: 0;
   color: #f1eee6;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.82rem, 2cqw, 1.7rem);
+  font-size: clamp(1.23rem, 3cqw, 2.55rem);
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -137,7 +137,7 @@ button:focus-visible {
   color: var(--ink);
   background: rgba(23, 24, 24, 0.2);
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 1.125rem;
   transition: background 160ms ease, border-color 160ms ease;
 }
 
@@ -317,7 +317,7 @@ button:focus-visible {
   align-items: center;
   gap: 0.55rem;
   color: var(--accent-soft);
-  font-size: clamp(0.64rem, 1cqw, 1rem);
+  font-size: clamp(0.96rem, 1.5cqw, 1.5rem);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
@@ -348,7 +348,7 @@ button:focus-visible {
 .dialogue-progress {
   margin-left: auto;
   color: var(--faint);
-  font-size: 0.66rem;
+  font-size: 0.99rem;
   font-weight: 400;
 }
 
@@ -356,7 +356,7 @@ button:focus-visible {
   min-height: 3.4rem;
   margin: 0.75rem 0 0.65rem;
   color: #f0ede5;
-  font-size: clamp(0.75rem, 1.8cqw, 1.55rem);
+  font-size: clamp(1.125rem, 2.7cqw, 2.325rem);
   line-height: 1.65;
   letter-spacing: -0.025em;
   text-shadow: 0 0.12rem 0.6rem rgba(0, 0, 0, 0.45);
@@ -371,11 +371,11 @@ button:focus-visible {
   color: var(--accent-soft);
   background: transparent;
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 1.23rem;
 }
 
 .continue-button span {
-  font-size: 1rem;
+  font-size: 1.5rem;
   transition: transform 160ms ease;
 }
 
@@ -389,7 +389,7 @@ button:focus-visible {
   gap: 0.42rem;
   margin-bottom: 0.15rem;
   color: rgba(241, 238, 230, 0.62);
-  font-size: clamp(0.54rem, 0.85cqw, 0.82rem);
+  font-size: clamp(0.81rem, 1.275cqw, 1.23rem);
   line-height: 1.2;
 }
 
@@ -411,7 +411,7 @@ button:focus-visible {
   color: rgba(241, 238, 230, 0.72);
   background: rgba(241, 238, 230, 0.13);
   font: inherit;
-  font-size: 0.64rem;
+  font-size: 0.96rem;
 }
 
 .report-shell {
@@ -430,13 +430,13 @@ button:focus-visible {
 }
 
 .report-header h1 {
-  font-size: clamp(0.82rem, 2.5cqw, 2.6rem);
+  font-size: clamp(1.23rem, 3.75cqw, 3.9rem);
 }
 
 .report-subtitle {
   margin: clamp(0.2rem, 0.65cqw, 0.65rem) 0 0;
   color: var(--muted);
-  font-size: clamp(0.45rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.675rem, 1.05cqw, 1.05rem);
 }
 
 .report-header-actions {
@@ -459,7 +459,7 @@ button:focus-visible {
 .clock-readout strong {
   color: var(--accent-soft);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.82rem, 1.8cqw, 1.8rem);
+  font-size: clamp(1.23rem, 2.7cqw, 2.7rem);
   font-weight: 400;
 }
 
@@ -490,13 +490,13 @@ button:focus-visible {
 .status-card strong {
   color: var(--paper);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.62rem, 1.12cqw, 1.12rem);
+  font-size: clamp(0.93rem, 1.68cqw, 1.68rem);
   font-weight: 400;
 }
 
 .status-card small {
   color: var(--muted);
-  font-size: clamp(0.45rem, 0.74cqw, 0.74rem);
+  font-size: clamp(0.675rem, 1.11cqw, 1.11rem);
   line-height: 1.5;
 }
 
@@ -536,7 +536,7 @@ button:focus-visible {
   margin: 0;
   color: var(--paper);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.72rem, 1.45cqw, 1.45rem);
+  font-size: clamp(1.08rem, 2.175cqw, 2.175rem);
   font-weight: 400;
   letter-spacing: -0.02em;
 }
@@ -562,7 +562,7 @@ button:focus-visible {
   padding: clamp(0.4rem, 1cqw, 1rem) 0 clamp(0.4rem, 1cqw, 1rem) clamp(0.65rem, 1.2cqw, 1.2rem);
   border-bottom: 1px solid rgba(231, 228, 220, 0.08);
   color: #c7c4bb;
-  font-size: clamp(0.5rem, 0.88cqw, 0.88rem);
+  font-size: clamp(0.75rem, 1.32cqw, 1.32rem);
   line-height: 1.65;
 }
 
@@ -598,7 +598,7 @@ button:focus-visible {
   align-items: center;
   gap: 0.45rem;
   color: var(--mira);
-  font-size: 0.62rem;
+  font-size: 0.93rem;
 }
 
 .evidence-pin {
@@ -611,7 +611,7 @@ button:focus-visible {
 .evidence-card h3 {
   margin: clamp(0.3rem, 0.7cqw, 0.7rem) 0 clamp(0.2rem, 0.4cqw, 0.4rem);
   color: var(--paper);
-  font-size: clamp(0.54rem, 0.95cqw, 0.95rem);
+  font-size: clamp(0.81rem, 1.425cqw, 1.425rem);
   font-weight: 600;
 }
 
@@ -619,7 +619,7 @@ button:focus-visible {
 .empty-state {
   margin: 0;
   color: var(--muted);
-  font-size: clamp(0.46rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.69rem, 1.17cqw, 1.17rem);
   line-height: 1.7;
 }
 
@@ -642,7 +642,7 @@ button:focus-visible {
   padding: clamp(0.3rem, 0.5cqw, 0.5rem) clamp(0.4rem, 0.65cqw, 0.65rem);
   color: #c7c4bb;
   background: rgba(231, 228, 220, 0.045);
-  font-size: clamp(0.46rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.69rem, 1.17cqw, 1.17rem);
 }
 
 .active-task-row strong {
@@ -654,7 +654,7 @@ button:focus-visible {
 .actor-mark {
   min-width: clamp(2.1rem, 3cqw, 3rem);
   color: var(--mira);
-  font-size: clamp(0.46rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.69rem, 1.02cqw, 1.02rem);
   font-weight: 700;
 }
 
@@ -677,7 +677,7 @@ button:focus-visible {
   color: var(--paper-ink);
   background: var(--accent);
   cursor: pointer;
-  font-size: clamp(0.48rem, 0.8cqw, 0.8rem);
+  font-size: clamp(0.72rem, 1.2cqw, 1.2rem);
   transition: background 160ms ease, color 160ms ease;
 }
 
@@ -694,7 +694,7 @@ button:focus-visible {
 }
 
 .advance-time-button strong {
-  font-size: 0.73rem;
+  font-size: 1.095rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -702,7 +702,7 @@ button:focus-visible {
 .time-note {
   margin: clamp(0.25rem, 0.55cqw, 0.55rem) 0 0;
   color: var(--faint);
-  font-size: clamp(0.43rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.645rem, 1.05cqw, 1.05rem);
 }
 
 .task-list {
@@ -750,13 +750,13 @@ button:focus-visible {
 
 .task-duration {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 1.08rem;
 }
 
 .task-card h3 {
   margin: clamp(0.3rem, 0.65cqw, 0.65rem) 0 clamp(0.2rem, 0.4cqw, 0.4rem);
   color: var(--paper);
-  font-size: clamp(0.52rem, 0.95cqw, 0.95rem);
+  font-size: clamp(0.78rem, 1.425cqw, 1.425rem);
   font-weight: 600;
 }
 
@@ -764,7 +764,7 @@ button:focus-visible {
   min-height: clamp(1.7rem, 2.6cqw, 2.6rem);
   margin: 0 0 clamp(0.35rem, 0.85cqw, 0.85rem);
   color: var(--muted);
-  font-size: clamp(0.44rem, 0.76cqw, 0.76rem);
+  font-size: clamp(0.66rem, 1.14cqw, 1.14rem);
   line-height: 1.6;
 }
 
@@ -775,7 +775,7 @@ button:focus-visible {
   color: var(--ink);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.44rem, 0.75cqw, 0.75rem);
+  font-size: clamp(0.66rem, 1.125cqw, 1.125rem);
   text-align: left;
   transition: background 160ms ease, border-color 160ms ease;
 }
@@ -810,7 +810,7 @@ button:focus-visible {
 .completion-notice p {
   margin: 0 0 clamp(0.15rem, 0.35cqw, 0.35rem);
   color: var(--muted);
-  font-size: clamp(0.46rem, 0.8cqw, 0.8rem);
+  font-size: clamp(0.69rem, 1.2cqw, 1.2rem);
   line-height: 1.5;
 }
 
@@ -847,7 +847,7 @@ button:focus-visible {
   max-width: clamp(10rem, 20cqw, 20rem);
   margin: 0;
   color: #67665e;
-  font-size: clamp(0.44rem, 0.73cqw, 0.73rem);
+  font-size: clamp(0.66rem, 1.095cqw, 1.095rem);
   line-height: 1.5;
   text-align: right;
 }
@@ -880,14 +880,14 @@ button:focus-visible {
 }
 
 .opinion-button strong {
-  font-size: clamp(0.46rem, 0.86cqw, 0.86rem);
+  font-size: clamp(0.69rem, 1.29cqw, 1.29rem);
   font-weight: 700;
   letter-spacing: -0.03em;
 }
 
 .opinion-button span {
   color: #77756c;
-  font-size: clamp(0.4rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.6rem, 1.05cqw, 1.05rem);
   line-height: 1.45;
 }
 
@@ -915,7 +915,7 @@ button:focus-visible {
   .report-header .quiet-button {
     max-width: 7rem;
     padding: 0.3rem 0.45rem;
-    font-size: 0.48rem;
+    font-size: 0.72rem;
   }
 
   .character--mira {
@@ -932,12 +932,12 @@ button:focus-visible {
   }
 
   .report-header h1 {
-    font-size: 0.75rem;
+    font-size: 1.125rem;
   }
 
   .report-subtitle {
     margin-top: 0.15rem;
-    font-size: 0.4rem;
+    font-size: 0.6rem;
   }
 
   .report-header-actions {
@@ -951,11 +951,11 @@ button:focus-visible {
   }
 
   .report-header-actions .clock-readout span {
-    font-size: 0.38rem;
+    font-size: 0.57rem;
   }
 
   .report-header-actions .clock-readout strong {
-    font-size: 0.7rem;
+    font-size: 1.05rem;
   }
 
   .status-strip {
@@ -970,13 +970,13 @@ button:focus-visible {
   }
 
   .status-card strong {
-    font-size: 0.48rem;
+    font-size: 0.72rem;
   }
 
   .status-card small {
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 0.35rem;
+    font-size: 0.525rem;
     white-space: nowrap;
   }
 
@@ -1090,7 +1090,7 @@ body {
 }
 
 .vn-topbar h1 {
-  font-size: clamp(1.05rem, 2.3cqw, 2.1rem);
+  font-size: clamp(1.575rem, 3.45cqw, 3.15rem);
 }
 
 .quiet-button {
@@ -1100,7 +1100,7 @@ body {
   padding: 0.42rem 0 0.28rem;
   color: var(--ink);
   background: transparent;
-  font-size: clamp(0.56rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.84rem, 1.17cqw, 1.17rem);
   letter-spacing: 0.02em;
 }
 
@@ -1228,7 +1228,7 @@ body {
   padding-bottom: clamp(0.42rem, 0.8cqw, 0.8rem);
   border-bottom: 1px solid rgba(232, 228, 218, 0.16);
   color: var(--accent-soft);
-  font-size: clamp(0.68rem, 0.95cqw, 0.95rem);
+  font-size: clamp(1.02rem, 1.425cqw, 1.425rem);
   letter-spacing: 0.1em;
 }
 
@@ -1249,7 +1249,7 @@ body {
 
 .dialogue-progress {
   color: rgba(232, 228, 218, 0.46);
-  font-size: clamp(0.56rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.84rem, 1.05cqw, 1.05rem);
   letter-spacing: 0.1em;
 }
 
@@ -1257,7 +1257,7 @@ body {
   min-height: 3.5rem;
   margin: clamp(0.7rem, 1.1cqw, 1.1rem) 0 clamp(0.62rem, 0.9cqw, 0.9rem);
   color: #f1eee6;
-  font-size: clamp(0.92rem, 1.7cqw, 1.55rem);
+  font-size: clamp(1.38rem, 2.55cqw, 2.325rem);
   line-height: 1.7;
   letter-spacing: -0.03em;
   text-shadow: 0 0.12rem 0.55rem rgba(0, 0, 0, 0.48);
@@ -1268,12 +1268,12 @@ body {
   border-top: 1px solid rgba(232, 228, 218, 0.14);
   padding-top: clamp(0.48rem, 0.7cqw, 0.7rem);
   color: var(--accent-soft);
-  font-size: clamp(0.62rem, 0.8cqw, 0.8rem);
+  font-size: clamp(0.93rem, 1.2cqw, 1.2rem);
   letter-spacing: 0.08em;
 }
 
 .continue-button span {
-  font-size: 1.05rem;
+  font-size: 1.575rem;
 }
 
 .stage-controls {
@@ -1281,7 +1281,7 @@ body {
   gap: 0.5rem;
   margin-bottom: 0.2rem;
   color: rgba(241, 238, 230, 0.54);
-  font-size: clamp(0.54rem, 0.74cqw, 0.74rem);
+  font-size: clamp(0.81rem, 1.11cqw, 1.11rem);
 }
 
 .control-row kbd {
@@ -1305,13 +1305,13 @@ body {
 }
 
 .report-header h1 {
-  font-size: clamp(1.2rem, 2.7cqw, 2.65rem);
+  font-size: clamp(1.8rem, 4.05cqw, 3.975rem);
 }
 
 .report-subtitle {
   margin-top: clamp(0.25rem, 0.65cqw, 0.7rem);
   color: var(--muted);
-  font-size: clamp(0.52rem, 0.75cqw, 0.75rem);
+  font-size: clamp(0.78rem, 1.125cqw, 1.125rem);
 }
 
 .report-header-actions {
@@ -1328,7 +1328,7 @@ body {
 
 .clock-readout strong {
   color: var(--accent-soft);
-  font-size: clamp(1rem, 1.9cqw, 1.9rem);
+  font-size: clamp(1.5rem, 2.85cqw, 2.85rem);
 }
 
 .quiet-button--dark {
@@ -1363,12 +1363,12 @@ body {
 
 .status-card strong {
   color: var(--paper);
-  font-size: clamp(0.74rem, 1.15cqw, 1.15rem);
+  font-size: clamp(1.11rem, 1.725cqw, 1.725rem);
 }
 
 .status-card small {
   color: var(--muted);
-  font-size: clamp(0.48rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.72rem, 1.05cqw, 1.05rem);
 }
 
 .report-grid {
@@ -1394,7 +1394,7 @@ body {
 
 .section-heading h2 {
   color: var(--paper);
-  font-size: clamp(0.92rem, 1.5cqw, 1.5rem);
+  font-size: clamp(1.38rem, 2.25cqw, 2.25rem);
   letter-spacing: -0.045em;
 }
 
@@ -1412,7 +1412,7 @@ body {
   padding: clamp(0.65rem, 1.1cqw, 1.1rem) 0;
   border-bottom-color: rgba(232, 228, 218, 0.11);
   color: #c9c6bc;
-  font-size: clamp(0.58rem, 0.88cqw, 0.88rem);
+  font-size: clamp(0.87rem, 1.32cqw, 1.32rem);
   line-height: 1.7;
 }
 
@@ -1456,13 +1456,13 @@ body {
 .evidence-card h3 {
   margin: 0.48rem 0 0.3rem;
   color: var(--paper);
-  font-size: clamp(0.64rem, 0.96cqw, 0.96rem);
+  font-size: clamp(0.96rem, 1.44cqw, 1.44rem);
 }
 
 .evidence-card p,
 .empty-state {
   color: var(--muted);
-  font-size: clamp(0.52rem, 0.77cqw, 0.77rem);
+  font-size: clamp(0.78rem, 1.155cqw, 1.155rem);
   line-height: 1.75;
 }
 
@@ -1482,12 +1482,12 @@ body {
   border-bottom: 1px solid rgba(232, 228, 218, 0.11);
   color: #c9c6bc;
   background: transparent;
-  font-size: clamp(0.54rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.81rem, 1.17cqw, 1.17rem);
 }
 
 .actor-mark {
   min-width: clamp(2.35rem, 3.4cqw, 3.4rem);
-  font-size: clamp(0.5rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.75rem, 1.05cqw, 1.05rem);
 }
 
 .advance-time-button {
@@ -1498,7 +1498,7 @@ body {
   padding: clamp(0.6rem, 0.95cqw, 0.95rem) 0;
   color: var(--accent-soft);
   background: transparent;
-  font-size: clamp(0.54rem, 0.8cqw, 0.8rem);
+  font-size: clamp(0.81rem, 1.2cqw, 1.2rem);
 }
 
 .advance-time-button:hover:not(:disabled) {
@@ -1514,7 +1514,7 @@ body {
 .time-note {
   margin-top: 0.48rem;
   color: var(--faint);
-  font-size: clamp(0.46rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.69rem, 1.02cqw, 1.02rem);
 }
 
 .task-list {
@@ -1546,26 +1546,26 @@ body {
 }
 
 .actor-label {
-  font-size: clamp(0.5rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.75rem, 1.05cqw, 1.05rem);
   letter-spacing: 0.14em;
 }
 
 .task-duration {
   color: var(--muted);
-  font-size: clamp(0.5rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.75rem, 1.05cqw, 1.05rem);
 }
 
 .task-card h3 {
   margin: 0.48rem 0 0.32rem;
   color: var(--paper);
-  font-size: clamp(0.68rem, 1cqw, 1rem);
+  font-size: clamp(1.02rem, 1.5cqw, 1.5rem);
 }
 
 .task-card p {
   min-height: auto;
   margin: 0 0 0.65rem;
   color: var(--muted);
-  font-size: clamp(0.5rem, 0.75cqw, 0.75rem);
+  font-size: clamp(0.75rem, 1.125cqw, 1.125rem);
   line-height: 1.7;
 }
 
@@ -1576,7 +1576,7 @@ body {
   padding: 0.28rem 0 0.2rem;
   color: var(--accent-soft);
   background: transparent;
-  font-size: clamp(0.5rem, 0.72cqw, 0.72rem);
+  font-size: clamp(0.75rem, 1.08cqw, 1.08rem);
 }
 
 .task-start-button:hover:not(:disabled) {
@@ -1600,7 +1600,7 @@ body {
 
 .completion-notice p {
   color: var(--muted);
-  font-size: clamp(0.5rem, 0.76cqw, 0.76rem);
+  font-size: clamp(0.75rem, 1.14cqw, 1.14rem);
 }
 
 .opinion-section {
@@ -1627,7 +1627,7 @@ body {
 .opinion-note {
   max-width: clamp(12rem, 24cqw, 24rem);
   color: var(--muted);
-  font-size: clamp(0.48rem, 0.72cqw, 0.72rem);
+  font-size: clamp(0.72rem, 1.08cqw, 1.08rem);
 }
 
 .opinion-grid {
@@ -1659,12 +1659,12 @@ body {
 
 .opinion-button strong {
   color: var(--paper);
-  font-size: clamp(0.52rem, 0.86cqw, 0.86rem);
+  font-size: clamp(0.78rem, 1.29cqw, 1.29rem);
 }
 
 .opinion-button span {
   color: var(--muted);
-  font-size: clamp(0.42rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.63rem, 1.02cqw, 1.02rem);
 }
 
 @media (max-width: 760px) {
@@ -1698,14 +1698,14 @@ body {
   }
 
   .vn-topbar h1 {
-    font-size: 1.35rem;
+    font-size: 2.025rem;
   }
 
   .vn-topbar .quiet-button,
   .report-header .quiet-button {
     max-width: 7rem;
     padding: 0.25rem 0 0.2rem;
-    font-size: 0.58rem;
+    font-size: 0.87rem;
     text-align: right;
   }
 
@@ -1719,7 +1719,7 @@ body {
   .stage-label {
     top: 7.3rem;
     left: 1rem;
-    font-size: 0.52rem;
+    font-size: 0.78rem;
   }
 
   .stage-window {
@@ -1762,18 +1762,18 @@ body {
   }
 
   .dialogue-heading {
-    font-size: 0.68rem;
+    font-size: 1.02rem;
   }
 
   .dialogue-text {
     min-height: 3.4rem;
     margin: 0.68rem 0 0.65rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
     line-height: 1.65;
   }
 
   .continue-button {
-    font-size: 0.62rem;
+    font-size: 0.93rem;
   }
 
   .stage-controls {
@@ -1792,13 +1792,13 @@ body {
   }
 
   .report-header h1 {
-    font-size: 1.5rem;
+    font-size: 2.25rem;
   }
 
   .report-subtitle {
     max-width: 15rem;
     margin-top: 0.25rem;
-    font-size: 0.52rem;
+    font-size: 0.78rem;
     line-height: 1.45;
   }
 
@@ -1812,11 +1812,11 @@ body {
   }
 
   .clock-readout span {
-    font-size: 0.44rem;
+    font-size: 0.66rem;
   }
 
   .clock-readout strong {
-    font-size: 0.92rem;
+    font-size: 1.38rem;
   }
 
   .status-strip {
@@ -1842,15 +1842,15 @@ body {
   .status-card .status-kicker {
     grid-row: span 2;
     align-self: start;
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 
   .status-card strong {
-    font-size: 0.68rem;
+    font-size: 1.02rem;
   }
 
   .status-card small {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 
   .report-grid {
@@ -1872,13 +1872,13 @@ body {
   }
 
   .section-heading h2 {
-    font-size: 1.12rem;
+    font-size: 1.68rem;
   }
 
   .fact-list li {
     grid-template-columns: 0.4rem 1fr;
     padding: 0.7rem 0;
-    font-size: 0.68rem;
+    font-size: 1.02rem;
   }
 
   .section-heading--evidence,
@@ -1891,26 +1891,26 @@ body {
   }
 
   .evidence-card h3 {
-    font-size: 0.75rem;
+    font-size: 1.125rem;
   }
 
   .evidence-card p,
   .empty-state {
-    font-size: 0.62rem;
+    font-size: 0.93rem;
   }
 
   .active-task-row {
     min-height: 2.4rem;
-    font-size: 0.62rem;
+    font-size: 0.93rem;
   }
 
   .advance-time-button {
     margin-top: 0.8rem;
-    font-size: 0.62rem;
+    font-size: 0.93rem;
   }
 
   .time-note {
-    font-size: 0.52rem;
+    font-size: 0.78rem;
   }
 
   .task-card {
@@ -1918,15 +1918,15 @@ body {
   }
 
   .task-card h3 {
-    font-size: 0.78rem;
+    font-size: 1.17rem;
   }
 
   .task-card p {
-    font-size: 0.62rem;
+    font-size: 0.93rem;
   }
 
   .task-start-button {
-    font-size: 0.6rem;
+    font-size: 0.9rem;
   }
 
   .completion-notice,
@@ -1941,7 +1941,7 @@ body {
   }
 
   .completion-notice p {
-    font-size: 0.58rem;
+    font-size: 0.87rem;
   }
 
   .opinion-section {
@@ -2028,7 +2028,7 @@ body {
   left: 0.3rem;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.46rem;
+  font-size: 0.69rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
@@ -2064,14 +2064,14 @@ body {
   margin: 0.32rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.95rem, 1.22cqw, 1.22rem);
+  font-size: clamp(1.425rem, 1.83cqw, 1.83rem);
   font-weight: 400;
   letter-spacing: -0.045em;
 }
 
 .planner-section-heading > span {
   color: var(--plan-faint);
-  font-size: clamp(0.42rem, 0.53cqw, 0.53rem);
+  font-size: clamp(0.63rem, 0.795cqw, 0.795rem);
   white-space: nowrap;
 }
 
@@ -2116,7 +2116,7 @@ body {
   margin: 0 0 0.18rem;
   color: var(--plan-faint);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.42rem;
+  font-size: 0.63rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -2124,7 +2124,7 @@ body {
 .actor-planning-header h3 {
   margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
+  font-size: clamp(1.08rem, 1.35cqw, 1.35rem);
   font-weight: 600;
 }
 
@@ -2132,7 +2132,7 @@ body {
   margin-left: auto;
   color: var(--plan-muted);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.44rem;
+  font-size: 0.66rem;
 }
 
 .actor-current-work,
@@ -2157,20 +2157,20 @@ body {
 .actor-subheading > span {
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.47rem;
+  font-size: 0.705rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .actor-subheading small {
   color: var(--plan-faint);
-  font-size: 0.46rem;
+  font-size: 0.69rem;
 }
 
 .actor-current-task {
   margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(0.56rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.84rem, 1.02cqw, 1.02rem);
   line-height: 1.42;
 }
 
@@ -2211,7 +2211,7 @@ body {
 .actor-empty-message {
   margin: 0;
   color: var(--plan-faint);
-  font-size: 0.5rem;
+  font-size: 0.75rem;
 }
 
 .actor-available-list {
@@ -2254,7 +2254,7 @@ body {
 
 .actor-available-task strong {
   overflow: hidden;
-  font-size: 0.53rem;
+  font-size: 0.795rem;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2263,7 +2263,7 @@ body {
 .actor-available-task small {
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: 0.45rem;
+  font-size: 0.675rem;
   line-height: 1.35;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2272,7 +2272,7 @@ body {
 .actor-available-task em {
   flex: 0 0 auto;
   color: var(--plan-amber);
-  font-size: 0.48rem;
+  font-size: 0.72rem;
   font-style: normal;
 }
 
@@ -2291,18 +2291,18 @@ body {
 }
 
 .advance-time-control b {
-  font-size: clamp(0.66rem, 0.88cqw, 0.88rem);
+  font-size: clamp(0.99rem, 1.32cqw, 1.32rem);
   font-weight: 600;
 }
 
 .advance-time-control small {
   color: currentColor;
-  font-size: clamp(0.46rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
   opacity: 0.72;
 }
 
 .advance-time-control strong {
-  font-size: clamp(0.76rem, 1cqw, 1rem);
+  font-size: clamp(1.14rem, 1.5cqw, 1.5rem);
 }
 
 .advance-time-control:disabled {
@@ -2329,7 +2329,7 @@ body {
   color: var(--plan-faint);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.46rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
 }
 
 .planning-tab-list button:last-child {
@@ -2361,7 +2361,7 @@ body {
   border-radius: 50%;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.42rem;
+  font-size: 0.63rem;
   vertical-align: -0.22rem;
 }
 
@@ -2387,7 +2387,7 @@ body {
   margin: 0.32rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.95rem, 1.22cqw, 1.22rem);
+  font-size: clamp(1.425rem, 1.83cqw, 1.83rem);
   font-weight: 400;
   letter-spacing: -0.045em;
 }
@@ -2416,7 +2416,7 @@ body {
   margin: 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.92rem, 1.2cqw, 1.2rem);
+  font-size: clamp(1.38rem, 1.8cqw, 1.8rem);
   font-weight: 400;
 }
 
@@ -2467,7 +2467,7 @@ body {
 .result-history-item small {
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.42rem;
+  font-size: 0.63rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
@@ -2475,7 +2475,7 @@ body {
 .result-history-item strong {
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: 0.52rem;
+  font-size: 0.78rem;
   font-weight: 400;
   line-height: 1.35;
   text-overflow: ellipsis;
@@ -2485,7 +2485,7 @@ body {
 .result-history-item em {
   flex: 0 0 auto;
   color: var(--plan-amber);
-  font-size: 0.47rem;
+  font-size: 0.705rem;
   font-style: normal;
 }
 
@@ -2530,7 +2530,7 @@ body {
   border: 1px solid var(--plan-amber);
   border-radius: 50%;
   color: var(--plan-amber);
-  font-size: 0.7rem;
+  font-size: 1.05rem;
 }
 
 .completion-toast-main > span:nth-child(2) {
@@ -2540,14 +2540,14 @@ body {
 }
 
 .completion-toast-main strong {
-  font-size: 0.58rem;
+  font-size: 0.87rem;
   font-weight: 600;
 }
 
 .completion-toast-main small {
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: 0.49rem;
+  font-size: 0.735rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2556,7 +2556,7 @@ body {
   flex: 0 0 auto;
   margin-left: auto;
   color: var(--plan-amber);
-  font-size: 0.45rem;
+  font-size: 0.675rem;
   font-style: normal;
 }
 
@@ -2568,7 +2568,7 @@ body {
   color: var(--plan-faint);
   background: transparent;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1.35rem;
 }
 
 .completion-toast-close:hover {
@@ -2606,7 +2606,7 @@ body {
   margin: 0.3rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1.1rem, 1.7cqw, 1.7rem);
+  font-size: clamp(1.65rem, 2.55cqw, 2.55rem);
   font-weight: 400;
 }
 
@@ -2617,7 +2617,7 @@ body {
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
-  font-size: 0.55rem;
+  font-size: 0.825rem;
 }
 
 .result-viewer-header button:hover {
@@ -2645,7 +2645,7 @@ body {
   margin: 0 0 0.3rem;
   color: var(--plan-mira);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.46rem;
+  font-size: 0.69rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -2657,7 +2657,7 @@ body {
 .result-viewer-entry h3 {
   margin: 0;
   color: var(--plan-ink);
-  font-size: 0.78rem;
+  font-size: 1.17rem;
   font-weight: 600;
 }
 
@@ -2665,7 +2665,7 @@ body {
 .result-viewer-evidence p {
   margin: 0.45rem 0 0;
   color: var(--plan-muted);
-  font-size: 0.58rem;
+  font-size: 0.87rem;
   line-height: 1.65;
 }
 
@@ -2677,7 +2677,7 @@ body {
 
 .result-viewer-evidence strong {
   color: var(--plan-amber);
-  font-size: 0.58rem;
+  font-size: 0.87rem;
   font-weight: 500;
 }
 
@@ -2689,7 +2689,7 @@ body {
   color: var(--plan-amber);
   background: transparent;
   cursor: pointer;
-  font-size: 0.52rem;
+  font-size: 0.78rem;
 }
 
 .result-viewer-evidence button:hover {
@@ -2811,7 +2811,7 @@ body {
 .work-actor,
 .work-status {
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.68rem;
+  font-size: 1.02rem;
   letter-spacing: 0.08em;
 }
 
@@ -2827,7 +2827,7 @@ body {
   color: var(--document-muted);
   background: transparent;
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   transition: color 160ms ease, border-color 160ms ease;
 }
 
@@ -2845,7 +2845,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(2.1rem, 5vw, 4.2rem);
+  font-size: clamp(3.15rem, 5vw, 6.3rem);
   font-weight: 400;
   letter-spacing: -0.075em;
   line-height: 1;
@@ -2855,7 +2855,7 @@ body {
   max-width: 25rem;
   margin: 1rem 0 0;
   color: var(--document-muted);
-  font-size: 0.9rem;
+  font-size: 1.35rem;
   line-height: 1.7;
 }
 
@@ -2874,7 +2874,7 @@ body {
 .document-clock strong {
   color: var(--document-amber);
   font-family: Iowan Old Style, Baskerville, Georgia, serif;
-  font-size: 1.65rem;
+  font-size: 2.475rem;
   font-weight: 400;
   letter-spacing: -0.04em;
 }
@@ -2903,7 +2903,7 @@ body {
 .report-section-label {
   margin: 0;
   color: var(--document-amber);
-  font-size: 0.64rem;
+  font-size: 0.96rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -2912,7 +2912,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: 1.7rem;
+  font-size: 2.55rem;
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1.15;
@@ -2927,7 +2927,7 @@ body {
   max-width: 42rem;
   margin: 0 0 0.8rem;
   color: var(--document-ink);
-  font-size: 1.04rem;
+  font-size: 1.56rem;
   line-height: 1.8;
   letter-spacing: -0.025em;
 }
@@ -2961,7 +2961,7 @@ body {
 .opinion-note p {
   margin: 0;
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   letter-spacing: -0.035em;
   line-height: 1.55;
 }
@@ -2970,7 +2970,7 @@ body {
   display: block;
   margin-top: 0.5rem;
   color: var(--document-muted);
-  font-size: 0.76rem;
+  font-size: 1.14rem;
   font-style: normal;
 }
 
@@ -2990,7 +2990,7 @@ body {
   margin: 0;
   padding: 1.25rem 0;
   color: var(--document-muted);
-  font-size: 0.9rem;
+  font-size: 1.35rem;
   line-height: 1.7;
 }
 
@@ -3007,7 +3007,7 @@ body {
 .new-record-note p {
   margin: 0.55rem 0 0;
   color: var(--document-ink);
-  font-size: 0.9rem;
+  font-size: 1.35rem;
   line-height: 1.7;
 }
 
@@ -3024,13 +3024,13 @@ body {
 .evidence-source {
   margin: 0 0 0.55rem;
   color: var(--document-mira);
-  font-size: 0.63rem;
+  font-size: 0.945rem;
 }
 
 .evidence-fragment h3 {
   margin: 0 0 0.4rem;
   color: var(--document-ink);
-  font-size: 0.98rem;
+  font-size: 1.47rem;
   font-weight: 600;
 }
 
@@ -3038,7 +3038,7 @@ body {
   max-width: 40rem;
   margin: 0;
   color: var(--document-muted);
-  font-size: 0.88rem;
+  font-size: 1.32rem;
   line-height: 1.75;
 }
 
@@ -3046,7 +3046,7 @@ body {
   max-width: 34rem;
   margin: 0.8rem 0 0;
   color: var(--document-faint);
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   line-height: 1.65;
 }
 
@@ -3068,12 +3068,12 @@ body {
   align-self: start;
   gap: 0.35rem;
   color: var(--document-muted);
-  font-size: 0.67rem;
+  font-size: 1.005rem;
 }
 
 .task-actor {
   color: var(--document-mira);
-  font-size: 0.67rem;
+  font-size: 1.005rem;
   font-weight: 600;
 }
 
@@ -3084,7 +3084,7 @@ body {
 .report-task-main h3 {
   margin: 0 0 0.32rem;
   color: var(--document-ink);
-  font-size: 0.96rem;
+  font-size: 1.44rem;
   font-weight: 600;
   letter-spacing: -0.025em;
 }
@@ -3093,7 +3093,7 @@ body {
   max-width: 29rem;
   margin: 0;
   color: var(--document-muted);
-  font-size: 0.82rem;
+  font-size: 1.23rem;
   line-height: 1.6;
 }
 
@@ -3105,7 +3105,7 @@ body {
   color: var(--document-ink);
   background: transparent;
   cursor: pointer;
-  font-size: 0.74rem;
+  font-size: 1.11rem;
   white-space: nowrap;
   transition: color 160ms ease, border-color 160ms ease;
 }
@@ -3139,7 +3139,7 @@ body {
 
 .work-actor {
   color: var(--document-mira);
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   font-weight: 600;
 }
 
@@ -3149,7 +3149,7 @@ body {
 
 .work-status {
   color: var(--document-faint);
-  font-size: 0.62rem;
+  font-size: 0.93rem;
 }
 
 .work-entry-detail {
@@ -3158,13 +3158,13 @@ body {
   gap: 1rem;
   margin: 0.5rem 0 0;
   color: var(--document-ink);
-  font-size: 0.92rem;
+  font-size: 1.38rem;
   line-height: 1.5;
 }
 
 .work-entry-detail strong {
   color: var(--document-amber);
-  font-size: 0.78rem;
+  font-size: 1.17rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -3187,7 +3187,7 @@ body {
   color: var(--document-amber);
   background: transparent;
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 1.23rem;
   text-align: left;
   transition: background 160ms ease, color 160ms ease;
 }
@@ -3198,7 +3198,7 @@ body {
 }
 
 .advance-time-button strong {
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -3213,14 +3213,14 @@ body {
 .time-note {
   margin: 0.55rem 0 0;
   color: var(--document-faint);
-  font-size: 0.7rem;
+  font-size: 1.05rem;
   line-height: 1.6;
 }
 
 .decision-intro {
   margin: -0.45rem 0 1rem;
   color: var(--document-muted);
-  font-size: 0.84rem;
+  font-size: 1.26rem;
 }
 
 .decision-list {
@@ -3250,7 +3250,7 @@ body {
 
 .decision-arrow {
   color: var(--document-amber);
-  font-size: 1.05rem;
+  font-size: 1.575rem;
 }
 
 .decision-copy {
@@ -3259,13 +3259,13 @@ body {
 }
 
 .decision-copy strong {
-  font-size: 0.94rem;
+  font-size: 1.41rem;
   font-weight: 600;
 }
 
 .decision-copy small {
   color: var(--document-muted);
-  font-size: 0.76rem;
+  font-size: 1.14rem;
   line-height: 1.45;
 }
 
@@ -3300,17 +3300,17 @@ body {
   .report-task-meta,
   .work-actor,
   .work-status {
-    font-size: 0.58rem;
+    font-size: 0.87rem;
   }
 
   .document-title-row h1 {
-    font-size: 2.65rem;
+    font-size: 3.975rem;
   }
 
   .document-subtitle {
     max-width: 14rem;
     margin-top: 0.75rem;
-    font-size: 0.78rem;
+    font-size: 1.17rem;
   }
 
   .document-clock {
@@ -3318,7 +3318,7 @@ body {
   }
 
   .document-clock strong {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
   }
 
   .document-rule {
@@ -3334,16 +3334,16 @@ body {
   }
 
   .report-section-heading h2 {
-    font-size: 1.45rem;
+    font-size: 2.175rem;
   }
 
   .situation-copy p {
-    font-size: 0.94rem;
+    font-size: 1.41rem;
     line-height: 1.75;
   }
 
   .opinion-note p {
-    font-size: 1.04rem;
+    font-size: 1.56rem;
   }
 
   .report-task-row {
@@ -3352,26 +3352,26 @@ body {
   }
 
   .report-task-main h3 {
-    font-size: 0.86rem;
+    font-size: 1.29rem;
   }
 
   .report-task-main p {
-    font-size: 0.76rem;
+    font-size: 1.14rem;
   }
 
   .task-request-button {
     grid-column: 2;
     justify-self: start;
     margin-top: -0.15rem;
-    font-size: 0.7rem;
+    font-size: 1.05rem;
   }
 
   .work-entry-detail {
-    font-size: 0.84rem;
+    font-size: 1.26rem;
   }
 
   .advance-time-button {
-    font-size: 0.76rem;
+    font-size: 1.14rem;
   }
 }
 
@@ -3436,7 +3436,7 @@ body {
   margin: 0;
   color: var(--plan-faint);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.48rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.72rem, 1.02cqw, 1.02rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -3449,7 +3449,7 @@ body {
 .report-topbar strong {
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.82rem, 1.35cqw, 1.35rem);
+  font-size: clamp(1.23rem, 2.025cqw, 2.025rem);
   font-weight: 400;
   letter-spacing: -0.035em;
 }
@@ -3463,7 +3463,7 @@ body {
 .report-topbar-right time {
   color: var(--plan-amber);
   font-family: Iowan Old Style, Baskerville, Georgia, serif;
-  font-size: clamp(1.1rem, 1.8cqw, 1.8rem);
+  font-size: clamp(1.65rem, 2.7cqw, 2.7rem);
   letter-spacing: -0.04em;
 }
 
@@ -3475,7 +3475,7 @@ body {
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.52rem, 0.72cqw, 0.72rem);
+  font-size: clamp(0.78rem, 1.08cqw, 1.08rem);
 }
 
 .report-topbar-right button:hover,
@@ -3539,7 +3539,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(2.15rem, 5.1cqw, 4.4rem);
+  font-size: clamp(3.225rem, 7.65cqw, 6.6rem);
   font-weight: 400;
   letter-spacing: -0.09em;
   line-height: 0.98;
@@ -3549,7 +3549,7 @@ body {
   max-width: 30rem;
   margin: 1rem 0 0;
   color: var(--document-muted);
-  font-size: clamp(0.72rem, 0.95cqw, 0.95rem);
+  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
   line-height: 1.7;
 }
 
@@ -3580,7 +3580,7 @@ body {
   margin: 0;
   color: var(--document-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -3589,7 +3589,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1.18rem, 1.8cqw, 1.8rem);
+  font-size: clamp(1.77rem, 2.7cqw, 2.7rem);
   font-weight: 400;
   letter-spacing: -0.065em;
 }
@@ -3605,7 +3605,7 @@ body {
   border-bottom: 1px solid rgba(80, 105, 113, 0.13);
   padding: 0.75rem 0 0.85rem;
   color: var(--document-ink);
-  font-size: clamp(0.76rem, 1.02cqw, 1.02rem);
+  font-size: clamp(1.14rem, 1.53cqw, 1.53rem);
   line-height: 1.8;
   letter-spacing: -0.025em;
 }
@@ -3633,7 +3633,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.84rem, 1.28cqw, 1.28rem);
+  font-size: clamp(1.26rem, 1.92cqw, 1.92rem);
   letter-spacing: -0.04em;
   line-height: 1.55;
 }
@@ -3642,7 +3642,7 @@ body {
   display: block;
   margin-top: 0.42rem;
   color: var(--document-muted);
-  font-size: clamp(0.6rem, 0.72cqw, 0.72rem);
+  font-size: clamp(0.9rem, 1.08cqw, 1.08rem);
   font-style: normal;
 }
 
@@ -3659,7 +3659,7 @@ body {
   max-width: 42rem;
   margin: 0;
   color: #777970;
-  font-size: clamp(0.72rem, 0.88cqw, 0.88rem);
+  font-size: clamp(1.08rem, 1.32cqw, 1.32rem);
   line-height: 1.8;
 }
 
@@ -3675,13 +3675,13 @@ body {
 .record-source {
   margin-bottom: 0.5rem;
   color: var(--document-mira);
-  font-size: 0.61rem;
+  font-size: 0.915rem;
 }
 
 .document-record h3 {
   margin: 0 0 0.38rem;
   color: var(--document-ink);
-  font-size: clamp(0.76rem, 1cqw, 1rem);
+  font-size: clamp(1.14rem, 1.5cqw, 1.5rem);
   font-weight: 700;
   letter-spacing: -0.025em;
 }
@@ -3690,7 +3690,7 @@ body {
   max-width: 46rem;
   margin: 0;
   color: var(--document-muted);
-  font-size: clamp(0.7rem, 0.85cqw, 0.85rem);
+  font-size: clamp(1.05rem, 1.275cqw, 1.275rem);
   line-height: 1.75;
 }
 
@@ -3705,7 +3705,7 @@ body {
   color: var(--document-amber);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.62rem, 0.74cqw, 0.74rem);
+  font-size: clamp(0.93rem, 1.11cqw, 1.11rem);
 }
 
 .attachment-link:hover {
@@ -3742,7 +3742,7 @@ body {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1.2rem, 1.9cqw, 1.9rem);
+  font-size: clamp(1.8rem, 2.85cqw, 2.85rem);
   font-weight: 400;
   letter-spacing: -0.065em;
 }
@@ -3756,13 +3756,13 @@ body {
 .planning-clock span {
   color: var(--plan-muted);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.48rem, 0.62cqw, 0.62rem);
+  font-size: clamp(0.72rem, 0.93cqw, 0.93rem);
 }
 
 .planning-clock strong {
   color: var(--plan-amber);
   font-family: Iowan Old Style, Baskerville, Georgia, serif;
-  font-size: clamp(1rem, 1.55cqw, 1.55rem);
+  font-size: clamp(1.5rem, 2.325cqw, 2.325rem);
   font-weight: 400;
 }
 
@@ -3781,20 +3781,20 @@ body {
 .timeline-heading h3 {
   margin: 0.33rem 0 0;
   color: var(--plan-ink);
-  font-size: clamp(0.72rem, 0.95cqw, 0.95rem);
+  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
   font-weight: 600;
 }
 
 .panel-eyebrow {
   color: var(--plan-amber);
-  font-size: clamp(0.46rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
 }
 
 .deadline-key,
 .deadline-unknown {
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.45rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.675rem, 0.87cqw, 0.87rem);
   white-space: nowrap;
 }
 
@@ -3807,7 +3807,7 @@ body {
   height: 1.15rem;
   margin-left: 4.2rem;
   color: var(--plan-muted);
-  font-size: clamp(0.43rem, 0.57cqw, 0.57rem);
+  font-size: clamp(0.645rem, 0.855cqw, 0.855rem);
 }
 
 .timeline-axis span {
@@ -3854,7 +3854,7 @@ body {
   left: 0.24rem;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.53rem;
+  font-size: 0.795rem;
   white-space: nowrap;
 }
 
@@ -3882,7 +3882,7 @@ body {
 
 .timeline-lane-label > span {
   color: var(--plan-mira);
-  font-size: clamp(0.62rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.93rem, 1.17cqw, 1.17rem);
   font-weight: 700;
 }
 
@@ -3893,7 +3893,7 @@ body {
 .timeline-lane-label small {
   overflow: hidden;
   color: var(--plan-faint);
-  font-size: clamp(0.39rem, 0.5cqw, 0.5rem);
+  font-size: clamp(0.585rem, 0.75cqw, 0.75rem);
   letter-spacing: 0.02em;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3918,7 +3918,7 @@ body {
   top: 0.68rem;
   left: 0;
   color: var(--plan-faint);
-  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
 }
 
 .timeline-block {
@@ -3933,7 +3933,7 @@ body {
   border-left: 2px solid rgba(255, 255, 255, 0.72);
   padding: 0 0.42rem;
   color: #17201e;
-  font-size: clamp(0.4rem, 0.55cqw, 0.55rem);
+  font-size: clamp(0.6rem, 0.825cqw, 0.825rem);
   font-weight: 700;
   line-height: 1.1;
   text-overflow: ellipsis;
@@ -3951,7 +3951,7 @@ body {
 .timeline-note {
   margin: 0.65rem 0 0;
   color: #aa9487;
-  font-size: clamp(0.46rem, 0.59cqw, 0.59rem);
+  font-size: clamp(0.69rem, 0.885cqw, 0.885rem);
   line-height: 1.5;
 }
 
@@ -3979,7 +3979,7 @@ body {
 .deadline-summary-count {
   color: var(--plan-faint);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
   letter-spacing: 0.04em;
 }
 
@@ -4006,7 +4006,7 @@ body {
   margin: 0;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -4023,7 +4023,7 @@ body {
 .deadline-summary-heading h3 {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
-  font-size: clamp(0.9rem, 1.18cqw, 1.18rem);
+  font-size: clamp(1.35rem, 1.77cqw, 1.77rem);
   font-weight: 600;
   letter-spacing: -0.025em;
 }
@@ -4040,7 +4040,7 @@ body {
   padding: 0.2rem 0.35rem;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -4070,13 +4070,13 @@ body {
 
 .deadline-summary-metrics span {
   color: var(--plan-muted);
-  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
 }
 
 .deadline-summary-metrics strong {
   color: var(--plan-ink);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.84rem, 1.08cqw, 1.08rem);
+  font-size: clamp(1.26rem, 1.62cqw, 1.62rem);
   font-weight: 500;
 }
 
@@ -4095,14 +4095,14 @@ body {
   padding: 0.65rem 0;
   color: var(--plan-muted);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.72rem, 0.95cqw, 0.95rem);
+  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
 }
 
 .deadline-summary-reason,
 .deadline-summary-plan-warning {
   margin: 0;
   color: var(--plan-muted);
-  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
+  font-size: clamp(0.9rem, 1.125cqw, 1.125rem);
   line-height: 1.55;
 }
 
@@ -4132,7 +4132,7 @@ body {
 
 .actor-name {
   color: var(--plan-mira);
-  font-size: clamp(0.62rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.93rem, 1.17cqw, 1.17rem);
   font-weight: 700;
 }
 
@@ -4142,7 +4142,7 @@ body {
 
 .schedule-status-heading > span:last-child {
   color: var(--plan-faint);
-  font-size: clamp(0.4rem, 0.53cqw, 0.53rem);
+  font-size: clamp(0.6rem, 0.795cqw, 0.795rem);
   letter-spacing: 0.02em;
   text-transform: none;
 }
@@ -4153,7 +4153,7 @@ body {
   gap: 0.8rem;
   margin: 0.42rem 0 0.6rem;
   color: var(--plan-ink);
-  font-size: clamp(0.55rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.825rem, 1.02cqw, 1.02rem);
   line-height: 1.45;
 }
 
@@ -4167,7 +4167,7 @@ body {
 .current-task-line span {
   flex: 0 0 auto;
   color: var(--plan-amber);
-  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
 }
 
 .current-task-line--empty {
@@ -4177,7 +4177,7 @@ body {
 .queue-empty {
   margin: 0;
   color: var(--plan-faint);
-  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
 }
 
 .queue-list {
@@ -4194,7 +4194,7 @@ body {
   align-items: center;
   gap: 0.38rem;
   color: var(--plan-muted);
-  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
 }
 
 .queue-index {
@@ -4219,7 +4219,7 @@ body {
   color: var(--plan-faint);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.4rem, 0.5cqw, 0.5rem);
+  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
 }
 
 .queue-actions button:hover:not(:disabled) {
@@ -4243,7 +4243,7 @@ body {
   color: var(--plan-amber);
   background: rgba(212, 160, 108, 0.08);
   cursor: pointer;
-  font-size: clamp(0.52rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.78rem, 1.02cqw, 1.02rem);
   text-align: left;
   transition: background 160ms ease, color 160ms ease;
 }
@@ -4254,7 +4254,7 @@ body {
 }
 
 .advance-time-control strong {
-  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -4270,7 +4270,7 @@ body {
 .panel-footnote {
   margin: 0.48rem 0 0;
   color: var(--plan-faint);
-  font-size: clamp(0.44rem, 0.56cqw, 0.56rem);
+  font-size: clamp(0.66rem, 0.84cqw, 0.84rem);
   line-height: 1.55;
 }
 
@@ -4290,7 +4290,7 @@ body {
   gap: 0.22rem;
   margin: 0 0 0.58rem;
   color: var(--plan-muted);
-  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
   line-height: 1.45;
 }
 
@@ -4320,7 +4320,7 @@ body {
 .evidence-sidebar .field-section-heading h2 {
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1rem, 1.35cqw, 1.35rem);
+  font-size: clamp(1.5rem, 2.025cqw, 2.025rem);
 }
 
 .task-picker .field-section-heading p,
@@ -4346,7 +4346,7 @@ body {
   display: flex;
   gap: 0.65rem;
   color: var(--plan-mira);
-  font-size: clamp(0.42rem, 0.52cqw, 0.52rem);
+  font-size: clamp(0.63rem, 0.78cqw, 0.78rem);
   letter-spacing: 0.06em;
 }
 
@@ -4357,7 +4357,7 @@ body {
 .task-option h4 {
   margin: 0.32rem 0 0.22rem;
   color: var(--plan-ink);
-  font-size: clamp(0.56rem, 0.7cqw, 0.7rem);
+  font-size: clamp(0.84rem, 1.05cqw, 1.05rem);
   font-weight: 600;
   line-height: 1.4;
 }
@@ -4365,7 +4365,7 @@ body {
 .task-option p {
   margin: 0;
   color: var(--plan-muted);
-  font-size: clamp(0.46rem, 0.56cqw, 0.56rem);
+  font-size: clamp(0.69rem, 0.84cqw, 0.84rem);
   line-height: 1.5;
 }
 
@@ -4376,7 +4376,7 @@ body {
   color: var(--plan-amber);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.45rem, 0.56cqw, 0.56rem);
+  font-size: clamp(0.675rem, 0.84cqw, 0.84rem);
   white-space: nowrap;
 }
 
@@ -4388,7 +4388,7 @@ body {
 .panel-empty {
   margin: 0;
   color: var(--plan-faint);
-  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
   line-height: 1.6;
 }
 
@@ -4416,21 +4416,21 @@ body {
 .opinion-drawer summary > span {
   display: grid;
   gap: 0.25rem;
-  font-size: clamp(0.66rem, 0.82cqw, 0.82rem);
+  font-size: clamp(0.99rem, 1.23cqw, 1.23rem);
   font-weight: 600;
 }
 
 .opinion-drawer summary small {
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.43rem, 0.52cqw, 0.52rem);
+  font-size: clamp(0.645rem, 0.78cqw, 0.78rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .opinion-drawer summary b {
   color: var(--plan-muted);
-  font-size: clamp(0.45rem, 0.55cqw, 0.55rem);
+  font-size: clamp(0.675rem, 0.825cqw, 0.825rem);
   font-weight: 400;
 }
 
@@ -4443,7 +4443,7 @@ body {
 }
 
 .opinion-drawer[open] summary b::after {
-  font-size: clamp(0.45rem, 0.55cqw, 0.55rem);
+  font-size: clamp(0.675rem, 0.825cqw, 0.825rem);
 }
 
 .opinion-drawer-list {
@@ -4475,13 +4475,13 @@ body {
 }
 
 .opinion-drawer-list strong {
-  font-size: clamp(0.48rem, 0.62cqw, 0.62rem);
+  font-size: clamp(0.72rem, 0.93cqw, 0.93rem);
   font-weight: 600;
 }
 
 .opinion-drawer-list span {
   color: var(--plan-muted);
-  font-size: clamp(0.41rem, 0.52cqw, 0.52rem);
+  font-size: clamp(0.615rem, 0.78cqw, 0.78rem);
   line-height: 1.35;
 }
 
@@ -4498,7 +4498,7 @@ body {
 .sidebar-evidence > p {
   margin-bottom: 0.32rem;
   color: var(--plan-mira);
-  font-size: clamp(0.4rem, 0.5cqw, 0.5rem);
+  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
   letter-spacing: 0.04em;
   text-transform: none;
 }
@@ -4520,7 +4520,7 @@ body {
 }
 
 .sidebar-evidence strong {
-  font-size: clamp(0.53rem, 0.66cqw, 0.66rem);
+  font-size: clamp(0.795rem, 0.99cqw, 0.99rem);
   font-weight: 600;
 }
 
@@ -4528,7 +4528,7 @@ body {
   display: -webkit-box;
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: clamp(0.47rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -4578,7 +4578,7 @@ body {
   gap: 0.35rem;
   color: var(--plan-faint);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.46rem;
+  font-size: 0.69rem;
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
@@ -4603,7 +4603,7 @@ body {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1rem, 1.55cqw, 1.55rem);
+  font-size: clamp(1.5rem, 2.325cqw, 2.325rem);
   font-weight: 400;
   letter-spacing: -0.055em;
 }
@@ -4622,7 +4622,7 @@ body {
 .attachment-caption {
   margin: 0.8rem 0 0;
   color: var(--plan-muted);
-  font-size: clamp(0.55rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.825rem, 1.02cqw, 1.02rem);
   line-height: 1.65;
 }
 
@@ -4637,7 +4637,7 @@ body {
   gap: 1rem;
   color: var(--plan-muted);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
 }
 
 .graph-labels span:last-child {
@@ -4687,7 +4687,7 @@ body {
   padding: 0.65rem 0;
   color: var(--plan-muted);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.48rem, 0.6cqw, 0.6rem);
+  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
   line-height: 1.5;
 }
 
@@ -4723,7 +4723,7 @@ body {
 .photo-placeholder span {
   color: rgba(236, 231, 220, 0.58);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.55rem;
+  font-size: 0.825rem;
   letter-spacing: 0.16em;
 }
 
@@ -4731,7 +4731,7 @@ body {
 .attachment-visual--map p {
   margin: 0.65rem 0 0;
   color: var(--plan-faint);
-  font-size: 0.55rem;
+  font-size: 0.825rem;
   line-height: 1.5;
 }
 
@@ -4781,7 +4781,7 @@ body {
   padding: 0.3rem 0.4rem;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.56rem;
+  font-size: 0.84rem;
 }
 
 @media (max-width: 1050px) {
@@ -4815,7 +4815,7 @@ body {
   }
 
   .field-document h1 {
-    font-size: 2.5rem;
+    font-size: 3.75rem;
   }
 
   .planning-scroll {
@@ -4901,7 +4901,7 @@ body {
 .actor-planning-row .actor-subheading > span {
   color: var(--plan-ink);
   font-family: inherit;
-  font-size: clamp(0.52rem, 0.64cqw, 0.64rem);
+  font-size: clamp(0.78rem, 0.96cqw, 0.96rem);
   font-weight: 600;
   letter-spacing: -0.015em;
   text-transform: none;
@@ -4917,7 +4917,7 @@ body {
   align-self: center;
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 1rem;
+  font-size: 1.5rem;
   line-height: 1;
 }
 
@@ -4967,7 +4967,7 @@ body {
   margin: 0 0 0.38rem;
   color: var(--document-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -4976,14 +4976,14 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1.18rem, 1.8cqw, 1.8rem);
+  font-size: clamp(1.77rem, 2.7cqw, 2.7rem);
   font-weight: 400;
   letter-spacing: -0.065em;
 }
 
 .proposal-ledger-heading > span {
   color: var(--document-muted);
-  font-size: clamp(0.6rem, 0.72cqw, 0.72rem);
+  font-size: clamp(0.9rem, 1.08cqw, 1.08rem);
   white-space: nowrap;
 }
 
@@ -5025,7 +5025,7 @@ body {
 .proposal-entry-title > span {
   color: var(--document-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.64rem;
+  font-size: 0.96rem;
   letter-spacing: 0.08em;
 }
 
@@ -5033,7 +5033,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.92rem, 1.25cqw, 1.25rem);
+  font-size: clamp(1.38rem, 1.875cqw, 1.875rem);
   font-weight: 500;
   letter-spacing: -0.045em;
 }
@@ -5045,7 +5045,7 @@ body {
   color: var(--document-amber);
   background: rgba(96, 133, 139, 0.06);
   cursor: pointer;
-  font-size: clamp(0.58rem, 0.72cqw, 0.72rem);
+  font-size: clamp(0.87rem, 1.08cqw, 1.08rem);
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
@@ -5089,7 +5089,7 @@ body {
   margin-bottom: 0.48rem;
   color: var(--document-muted);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.58rem;
+  font-size: 0.87rem;
   font-style: normal;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -5107,7 +5107,7 @@ body {
   margin: 0;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.78rem, 1.05cqw, 1.05rem);
+  font-size: clamp(1.17rem, 1.575cqw, 1.575rem);
   line-height: 1.55;
   letter-spacing: -0.035em;
 }
@@ -5134,7 +5134,7 @@ body {
 .proposal-raw-log summary::before {
   content: "▸";
   color: var(--document-amber);
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   transition: transform 160ms ease;
 }
 
@@ -5145,14 +5145,14 @@ body {
 .proposal-raw-log summary > span {
   flex: 1 1 auto;
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.61rem;
+  font-size: 0.915rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .proposal-raw-log summary small {
   color: var(--document-muted);
-  font-size: 0.58rem;
+  font-size: 0.87rem;
 }
 
 .proposal-raw-lines {
@@ -5168,14 +5168,14 @@ body {
   margin: 0;
   padding: 0.32rem 0;
   color: #52666d;
-  font-size: clamp(0.62rem, 0.76cqw, 0.76rem);
+  font-size: clamp(0.93rem, 1.14cqw, 1.14rem);
   line-height: 1.65;
 }
 
 .proposal-raw-lines strong {
   color: var(--document-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.57rem;
+  font-size: 0.855rem;
   font-weight: 500;
 }
 
@@ -5214,7 +5214,7 @@ body {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1.35rem, 2.2cqw, 2.2rem);
+  font-size: clamp(2.025rem, 3.3cqw, 3.3rem);
   font-weight: 400;
   letter-spacing: -0.065em;
 }
@@ -5227,7 +5227,7 @@ body {
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
-  font-size: 0.58rem;
+  font-size: 0.87rem;
 }
 
 .proposal-dialog-close:hover,
@@ -5246,14 +5246,14 @@ body {
 .proposal-dialog-action > span {
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.58rem;
+  font-size: 0.87rem;
   letter-spacing: 0.1em;
 }
 
 .proposal-dialog-action strong {
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   font-weight: 400;
 }
 
@@ -5263,7 +5263,7 @@ body {
 .proposal-selected-evidence span {
   margin: 0;
   color: var(--plan-muted);
-  font-size: 0.62rem;
+  font-size: 0.93rem;
   line-height: 1.6;
 }
 
@@ -5284,14 +5284,14 @@ body {
 .proposal-selected-evidence p {
   margin: 0;
   color: var(--plan-ink);
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   font-weight: 600;
 }
 
 .proposal-evidence-heading > strong {
   color: var(--plan-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.66rem;
+  font-size: 0.99rem;
   font-weight: 400;
 }
 
@@ -5329,13 +5329,13 @@ body {
 
 .proposal-evidence-option strong {
   color: var(--plan-ink);
-  font-size: 0.65rem;
+  font-size: 0.975rem;
   font-weight: 600;
 }
 
 .proposal-evidence-option small {
   color: var(--plan-muted);
-  font-size: 0.58rem;
+  font-size: 0.87rem;
   line-height: 1.45;
 }
 
@@ -5359,7 +5359,7 @@ body {
 .proposal-selected-evidence p {
   color: var(--plan-mira);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.56rem;
+  font-size: 0.84rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -5380,7 +5380,7 @@ body {
   color: #18211f;
   background: var(--plan-amber);
   cursor: pointer;
-  font-size: 0.64rem;
+  font-size: 0.96rem;
 }
 
 .proposal-confirm-button:hover {
@@ -5869,14 +5869,14 @@ body {
   flex: 0 0 auto;
   color: var(--plan-accent);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.5rem, 0.62cqw, 0.62rem);
+  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
   white-space: nowrap;
 }
 
 .deadline-reminder strong {
   overflow: hidden;
   color: var(--plan-ink);
-  font-size: clamp(0.52rem, 0.66cqw, 0.66rem);
+  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -5894,7 +5894,7 @@ body {
 .planning-tab-list button {
   min-height: 2.75rem;
   padding: 0.5rem 0.4rem;
-  font-size: clamp(0.68rem, 0.82cqw, 0.82rem);
+  font-size: clamp(1.02rem, 1.23cqw, 1.23rem);
   font-weight: 600;
 }
 
@@ -5923,7 +5923,7 @@ body {
   margin: 0;
   color: var(--plan-accent);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.46rem, 0.58cqw, 0.58rem);
+  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -5932,7 +5932,7 @@ body {
   margin: 0.32rem 0 0;
   color: var(--plan-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(1.05rem, 1.65cqw, 1.65rem);
+  font-size: clamp(1.575rem, 2.475cqw, 2.475rem);
   font-weight: 400;
   letter-spacing: -0.055em;
 }
@@ -5944,7 +5944,7 @@ body {
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
-  font-size: 0.55rem;
+  font-size: 0.825rem;
 }
 
 .floating-window-header button:hover {
@@ -5990,17 +5990,17 @@ body {
 
 .proposal-raw-log-button > span {
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.61rem;
+  font-size: 0.915rem;
   letter-spacing: 0.08em;
 }
 
 .proposal-raw-log-button small {
   color: var(--document-muted);
-  font-size: 0.58rem;
+  font-size: 0.87rem;
 }
 
 .proposal-raw-log-button b {
-  font-size: 0.72rem;
+  font-size: 1.08rem;
   font-weight: 400;
 }
 
@@ -6017,14 +6017,14 @@ body {
   border-bottom: 1px solid var(--plan-line);
   padding: 0.58rem 0;
   color: var(--plan-muted);
-  font-size: clamp(0.62rem, 0.78cqw, 0.78rem);
+  font-size: clamp(0.93rem, 1.17cqw, 1.17rem);
   line-height: 1.65;
 }
 
 .raw-log-window-lines strong {
   color: var(--plan-accent);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.57rem;
+  font-size: 0.855rem;
   font-weight: 500;
 }
 
@@ -6104,14 +6104,14 @@ body {
 
 .presentation-transition-label {
   color: #dce7ea;
-  font-size: clamp(0.6rem, 1.05cqw, 0.95rem);
+  font-size: clamp(0.9rem, 1.575cqw, 1.425rem);
   letter-spacing: 0.13em;
 }
 
 .presentation-transition-location {
   color: #7fa5aa;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.78rem, 1.4cqw, 1.3rem);
+  font-size: clamp(1.17rem, 2.1cqw, 1.95rem);
   letter-spacing: 0.03em;
 }
 
@@ -6158,7 +6158,7 @@ body {
   margin: 0;
   color: var(--document-amber);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.54rem;
+  font-size: 0.81rem;
   letter-spacing: 0.09em;
 }
 
@@ -6166,7 +6166,7 @@ body {
   margin: 0.35rem 0 0.45rem;
   color: var(--document-ink);
   font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
-  font-size: clamp(0.85rem, 1.1cqw, 1.1rem);
+  font-size: clamp(1.275rem, 1.65cqw, 1.65rem);
   font-weight: 500;
 }
 
@@ -6174,7 +6174,7 @@ body {
 .field-route-record-summary {
   margin: 0;
   color: var(--document-muted);
-  font-size: clamp(0.54rem, 0.73cqw, 0.73rem);
+  font-size: clamp(0.81rem, 1.095cqw, 1.095rem);
   line-height: 1.7;
 }
 
@@ -6189,7 +6189,7 @@ body {
   margin: 0.6rem 0 0;
   padding-left: 1.1rem;
   color: var(--document-muted);
-  font-size: clamp(0.5rem, 0.68cqw, 0.68rem);
+  font-size: clamp(0.75rem, 1.02cqw, 1.02rem);
   line-height: 1.55;
 }
 
