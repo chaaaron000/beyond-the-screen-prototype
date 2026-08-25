@@ -8,6 +8,46 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (() => {
+        const assetSignature = (documentRoot) =>
+          [
+            ...documentRoot.querySelectorAll(
+              'script[src], link[rel="stylesheet"][href]',
+            ),
+          ]
+            .map(
+              (element) =>
+                element.getAttribute("src") || element.getAttribute("href"),
+            )
+            .join("|");
+
+        const checkForUpdate = () => {
+          const latestUrl = new URL("index.html", document.baseURI);
+          latestUrl.searchParams.set("version-check", Date.now().toString());
+
+          fetch(latestUrl, { cache: "no-store" })
+            .then((response) => (response.ok ? response.text() : null))
+            .then((html) => {
+              if (!html) return;
+
+              const latestDocument = new DOMParser().parseFromString(
+                html,
+                "text/html",
+              );
+              if (
+                assetSignature(document) !== assetSignature(latestDocument)
+              ) {
+                window.location.replace(latestUrl);
+              }
+            })
+            .catch(() => {});
+        };
+
+        checkForUpdate();
+        window.setInterval(checkForUpdate, 60_000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
