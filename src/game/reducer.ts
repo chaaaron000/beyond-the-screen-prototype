@@ -3,6 +3,10 @@ import {
   getAutonomousTaskIds,
   getProposalReaction,
 } from "../content/proposals";
+import {
+  getFieldRouteContent,
+  getNextTerminalEncounterPosition,
+} from "../content/field-mission/routes";
 import { TASKS } from "../content/tasks";
 import { createInitialState } from "./state";
 import type {
@@ -21,8 +25,12 @@ export function getAvailableTasks(state: GameState): TaskDefinition[] {
   const scheduledTaskIds = new Set(getScheduledTaskIds(state));
   return TASKS.filter(
     (task) =>
+      task.id !== "terminalSearch" &&
       !state.completedTaskIds.includes(task.id) &&
       !scheduledTaskIds.has(task.id) &&
+      (task.id !== "terminalLocationSearch" || state.discoveredTerminalConcept) &&
+      (task.id !== "motorcycleInspection" || !state.exploredRoutes.motorcycle) &&
+      (task.id !== "powerEntranceInspection" || !state.exploredRoutes.power) &&
       (task.requires ?? []).every((evidenceId) =>
         state.discoveredEvidence.includes(evidenceId),
       ),
@@ -57,13 +65,40 @@ export function isActorBusy(state: GameState, actor: Actor): boolean {
   return state.activeTasks[actor] !== null;
 }
 
+function completeFieldVisit(state: GameState): GameState {
+  const proposalId = state.pendingFieldVisit;
+  if (!proposalId || state.exploredRoutes[proposalId]) return state;
+
+  const route = getFieldRouteContent(proposalId);
+  const discoveredEvidence = [...state.discoveredEvidence];
+  route.reportResult.evidenceIds.forEach((evidenceId) => {
+    if (!discoveredEvidence.includes(evidenceId)) discoveredEvidence.push(evidenceId);
+  });
+
+  return {
+    ...state,
+    exploredRoutes: {
+      ...state.exploredRoutes,
+      [proposalId]: true,
+    },
+    pendingFieldVisit: null,
+    discoveredEvidence,
+    discoveredTerminalConcept: true,
+    firstTerminalDiscoverySource:
+      state.firstTerminalDiscoverySource ?? proposalId,
+    refrigerationEmergencyMitigated:
+      state.refrigerationEmergencyMitigated || proposalId === "refrigeration",
+  };
+}
+
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "ADVANCE_DIALOGUE": {
       const isLastLine = state.dialogueIndex >= state.dialogue.length - 1;
       if (isLastLine) {
+        const completedState = completeFieldVisit(state);
         return {
-          ...state,
+          ...completedState,
           view: "report",
           dialogue: [],
           dialogueIndex: 0,
@@ -205,6 +240,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case "PROPOSE_ACTION": {
+      if (state.pendingFieldVisit || state.exploredRoutes[action.proposalId]) {
+        return state;
+      }
+
       const selectedEvidenceIds = [...new Set(action.evidenceIds)].slice(0, 3);
       const reaction = getProposalReaction(state, action.proposalId, selectedEvidenceIds);
       const nextPressure = reaction.outcome === "rejected" ? state.rejectionPressure + 1 : 0;
@@ -225,15 +264,28 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         });
       }
 
+      const route = getFieldRouteContent(action.proposalId);
+      const dialogue =
+        reaction.outcome === "accepted"
+          ? [
+              ...reaction.dialogue,
+              ...route.fieldDialogue[
+                getNextTerminalEncounterPosition(state)
+              ],
+            ]
+          : reaction.dialogue;
+
       return {
         ...state,
         view: "vn",
         dialogue: shouldTakeOver
-          ? [...reaction.dialogue, ...AUTONOMOUS_TAKEOVER_DIALOGUE]
-          : reaction.dialogue,
+          ? [...dialogue, ...AUTONOMOUS_TAKEOVER_DIALOGUE]
+          : dialogue,
         dialogueIndex: 0,
         lastOpinion: action.proposalId,
         queuedTasks,
+        pendingFieldVisit:
+          reaction.outcome === "accepted" ? action.proposalId : null,
         rejectionPressure: shouldTakeOver ? 0 : nextPressure,
       };
     }

@@ -13,8 +13,12 @@ export type ProposalOutcome = "accepted" | "considering" | "rejected";
 
 export type EvidenceId =
   | "refrigerationLimit"
+  | "refrigerationWarmingConfirmed"
+  | "refrigerationEmergencyMitigation"
+  | "refrigerationControlDependency"
   | "powerTerminalRequirement"
   | "motorcycleCondition"
+  | "motorcycleLightingDependency"
   | "powerEntranceStatus"
   | "terminalLocation"
   | "terminalConfirmed";
@@ -58,6 +62,8 @@ export interface ActiveTask {
   remainingMinutes: number;
 }
 
+export type ExploredRouteRecord = Record<ProposalId, boolean>;
+
 export interface GameState {
   view: ViewMode;
   clockMinutes: number;
@@ -70,6 +76,11 @@ export interface GameState {
   dialogueIndex: number;
   lastOpinion: Opinion | null;
   rejectionPressure: number;
+  exploredRoutes: ExploredRouteRecord;
+  pendingFieldVisit: ProposalId | null;
+  discoveredTerminalConcept: boolean;
+  firstTerminalDiscoverySource: ProposalId | null;
+  refrigerationEmergencyMitigated: boolean;
 }
 
 export type GameAction =

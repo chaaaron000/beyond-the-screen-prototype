@@ -20,6 +20,27 @@ export const ATTACHMENTS: Record<EvidenceId, AttachmentDefinition> = {
     kind: "trend",
     caption: "비상 전원 출력이 내려가는 추세와 분석된 보존 한계를 겹쳐 본다.",
   },
+  refrigerationWarmingConfirmed: {
+    evidenceId: "refrigerationWarmingConfirmed",
+    label: "현장 온도 기록 보기",
+    title: "냉장 설비 / 실제 온도 상승",
+    kind: "trend",
+    caption: "현장에서 확인한 냉장 설비의 실제 온도 상승을 기록한 메모다.",
+  },
+  refrigerationEmergencyMitigation: {
+    evidenceId: "refrigerationEmergencyMitigation",
+    label: "식품 이동 기록 보기",
+    title: "생활 구역 / 냉장 식품 응급 이동",
+    kind: "photo",
+    caption: "상하기 쉬운 식품을 작동하는 주거용 냉장고로 옮긴 응급 조치 기록이다.",
+  },
+  refrigerationControlDependency: {
+    evidenceId: "refrigerationControlDependency",
+    label: "냉장 제어 기록 보기",
+    title: "지하 1층 · 식당 구역 / 냉장 제어 단말",
+    kind: "log",
+    caption: "냉장 설비 온도 제어가 현장 인증 단말에 의존한다는 현장 기록이다.",
+  },
   powerTerminalRequirement: {
     evidenceId: "powerTerminalRequirement",
     label: "접근 로그 열기",
@@ -33,6 +54,13 @@ export const ATTACHMENTS: Record<EvidenceId, AttachmentDefinition> = {
     title: "보관 구역 / 바이크 기록",
     kind: "photo",
     caption: "서윤이 직접 확인한 외관과 이동 가능성 메모를 위한 자리다.",
+  },
+  motorcycleLightingDependency: {
+    evidenceId: "motorcycleLightingDependency",
+    label: "조명 의존성 기록 보기",
+    title: "보관 구역 / 조명 단말 의존성",
+    kind: "log",
+    caption: "보관 구역 조명이 현장 유지보수·인증 단말에 의존한다는 현장 메모다.",
   },
   powerEntranceStatus: {
     evidenceId: "powerEntranceStatus",

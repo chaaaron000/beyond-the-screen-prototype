@@ -14,28 +14,33 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 4. 조사 예정에 넣는 순간에는 작업이나 시간이 시작되지 않습니다. 진행 버튼을 눌렀을 때 각자의 첫 작업이 시작되고, 다음 완료 시점까지 시간이 흐릅니다.
 5. 작업이 완료되면 새로운 근거가 보고서에 추가되고, 확보한 정보에 따라 시작 가능한 조사와 대사 분기가 달라집니다.
 6. 판단을 선택하면 해당 의견에 대한 새로운 VN 대화가 시작됩니다.
+7. 승인된 현장 방문은 FIELD LINK와 FIELD LOG UPDATED 기록을 거치며, 돌아온 장소·현장 메모·사실은 보고서에 누적됩니다. 완료한 방문은 `현장 확인 완료`로 남고 다시 제안할 수 없습니다.
 
 ## Screenshots
 
-![VN scene](docs/screenshots/vn-scene-proposal-flow.png)
+![VN field scene](docs/screenshots/vn-field-scene.png)
 
-![Report document and planning pane](docs/screenshots/report-proposals-top.png)
+![FIELD LINK transition](docs/screenshots/transition-field-link.png)
+
+![FIELD LOG transition](docs/screenshots/transition-field-log.png)
 
 ![Proposal evidence dialog](docs/screenshots/proposal-evidence-dialog.png)
 
-![Report document bottom](docs/screenshots/report-document-bottom.png)
+![Report document top](docs/screenshots/report-document-top-current.png)
 
-![Planning pane schedule top](docs/screenshots/planning-pane-top.png)
+![Report document results section](docs/screenshots/report-document-results.png)
 
-![Planning pane schedule bottom](docs/screenshots/planning-pane-schedule-bottom.png)
+![Report document field log section](docs/screenshots/report-document-field-log-current.png)
 
-![Planning pane collected information top](docs/screenshots/planning-pane-results.png)
+![Report document bottom](docs/screenshots/report-document-bottom-current.png)
 
-![Planning pane collected information bottom](docs/screenshots/planning-pane-collected-bottom.png)
+![Planning schedule top](docs/screenshots/planning-schedule-top.png)
 
-![Independent conversation log windows](docs/screenshots/floating-raw-log-windows.png)
+![Planning schedule lower queue and time area](docs/screenshots/planning-schedule-bottom.png)
 
-![Draggable investigation result and graph windows](docs/screenshots/floating-investigation-windows.png)
+![Collected information](docs/screenshots/planning-collected-final.png)
+
+![Attachment, result, and raw-log windows](docs/screenshots/floating-attachment-result-raw-log.png)
 
 ## 실행
 

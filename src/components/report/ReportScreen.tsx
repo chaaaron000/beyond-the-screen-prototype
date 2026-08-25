@@ -9,6 +9,7 @@ import {
 } from "react";
 import { ATTACHMENTS, type AttachmentDefinition } from "../../content/reports/attachments";
 import { EVIDENCE, KNOWN_FACTS, TASK_RESULT_LABELS } from "../../content/reports/facts";
+import { getFieldRouteContent } from "../../content/field-mission/routes";
 import { getProposal, PROPOSALS, type ProposalDefinition } from "../../content/proposals";
 import {
   formatClock,
@@ -35,6 +36,10 @@ import type {
 interface ReportScreenProps {
   state: GameState;
   dispatch: Dispatch<GameAction>;
+  onProposeAction?: (proposalId: ProposalId, evidenceIds: EvidenceId[]) => void;
+  inputLocked?: boolean;
+  highlightedRoute?: ProposalId | null;
+  activeProposal?: ProposalId | null;
 }
 
 interface TimelineBlock {
@@ -984,12 +989,16 @@ function rawSpeakerLabel(speaker: DialogueLine["speaker"]): string {
 }
 
 function ProposalLedger({
+  state,
   onStartProposal,
   onOpenRawLog,
+  activeProposal,
   disabled = false,
 }: {
+  state: GameState;
   onStartProposal: (proposalId: ProposalId) => void;
   onOpenRawLog: (proposalId: ProposalId) => void;
+  activeProposal?: ProposalId | null;
   disabled?: boolean;
 }) {
   return (
@@ -1003,7 +1012,7 @@ function ProposalLedger({
       </header>
       <div className="proposal-list">
         {PROPOSALS.map((proposal) => (
-          <article className="proposal-entry" key={proposal.id}>
+          <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
             <header className="proposal-entry-header">
               <div className="proposal-entry-title">
                 <span>{proposal.number}</span>
@@ -1012,10 +1021,10 @@ function ProposalLedger({
               <button
                 type="button"
                 className="proposal-start-button"
-                disabled={disabled}
+                disabled={disabled || state.exploredRoutes[proposal.id]}
                 onClick={() => onStartProposal(proposal.id)}
               >
-                제안하기 <span aria-hidden="true">↗</span>
+                {state.exploredRoutes[proposal.id] ? "현장 확인 완료" : <>제안하기 <span aria-hidden="true">↗</span></>}
               </button>
             </header>
 
@@ -1050,14 +1059,20 @@ function FieldDocument({
   onOpenAttachment,
   onStartProposal,
   onOpenRawLog,
+  highlightedRoute,
+  activeProposal,
   disabled = false,
 }: {
   state: GameState;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onStartProposal: (proposalId: ProposalId) => void;
   onOpenRawLog: (proposalId: ProposalId) => void;
+  highlightedRoute?: ProposalId | null;
+  activeProposal?: ProposalId | null;
   disabled?: boolean;
 }) {
+  const completedRoutes = PROPOSALS.filter((proposal) => state.exploredRoutes[proposal.id]);
+
   return (
     <article className="field-document">
       <header className="field-document-header">
@@ -1076,7 +1091,13 @@ function FieldDocument({
         </div>
       </section>
 
-      <ProposalLedger onStartProposal={onStartProposal} onOpenRawLog={onOpenRawLog} disabled={disabled} />
+      <ProposalLedger
+        state={state}
+        onStartProposal={onStartProposal}
+        onOpenRawLog={onOpenRawLog}
+        activeProposal={activeProposal}
+        disabled={disabled}
+      />
 
       <section className="field-document-section">
         <SectionHeading eyebrow="조사 결과" title="도착한 기록" />
@@ -1095,6 +1116,35 @@ function FieldDocument({
                   <button type="button" className="attachment-link" onClick={() => onOpenAttachment(attachment)}>
                     <span aria-hidden="true">↗</span>{attachment.label}
                   </button>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      <section className="field-document-section field-document-section--field-log" aria-label="현장 확인 기록">
+        <SectionHeading eyebrow="현장 기록" title="확인한 장소" />
+        {completedRoutes.length === 0 ? (
+          <p className="document-empty">아직 현장에서 돌아온 기록이 없다.</p>
+        ) : (
+          <div className="field-route-records" aria-live="polite">
+            {completedRoutes.map((proposal) => {
+              const route = getFieldRouteContent(proposal.id);
+              const isHighlighted = highlightedRoute === proposal.id;
+              return (
+                <article
+                  className={`field-route-record${isHighlighted ? " field-route-record--highlighted" : ""}`}
+                  data-route-id={proposal.id}
+                  key={proposal.id}
+                >
+                  <p className="field-route-record-kicker">{route.fieldLogUpdatedLabel}</p>
+                  <h3>{route.location}</h3>
+                  <p className="field-route-record-note">{route.reportResult.fieldNote}</p>
+                  <p className="field-route-record-summary">{route.reportResult.summary}</p>
+                  <ul>
+                    {route.reportResult.facts.map((fact) => <li key={fact}>{fact}</li>)}
+                  </ul>
                 </article>
               );
             })}
@@ -1451,7 +1501,14 @@ function PlanningPanel({
   );
 }
 
-export function ReportScreen({ state, dispatch }: ReportScreenProps) {
+export function ReportScreen({
+  state,
+  dispatch,
+  onProposeAction,
+  inputLocked = false,
+  highlightedRoute = null,
+  activeProposal = null,
+}: ReportScreenProps) {
   const [openWindows, setOpenWindows] = useState<FloatingWindowState[]>([]);
   const [proposalDialog, setProposalDialog] = useState<{ id: ProposalId; evidenceIds: EvidenceId[] } | null>(null);
   const [activePlanningTab, setActivePlanningTab] = useState<PlanningTab>("schedule");
@@ -1498,6 +1555,7 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
 
   const nextStep = getNextCompletionMinutes(state);
   const isAdvancing = transition !== null;
+  const isInputLocked = inputLocked || isAdvancing;
   const displayClockMinutes = isAdvancing ? previewClock : state.clockMinutes;
   const transitionProgress = transition && transition.to > transition.from
     ? Math.max(0, Math.min(1, (previewClock - transition.from) / (transition.to - transition.from)))
@@ -1572,10 +1630,12 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
   };
 
   const startProposal = (proposalId: ProposalId) => {
+    if (isInputLocked || state.exploredRoutes[proposalId]) return;
     setProposalDialog({ id: proposalId, evidenceIds: [] });
   };
 
   const toggleProposalEvidence = (evidenceId: EvidenceId) => {
+    if (isInputLocked) return;
     setProposalDialog((current) => {
       if (!current) return current;
       const evidenceIds = current.evidenceIds.includes(evidenceId)
@@ -1597,7 +1657,7 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
         <div className="report-topbar-right">
           <span>현재 시각</span>
           <time>{formatClock(displayClockMinutes)}</time>
-          <button type="button" disabled={isAdvancing} onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
+          <button type="button" disabled={isInputLocked} onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
         </div>
       </header>
       <div
@@ -1611,7 +1671,9 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
               onOpenAttachment={openAttachmentViewer}
               onStartProposal={startProposal}
               onOpenRawLog={(proposalId) => openWindow({ key: `raw-log:${proposalId}`, type: "raw-log", contentId: proposalId })}
-              disabled={isAdvancing}
+              highlightedRoute={highlightedRoute}
+              activeProposal={activeProposal}
+              disabled={isInputLocked}
             />
           </div>
         </section>
@@ -1635,7 +1697,7 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
           onOpenAttachment={openAttachmentViewer}
           displayClockMinutes={displayClockMinutes}
           transitionProgress={transitionProgress}
-          isAdvancing={isAdvancing}
+          isAdvancing={isInputLocked}
           activePlanningTab={activePlanningTab}
           onPlanningTabChange={setActivePlanningTab}
           onOpenResult={openResultViewer}
@@ -1676,11 +1738,16 @@ export function ReportScreen({ state, dispatch }: ReportScreenProps) {
           onToggleEvidence={toggleProposalEvidence}
           onCancel={() => setProposalDialog(null)}
           onConfirm={() => {
-            dispatch({
-              type: "PROPOSE_ACTION",
-              proposalId: proposalDialog.id,
-              evidenceIds: proposalDialog.evidenceIds,
-            });
+            if (isInputLocked) return;
+            if (onProposeAction) {
+              onProposeAction(proposalDialog.id, proposalDialog.evidenceIds);
+            } else {
+              dispatch({
+                type: "PROPOSE_ACTION",
+                proposalId: proposalDialog.id,
+                evidenceIds: proposalDialog.evidenceIds,
+              });
+            }
             setProposalDialog(null);
           }}
         />

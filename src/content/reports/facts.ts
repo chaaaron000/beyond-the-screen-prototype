@@ -19,6 +19,21 @@ export const EVIDENCE: Record<EvidenceId, {
     detail:
       "비상 전원 출력이 계속 떨어지고 있다. 현재 추세라면 13:20경 식품 보존 한계에 도달한다.",
   },
+  refrigerationWarmingConfirmed: {
+    title: "냉장 설비 실제 온도 상승",
+    source: "현장 확인 / 지하 1층 · 식당 구역 / 냉장 설비실",
+    detail: "현장 센서와 손상된 보관 상태를 대조해 냉장 설비의 실제 온도 상승을 확인했다.",
+  },
+  refrigerationEmergencyMitigation: {
+    title: "냉장 식품 응급 이동",
+    source: "현장 확인 / 생활 구역 주거용 냉장고",
+    detail: "상하기 쉬운 식품을 작동하는 주거용 냉장고로 옮겼다. 냉장 설비 자체는 아직 복구되지 않았다.",
+  },
+  refrigerationControlDependency: {
+    title: "냉장 설비 제어 단말 의존성",
+    source: "현장 확인 / 지하 1층 · 식당 구역",
+    detail: "냉장 설비의 온도 제어는 현장 인증 단말을 통해서만 가능하며, 응급 식품 이동만으로는 설비를 정상화할 수 없다.",
+  },
   powerTerminalRequirement: {
     title: "주 발전 계통 접근 조건",
     source: "미라 / 발전소 상태·접근 조건 분석",
@@ -30,6 +45,11 @@ export const EVIDENCE: Record<EvidenceId, {
     source: "서윤 / 바이크 현장 확인",
     detail:
       "외관은 예상보다 멀쩡하다. 장기 방치 흔적은 있지만 이동 수단으로 살려볼 여지가 있다.",
+  },
+  motorcycleLightingDependency: {
+    title: "보관 구역 조명 단말 의존성",
+    source: "현장 확인 / 보관 구역",
+    detail: "바이크 현장에서 보관 구역 조명은 현장 유지보수·인증 단말 없이는 켤 수 없다는 점을 확인했다.",
   },
   powerEntranceStatus: {
     title: "발전 구역 입구 현장 기록",

@@ -4,6 +4,8 @@ import type { GameAction, GameState, Speaker } from "../../types/game";
 interface VNSceneProps {
   state: GameState;
   dispatch: Dispatch<GameAction>;
+  onAdvanceDialogue?: () => void;
+  disabled?: boolean;
 }
 
 function speakerLabel(speaker: Speaker): string {
@@ -19,7 +21,7 @@ function speakerLabel(speaker: Speaker): string {
   }
 }
 
-export function VNScene({ state, dispatch }: VNSceneProps) {
+export function VNScene({ state, dispatch, onAdvanceDialogue, disabled = false }: VNSceneProps) {
   const line = state.dialogue[state.dialogueIndex];
   const isLastLine = state.dialogueIndex >= state.dialogue.length - 1;
   const activeSpeaker = line?.speaker ?? "narrator";
@@ -35,6 +37,7 @@ export function VNScene({ state, dispatch }: VNSceneProps) {
         <button
           className="quiet-button"
           type="button"
+          disabled={disabled}
           onClick={() => dispatch({ type: "RESTART" })}
         >
           시나리오 다시 시작
@@ -78,7 +81,8 @@ export function VNScene({ state, dispatch }: VNSceneProps) {
           <button
             className="continue-button"
             type="button"
-            onClick={() => dispatch({ type: "ADVANCE_DIALOGUE" })}
+            disabled={disabled}
+            onClick={onAdvanceDialogue ?? (() => dispatch({ type: "ADVANCE_DIALOGUE" }))}
           >
             {isLastLine ? "보고서 열기" : "계속"}
             <span aria-hidden="true">→</span>

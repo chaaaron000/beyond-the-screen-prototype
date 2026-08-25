@@ -51,7 +51,6 @@ export const TASKS: TaskDefinition[] = [
     title: "현장 단말기 위치 조사",
     durationMinutes: 20,
     description: "미라가 오래된 유지보수 기록에서 단말기 후보 위치를 추적한다.",
-    requires: ["powerTerminalRequirement"],
     result: {
       summary: "오래된 기록에서 단말기 후보 구역 하나를 좁혔다.",
       evidenceId: "terminalLocation",

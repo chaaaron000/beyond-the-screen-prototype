@@ -6051,3 +6051,180 @@ body {
     transition: none;
   }
 }
+
+/* Presentation handoffs stay quiet and record-like: one separator, no spectacle. */
+.game-screen.is-presentation-locked > :not(.presentation-transition) {
+  transition: opacity 260ms ease, filter 260ms ease, transform 260ms ease;
+}
+
+.game-screen.presentation-report-to-vn-emphasis > .report-shell {
+  opacity: 0.62;
+  filter: blur(2px);
+  transform: scale(0.985);
+}
+
+.presentation-transition {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.45rem;
+  color: #dce7ea;
+  background: rgba(11, 18, 23, 0.92);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  pointer-events: auto;
+  text-align: center;
+  transition: opacity 240ms ease, background-color 240ms ease;
+}
+
+.presentation-transition--emphasis,
+.presentation-transition--hold {
+  background: rgba(11, 18, 23, 0.34);
+}
+
+.presentation-transition--emphasis .presentation-transition-label,
+.presentation-transition--emphasis .presentation-transition-location,
+.presentation-transition--hold .presentation-transition-label,
+.presentation-transition--hold .presentation-transition-location {
+  opacity: 0;
+}
+
+.presentation-transition--vn-reveal,
+.presentation-transition--report-reveal {
+  background: rgba(11, 18, 23, 0.08);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.presentation-transition-label,
+.presentation-transition-location {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  transition: opacity 160ms ease;
+}
+
+.presentation-transition-label {
+  color: #dce7ea;
+  font-size: clamp(0.6rem, 1.05cqw, 0.95rem);
+  letter-spacing: 0.13em;
+}
+
+.presentation-transition-location {
+  color: #7fa5aa;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.78rem, 1.4cqw, 1.3rem);
+  letter-spacing: 0.03em;
+}
+
+.presentation-transition-record {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  width: 60%;
+  height: 1px;
+  background: rgba(127, 165, 170, 0.68);
+  box-shadow: 0 0 1.4rem rgba(127, 165, 170, 0.2);
+  transform: translateY(2.15rem);
+}
+
+.presentation-transition--accepted .presentation-transition-record,
+.presentation-transition--vn-to-report .presentation-transition-record {
+  animation: presentation-record-pulse 1.2s ease-in-out infinite;
+}
+
+.field-document-section--field-log {
+  margin-top: clamp(1.5rem, 3cqw, 3rem);
+}
+
+.field-route-records {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.field-route-record {
+  border-top: 1px solid var(--document-line);
+  border-bottom: 1px solid var(--document-line);
+  padding: 0.85rem 0;
+  color: var(--document-ink);
+  background: rgba(96, 133, 139, 0.035);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.field-route-record--highlighted {
+  background: rgba(96, 133, 139, 0.13);
+  box-shadow: inset 2px 0 0 var(--document-amber);
+}
+
+.field-route-record-kicker {
+  margin: 0;
+  color: var(--document-amber);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.09em;
+}
+
+.field-route-record h3 {
+  margin: 0.35rem 0 0.45rem;
+  color: var(--document-ink);
+  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-size: clamp(0.85rem, 1.1cqw, 1.1rem);
+  font-weight: 500;
+}
+
+.field-route-record-note,
+.field-route-record-summary {
+  margin: 0;
+  color: var(--document-muted);
+  font-size: clamp(0.54rem, 0.73cqw, 0.73rem);
+  line-height: 1.7;
+}
+
+.field-route-record-summary {
+  margin-top: 0.42rem;
+  color: var(--document-ink);
+}
+
+.field-route-record ul {
+  display: grid;
+  gap: 0.22rem;
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--document-muted);
+  font-size: clamp(0.5rem, 0.68cqw, 0.68rem);
+  line-height: 1.55;
+}
+
+@keyframes presentation-record-pulse {
+  0%, 100% { opacity: 0.42; transform: translateY(2.15rem) scaleX(0.94); }
+  50% { opacity: 0.9; transform: translateY(2.15rem) scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-screen.is-presentation-locked > :not(.presentation-transition),
+  .presentation-transition,
+  .presentation-transition-label,
+  .presentation-transition-location,
+  .field-route-record {
+    transition: none;
+  }
+
+  .game-screen.presentation-report-to-vn-emphasis > .report-shell {
+    opacity: 0.72;
+    filter: none;
+    transform: none;
+  }
+
+  .presentation-transition--accepted .presentation-transition-record,
+  .presentation-transition--vn-to-report .presentation-transition-record {
+    animation: none;
+  }
+}
+
+.proposal-entry--active {
+  border-color: var(--document-amber);
+  background: rgba(96, 133, 139, 0.12);
+  box-shadow: inset 2px 0 0 var(--document-amber);
+}
