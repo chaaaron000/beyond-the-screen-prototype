@@ -256,13 +256,10 @@ function getPlannedScheduleEnd(state: GameState): number {
 interface DeadlineSummaryItem {
   id: string;
   title: string;
-  context: string;
   deadlineMinutes: number | null;
   remainingMinutes: number | null;
-  reason: string;
   statusLabel: string;
   isWarning: boolean;
-  planRunsPastDeadline: boolean;
 }
 
 function getDeadlineSummaryItems(
@@ -280,21 +277,14 @@ function getDeadlineSummaryItems(
     {
       id: "refrigeration",
       title: "냉장 시설",
-      context: "비상 전원 운전 중",
       deadlineMinutes: knowsDeadline ? REFRIGERATION_DEADLINE_MINUTES : null,
       remainingMinutes: knowsDeadline ? remainingMinutes : null,
-      reason: knowsDeadline
-        ? "비상 전원 출력이 계속 떨어져 온도가 상승하고 있다. 한계 이후에는 식품 보존을 보장하기 어렵다."
-        : "냉장 설비의 온도가 상승하고 있다. 정확한 보존 가능 시간은 아직 분석되지 않았다.",
       statusLabel: !knowsDeadline
         ? "분석 필요"
         : remainingMinutes <= 0
           ? "한계 도달"
-          : isWarning
-            ? "주의"
-            : "알려짐",
+          : formatRemainingPreservation(remainingMinutes),
       isWarning,
-      planRunsPastDeadline,
     },
   ];
 }
@@ -326,31 +316,16 @@ function DeadlineSummary({
             className={`deadline-summary-item${item.deadlineMinutes === null ? " deadline-summary-item--unknown" : ""}${item.isWarning ? " deadline-summary-item--warning" : ""}`}
             key={item.id}
           >
-            <div className="deadline-summary-heading">
-              <h3>{item.title} <span>· {item.context}</span></h3>
-              <span className="deadline-summary-status">{item.statusLabel}</span>
+            <span className="deadline-summary-marker" aria-hidden="true" />
+            <div className="deadline-summary-copy">
+              <h3>{item.title}</h3>
+              <p>
+                {item.deadlineMinutes === null
+                  ? "보존 한계 미확인"
+                  : `보존 한계 ${formatClock(item.deadlineMinutes)}`}
+              </p>
             </div>
-
-            {item.deadlineMinutes !== null && item.remainingMinutes !== null ? (
-              <div className="deadline-summary-metrics">
-                <div>
-                  <span>예상 보존 한계</span>
-                  <strong>{formatClock(item.deadlineMinutes)}</strong>
-                </div>
-                <div>
-                  <span>남은 시간</span>
-                  <strong>{formatRemainingPreservation(item.remainingMinutes)}</strong>
-                </div>
-              </div>
-            ) : (
-              <p className="deadline-summary-unknown-value">보존 가능 시간 미확인</p>
-            )}
-
-            <p className="deadline-summary-reason">{item.reason}</p>
-
-            {item.planRunsPastDeadline && (
-              <p className="deadline-summary-plan-warning">현재 조사 일정이 알려진 보존 한계를 넘습니다. 순서를 먼저 조정하세요.</p>
-            )}
+            <strong className="deadline-summary-status">{item.statusLabel}</strong>
           </article>
         ))}
       </div>
@@ -1334,10 +1309,6 @@ function PlanningTabs({
   dispatch,
   onOpenAttachment,
   onOpenResult,
-  onAdvance,
-  nextStep,
-  nextClock,
-  displayClockMinutes,
   transitionProgress,
   disabled = false,
 }: {
@@ -1347,10 +1318,6 @@ function PlanningTabs({
   dispatch: Dispatch<GameAction>;
   onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onOpenResult: (taskId: TaskId) => void;
-  onAdvance: () => void;
-  nextStep: number | null;
-  nextClock: number | null;
-  displayClockMinutes: number;
   transitionProgress: number;
   disabled?: boolean;
 }) {
@@ -1358,7 +1325,7 @@ function PlanningTabs({
     <section className={`planning-tabs${disabled ? " planning-tabs--disabled" : ""}`} aria-label="조사 계획 상세">
       <nav className="planning-tab-list" aria-label="조사 계획 탭" role="tablist">
         {([
-          ["schedule", "조사 일정"],
+          ["schedule", "조사 일정 편집"],
           ["collected", "추가 수집한 정보"],
         ] as [PlanningTab, string][]).map(([tab, label]) => (
           <button
@@ -1392,21 +1359,6 @@ function PlanningTabs({
             disabled={disabled}
             transitionProgress={transitionProgress}
           />
-
-          <button
-            className="advance-time-control"
-            type="button"
-            disabled={nextStep === null || disabled}
-            onClick={onAdvance}
-          >
-            <span>
-              <b>{disabled ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}</b>
-              {nextClock !== null && !disabled && <small>다음 완료: {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
-              {disabled && <small>작업 완료 시점으로 이동하고 있습니다</small>}
-            </span>
-            {nextClock !== null && <strong>{formatClock(disabled ? displayClockMinutes : nextClock)}</strong>}
-          </button>
-          <p className="advance-time-note">작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.</p>
         </div>
       ) : (
         <div
@@ -1510,6 +1462,23 @@ function PlanningPanel({
         <DeadlineSummary state={state} displayClockMinutes={displayClockMinutes} />
 
         <Timeline state={state} displayClockMinutes={displayClockMinutes} transitionProgress={transitionProgress} />
+
+        <section className="advance-time-block" aria-label="시간 진행">
+          <button
+            className="advance-time-control"
+            type="button"
+            disabled={nextStep === null || isAdvancing}
+            onClick={onAdvance}
+          >
+            <span>
+              <b>{isAdvancing ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}</b>
+              {nextClock !== null && !isAdvancing && <small>다음 완료: {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
+              {isAdvancing && <small>작업 완료 시점으로 이동하고 있습니다</small>}
+            </span>
+            <strong>{nextClock === null ? "—" : formatClock(isAdvancing ? displayClockMinutes : nextClock)}</strong>
+          </button>
+          <p className="advance-time-note">작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.</p>
+        </section>
         <div className="planning-overview-end" ref={overviewEndRef} aria-hidden="true" />
 
         <PlanningTabs
@@ -1519,10 +1488,6 @@ function PlanningPanel({
           dispatch={dispatch}
           onOpenAttachment={onOpenAttachment}
           onOpenResult={onOpenResult}
-          onAdvance={onAdvance}
-          nextStep={nextStep}
-          nextClock={nextClock}
-          displayClockMinutes={displayClockMinutes}
           transitionProgress={transitionProgress}
           disabled={isAdvancing}
         />

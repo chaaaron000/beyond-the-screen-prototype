@@ -3957,23 +3957,81 @@ body {
 
 .deadline-summary {
   display: grid;
-  gap: 0.75rem;
   margin-top: clamp(1rem, 1.8cqw, 1.8rem);
-  border: 1px solid rgba(127, 165, 170, 0.3);
-  border-left: 3px solid var(--plan-amber);
-  padding: clamp(0.82rem, 1.25cqw, 1.25rem);
-  background: linear-gradient(120deg, rgba(127, 165, 170, 0.1), rgba(127, 165, 170, 0.025));
+  border-bottom: 1px solid var(--plan-line);
 }
 
 .deadline-summary-list {
   display: grid;
-  gap: 0.75rem;
+  border-top: 1px solid var(--plan-line);
 }
 
 .deadline-summary-item {
+  position: relative;
   display: grid;
   min-width: 0;
-  gap: 0.65rem;
+  min-height: 4.25rem;
+  grid-template-columns: 0.4rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  border-left: 3px solid var(--plan-accent);
+  padding: 0.65rem 1rem 0.65rem 1.05rem;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.deadline-summary-item + .deadline-summary-item {
+  border-top: 1px solid var(--plan-line);
+}
+
+.deadline-summary-item--unknown {
+  border-left-color: var(--plan-faint);
+}
+
+.deadline-summary-item--warning {
+  border-left-color: var(--plan-alert);
+  background: rgba(179, 107, 95, 0.07);
+}
+
+.deadline-summary-marker {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--plan-accent);
+}
+
+.deadline-summary-item--unknown .deadline-summary-marker {
+  background: var(--plan-faint);
+}
+
+.deadline-summary-item--warning .deadline-summary-marker {
+  background: var(--plan-alert);
+}
+
+.deadline-summary-copy {
+  min-width: 0;
+}
+
+.deadline-summary-copy h3 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--plan-ink);
+  font-size: clamp(0.84rem, 1.05cqw, 1.05rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deadline-summary-copy p {
+  overflow: hidden;
+  margin: 0.38rem 0 0;
+  color: var(--plan-muted);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
+  font-weight: 500;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .deadline-summary-count {
@@ -3983,133 +4041,44 @@ body {
   letter-spacing: 0.04em;
 }
 
-.deadline-summary--unknown {
-  border-color: var(--plan-line);
-  border-left-color: var(--plan-muted);
-  background: rgba(255, 255, 255, 0.018);
-}
-
-.deadline-summary--warning {
-  border-color: rgba(179, 107, 95, 0.62);
-  border-left-color: var(--plan-alert);
-  background: rgba(179, 107, 95, 0.08);
-}
-
 .deadline-summary-heading {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
+  padding-bottom: 0.65rem;
 }
 
 .deadline-summary-label {
   margin: 0;
-  color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.deadline-summary--unknown .deadline-summary-label {
-  color: var(--plan-muted);
-}
-
-.deadline-summary--warning .deadline-summary-label,
-.deadline-summary--warning .deadline-summary-status {
-  color: var(--plan-alert);
-}
-
-.deadline-summary-heading h3 {
-  margin: 0.35rem 0 0;
   color: var(--plan-ink);
-  font-size: clamp(1.35rem, 1.77cqw, 1.77rem);
+  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
   font-weight: 600;
-  letter-spacing: -0.025em;
-}
-
-.deadline-summary-heading h3 span {
-  color: var(--plan-muted);
-  font-size: 0.82em;
-  font-weight: 400;
 }
 
 .deadline-summary-status {
   flex: 0 0 auto;
-  border: 1px solid currentColor;
-  padding: 0.2rem 0.35rem;
-  color: var(--plan-amber);
+  color: var(--plan-accent);
   font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.deadline-summary--unknown .deadline-summary-status {
-  color: var(--plan-muted);
-}
-
-.deadline-summary-metrics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.65rem;
-  border-top: 1px solid var(--plan-line);
-  border-bottom: 1px solid var(--plan-line);
-  padding: 0.65rem 0;
-}
-
-.deadline-summary-metrics > div {
-  display: grid;
-  gap: 0.2rem;
-}
-
-.deadline-summary-metrics > div + div {
-  border-left: 1px solid var(--plan-line);
-  padding-left: 0.65rem;
-}
-
-.deadline-summary-metrics span {
-  color: var(--plan-muted);
-  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
-}
-
-.deadline-summary-metrics strong {
-  color: var(--plan-ink);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(1.26rem, 1.62cqw, 1.62rem);
   font-weight: 500;
+  white-space: nowrap;
 }
 
-.deadline-summary-metrics > div:last-child strong {
-  color: var(--plan-amber);
+.deadline-summary-item--unknown .deadline-summary-status {
+  color: var(--plan-muted);
 }
 
-.deadline-summary--warning .deadline-summary-metrics > div:last-child strong {
+.deadline-summary-item--warning .deadline-summary-status {
   color: var(--plan-alert);
 }
 
-.deadline-summary-unknown-value {
-  margin: 0;
-  border-top: 1px solid var(--plan-line);
-  border-bottom: 1px solid var(--plan-line);
-  padding: 0.65rem 0;
-  color: var(--plan-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
+.advance-time-block {
+  margin-top: clamp(1.1rem, 1.8cqw, 1.8rem);
 }
 
-.deadline-summary-reason,
-.deadline-summary-plan-warning {
-  margin: 0;
-  color: var(--plan-muted);
-  font-size: clamp(0.9rem, 1.125cqw, 1.125rem);
-  line-height: 1.55;
-}
-
-.deadline-summary-plan-warning {
-  border-top: 1px solid rgba(179, 107, 95, 0.35);
-  padding-top: 0.62rem;
-  color: #d19a8e;
+.advance-time-block .advance-time-control {
+  margin-top: 0;
 }
 
 .schedule-status-list {

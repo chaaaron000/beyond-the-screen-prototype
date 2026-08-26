@@ -35,11 +35,11 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report document bottom](docs/screenshots/report-document-bottom-current.png)
 
-![Planning schedule top](docs/screenshots/planning-schedule-top.png)
+![Planning schedule with compact deadline tracker](docs/screenshots/planning-schedule-top.png)
 
-![Planning schedule lower queue and time area](docs/screenshots/planning-schedule-bottom.png)
+![Timeline and advance time control](docs/screenshots/planning-schedule-bottom.png)
 
-![Collected information](docs/screenshots/planning-collected-final.png)
+![Collected information tab with advance control](docs/screenshots/planning-collected-final.png)
 
 ![Attachment, result, and raw-log windows](docs/screenshots/floating-attachment-result-raw-log.png)
 
