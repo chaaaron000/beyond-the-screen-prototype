@@ -1,0 +1,477 @@
+/*
+ * Theme layer: color palettes × light/dark mode.
+ *
+ * App state sets <html data-theme="dark|light" data-palette="material|onedark|github|nord|vscode|gruvbox">.
+ * Every UI color in global.css flows through the --p-* tokens below, which are remapped onto the
+ * legacy document/plan variable groups so the existing report and planning CSS themes itself.
+ *
+ * VN scene imagery stays cinematic (night) in both modes; its chrome was brightened from the tokens.
+ * Presentation covers also stay night; they are the same cinematic language as the VN scene.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Palette tokens                                                      */
+/* Nord dark is the default palette (closest to the original look).    */
+/* ------------------------------------------------------------------ */
+:root,
+html[data-theme="dark"][data-palette="nord"] {
+  color-scheme: dark;
+  --p-bg: #272c35;
+  --p-frame: #2e3440;
+  --p-surface: #2e3440;
+  --p-raised: #3b4252;
+  --p-sunken: #272c35;
+  --p-ink: #eceff4;
+  --p-muted: #a9b4c1;
+  --p-faint: #727c8a;
+  --p-line: rgba(236, 239, 244, 0.14);
+  --p-line-base: #eceff4;
+  --p-accent: #88c0d0;
+  --p-accent-soft: #9dccd8;
+  --p-on-accent: #1e2b33;
+  --p-mira: #8fbcbb;
+  --p-seoyun: #81a1c1;
+  --p-alert: #bf616a;
+  --p-dialogue-top: rgba(11, 14, 14, 0.86);
+  --p-dialogue-bottom: rgba(8, 10, 11, 0.96);
+  --p-dialogue-ink: #f1eee6;
+}
+
+html[data-theme="light"][data-palette="nord"] {
+  color-scheme: light;
+  --p-bg: #dfe5ec;
+  --p-frame: #eceff4;
+  --p-surface: #eceff4;
+  --p-raised: #ffffff;
+  --p-sunken: #e0e6ed;
+  --p-ink: #2e3440;
+  --p-muted: #4c566a;
+  --p-faint: #7b8794;
+  --p-line: rgba(46, 52, 64, 0.15);
+  --p-line-base: #2e3440;
+  --p-accent: #5e81ac;
+  --p-accent-soft: #6e93c1;
+  --p-on-accent: #ffffff;
+  --p-mira: #5f8f8d;
+  --p-seoyun: #6e93b9;
+  --p-alert: #bf616a;
+  --p-dialogue-top: rgba(252, 252, 250, 0.92);
+  --p-dialogue-bottom: rgba(238, 238, 232, 0.97);
+  --p-dialogue-ink: #2e3440;
+}
+
+html[data-theme="dark"][data-palette="material"] {
+  color-scheme: dark;
+  --p-bg: #121212;
+  --p-frame: #1b1b1b;
+  --p-surface: #1e1e1e;
+  --p-raised: #2b2b2b;
+  --p-sunken: #161616;
+  --p-ink: #ededed;
+  --p-muted: #b1b1b1;
+  --p-faint: #767676;
+  --p-line: rgba(255, 255, 255, 0.14);
+  --p-line-base: #9e9e9e;
+  --p-accent: #7986cb;
+  --p-accent-soft: #9ba7e3;
+  --p-on-accent: #131316;
+  --p-mira: #26a69a;
+  --p-seoyun: #42a5f5;
+  --p-alert: #ef5350;
+  --p-dialogue-top: rgba(15, 15, 15, 0.88);
+  --p-dialogue-bottom: rgba(10, 10, 10, 0.97);
+  --p-dialogue-ink: #f2f2f2;
+}
+
+html[data-theme="light"][data-palette="material"] {
+  color-scheme: light;
+  --p-bg: #f2f2f2;
+  --p-frame: #ffffff;
+  --p-surface: #ffffff;
+  --p-raised: #f5f5f5;
+  --p-sunken: #f5f5f5;
+  --p-ink: #212121;
+  --p-muted: #616161;
+  --p-faint: #9e9e9e;
+  --p-line: rgba(0, 0, 0, 0.13);
+  --p-line-base: #212121;
+  --p-accent: #3f51b5;
+  --p-accent-soft: #5c6bc0;
+  --p-on-accent: #ffffff;
+  --p-mira: #00897b;
+  --p-seoyun: #1e88e5;
+  --p-alert: #e53935;
+  --p-dialogue-top: rgba(255, 255, 255, 0.93);
+  --p-dialogue-bottom: rgba(238, 238, 238, 0.97);
+  --p-dialogue-ink: #212121;
+}
+
+html[data-theme="dark"][data-palette="onedark"] {
+  color-scheme: dark;
+  --p-bg: #191c22;
+  --p-frame: #21252b;
+  --p-surface: #282c34;
+  --p-raised: #2c313a;
+  --p-sunken: #21252b;
+  --p-ink: #abb2bf;
+  --p-muted: #858c99;
+  --p-faint: #5c6370;
+  --p-line: rgba(171, 178, 191, 0.16);
+  --p-line-base: #abb2bf;
+  --p-accent: #e5c07b;
+  --p-accent-soft: #d19a66;
+  --p-on-accent: #21252b;
+  --p-mira: #56b6c2;
+  --p-seoyun: #61afef;
+  --p-alert: #e06c75;
+  --p-dialogue-top: rgba(16, 19, 23, 0.88);
+  --p-dialogue-bottom: rgba(11, 13, 16, 0.97);
+  --p-dialogue-ink: #e8eaee;
+}
+
+html[data-theme="light"][data-palette="onedark"] {
+  color-scheme: light;
+  --p-bg: #efeff1;
+  --p-frame: #fafafa;
+  --p-surface: #fafafa;
+  --p-raised: #ececee;
+  --p-sunken: #f0f0f2;
+  --p-ink: #383a42;
+  --p-muted: #696c77;
+  --p-faint: #a0a1a7;
+  --p-line: rgba(56, 58, 66, 0.14);
+  --p-line-base: #383a42;
+  --p-accent: #986801;
+  --p-accent-soft: #c18401;
+  --p-on-accent: #ffffff;
+  --p-mira: #50a14f;
+  --p-seoyun: #4078f2;
+  --p-alert: #e45649;
+  --p-dialogue-top: rgba(255, 255, 255, 0.93);
+  --p-dialogue-bottom: rgba(242, 242, 244, 0.97);
+  --p-dialogue-ink: #383a42;
+}
+
+html[data-theme="dark"][data-palette="github"] {
+  color-scheme: dark;
+  --p-bg: #0a0d11;
+  --p-frame: #0d1117;
+  --p-surface: #0d1117;
+  --p-raised: #161b22;
+  --p-sunken: #010409;
+  --p-ink: #e6edf3;
+  --p-muted: #7d8590;
+  --p-faint: #6e7681;
+  --p-line: #30363d;
+  --p-line-base: #8b949e;
+  --p-accent: #d29922;
+  --p-accent-soft: #e3b341;
+  --p-on-accent: #0d1117;
+  --p-mira: #3fb950;
+  --p-seoyun: #2f81f7;
+  --p-alert: #f85149;
+  --p-dialogue-top: rgba(16, 19, 24, 0.9);
+  --p-dialogue-bottom: rgba(10, 13, 17, 0.98);
+  --p-dialogue-ink: #f0f6fc;
+}
+
+html[data-theme="light"][data-palette="github"] {
+  color-scheme: light;
+  --p-bg: #f6f8fa;
+  --p-frame: #ffffff;
+  --p-surface: #ffffff;
+  --p-raised: #f6f8fa;
+  --p-sunken: #f6f8fa;
+  --p-ink: #1f2328;
+  --p-muted: #59636e;
+  --p-faint: #6e7781;
+  --p-line: #d0d7de;
+  --p-line-base: #57606a;
+  --p-accent: #9a6700;
+  --p-accent-soft: #bf8700;
+  --p-on-accent: #ffffff;
+  --p-mira: #1a7f37;
+  --p-seoyun: #0969da;
+  --p-alert: #cf222e;
+  --p-dialogue-top: rgba(255, 255, 255, 0.93);
+  --p-dialogue-bottom: rgba(240, 243, 246, 0.97);
+  --p-dialogue-ink: #1f2328;
+}
+
+html[data-theme="dark"][data-palette="vscode"] {
+  color-scheme: dark;
+  --p-bg: #171717;
+  --p-frame: #1e1e1e;
+  --p-surface: #1e1e1e;
+  --p-raised: #2d2d30;
+  --p-sunken: #252526;
+  --p-ink: #d4d4d4;
+  --p-muted: #969696;
+  --p-faint: #6e6e6e;
+  --p-line: rgba(212, 212, 212, 0.14);
+  --p-line-base: #d4d4d4;
+  --p-accent: #007acc;
+  --p-accent-soft: #3794ff;
+  --p-on-accent: #10141a;
+  --p-mira: #4ec9b0;
+  --p-seoyun: #569cd6;
+  --p-alert: #f48771;
+  --p-dialogue-top: rgba(14, 14, 14, 0.9);
+  --p-dialogue-bottom: rgba(9, 9, 9, 0.98);
+  --p-dialogue-ink: #e8e8e8;
+}
+
+html[data-theme="light"][data-palette="vscode"] {
+  color-scheme: light;
+  --p-bg: #e8e8e8;
+  --p-frame: #ffffff;
+  --p-surface: #ffffff;
+  --p-raised: #f3f3f3;
+  --p-sunken: #f8f8f8;
+  --p-ink: #333333;
+  --p-muted: #6e6e6e;
+  --p-faint: #8c8c8c;
+  --p-line: #e0e0e0;
+  --p-line-base: #616161;
+  --p-accent: #007acc;
+  --p-accent-soft: #0070c1;
+  --p-on-accent: #ffffff;
+  --p-mira: #00838f;
+  --p-seoyun: #0258b8;
+  --p-alert: #c93d5c;
+  --p-dialogue-top: rgba(255, 255, 255, 0.94);
+  --p-dialogue-bottom: rgba(238, 238, 238, 0.97);
+  --p-dialogue-ink: #333333;
+}
+
+html[data-theme="dark"][data-palette="gruvbox"] {
+  color-scheme: dark;
+  --p-bg: #1d2021;
+  --p-frame: #282828;
+  --p-surface: #282828;
+  --p-raised: #32302f;
+  --p-sunken: #1d2021;
+  --p-ink: #ebdbb2;
+  --p-muted: #a89984;
+  --p-faint: #928374;
+  --p-line: rgba(235, 219, 178, 0.15);
+  --p-line-base: #ebdbb2;
+  --p-accent: #d79921;
+  --p-accent-soft: #fabd2f;
+  --p-on-accent: #282828;
+  --p-mira: #8ec07c;
+  --p-seoyun: #83a598;
+  --p-alert: #fb4934;
+  --p-dialogue-top: rgba(18, 18, 18, 0.9);
+  --p-dialogue-bottom: rgba(12, 12, 12, 0.98);
+  --p-dialogue-ink: #fbf1c7;
+}
+
+html[data-theme="light"][data-palette="gruvbox"] {
+  color-scheme: light;
+  --p-bg: #e3d1a1;
+  --p-frame: #fbf1c7;
+  --p-surface: #fbf1c7;
+  --p-raised: #ebdbb2;
+  --p-sunken: #efdfb2;
+  --p-ink: #3c3836;
+  --p-muted: #665c54;
+  --p-faint: #928374;
+  --p-line: rgba(60, 56, 54, 0.18);
+  --p-line-base: #3c3836;
+  --p-accent: #b57614;
+  --p-accent-soft: #c69214;
+  --p-on-accent: #fbf1c7;
+  --p-mira: #79740e;
+  --p-seoyun: #076678;
+  --p-alert: #9d0006;
+  --p-dialogue-top: rgba(253, 248, 229, 0.93);
+  --p-dialogue-bottom: rgba(240, 228, 200, 0.97);
+  --p-dialogue-ink: #3c3836;
+}
+
+/* ------------------------------------------------------------------ */
+/* Legacy variable remap (global.css works unchanged once mapped)      */
+/* ------------------------------------------------------------------ */
+:root {
+  --ink: var(--p-ink);
+  --muted: var(--p-muted);
+  --faint: var(--p-faint);
+  --line: var(--p-line);
+  --panel: var(--p-surface);
+  --panel-raised: var(--p-raised);
+  --paper: var(--p-ink);
+  --paper-ink: var(--p-on-accent);
+  --accent: var(--p-accent);
+  --accent-soft: var(--p-accent-soft);
+  --mira: var(--p-mira);
+  --seoyun: var(--p-seoyun);
+  --vn-night: #0b1217;
+  --report-ink: var(--p-ink);
+}
+
+.report-shell {
+  --document-paper: var(--p-surface);
+  --document-ink: var(--p-ink);
+  --document-muted: var(--p-muted);
+  --document-faint: var(--p-faint);
+  --document-line: var(--p-line);
+  --document-amber: var(--p-accent);
+  --document-mira: var(--p-mira);
+  --document-seoyun: var(--p-seoyun);
+  --plan-ink: var(--p-ink);
+  --plan-muted: var(--p-muted);
+  --plan-faint: var(--p-faint);
+  --plan-line: var(--p-line);
+  --plan-line-base: var(--p-line-base);
+  --plan-panel: var(--p-surface);
+  --plan-panel-raised: var(--p-raised);
+  --plan-sunken: var(--p-sunken);
+  --plan-frame: var(--p-frame);
+  --plan-mira: var(--p-mira);
+  --plan-seoyun: var(--p-seoyun);
+  --plan-accent: var(--p-accent);
+  --plan-amber: var(--p-accent);
+  --plan-alert: var(--p-alert);
+  --plan-risk: var(--p-alert);
+  --plan-on-accent: var(--p-on-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces that were hard-coded before the theme layer                */
+/* ------------------------------------------------------------------ */
+body {
+  color: var(--p-ink);
+  background: var(--p-bg);
+}
+
+.game-viewport {
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--p-accent) 12%, transparent), transparent 36rem),
+    var(--p-bg);
+}
+
+.game-screen {
+  border-color: var(--p-line);
+  background: var(--p-frame);
+}
+
+.report-shell {
+  color: var(--p-ink);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--p-accent) 3%, transparent), transparent 22%, transparent 78%, color-mix(in srgb, var(--p-accent) 3%, transparent)),
+    var(--p-surface);
+}
+
+.report-topbar {
+  border-bottom-color: var(--p-line);
+  background: var(--p-raised);
+}
+
+html[data-theme="light"] .report-topbar strong {
+  color: var(--p-ink);
+}
+
+/* VN chrome: the scene is a night render in both modes. Keep its labels,
+ * buttons, and dialogue accent readable by brightening the palette tokens
+ * toward white only inside the scene. */
+html[data-theme="dark"] .vn-shell {
+  --accent: var(--p-accent);
+  --accent-soft: var(--p-accent-soft);
+  --mira: var(--p-mira);
+  --seoyun: var(--p-seoyun);
+}
+
+html[data-theme="light"] .vn-shell {
+  /* Only the accent on the dark scene chrome (topbar eyebrow) needs
+   * brightening; dialogue-box accents sit on a light surface, so they keep
+   * the raw (readable) palette values. */
+  --accent: color-mix(in srgb, var(--p-accent) 55%, #ffffff);
+}
+
+.vn-shell .quiet-button {
+  color: #e5eef0;
+  border-bottom-color: rgba(232, 228, 218, 0.42);
+}
+
+/* Dialogue box follows the theme, not the scene (it is the reading surface). */
+html[data-theme="light"] .dialogue-box {
+  border-color: var(--p-line);
+  background: linear-gradient(180deg, var(--p-dialogue-top), var(--p-dialogue-bottom));
+}
+
+html[data-theme="light"] .dialogue-text {
+  color: var(--p-dialogue-ink);
+  text-shadow: none;
+}
+
+html[data-theme="light"] .dialogue-heading,
+html[data-theme="light"] .continue-button {
+  border-color: var(--p-line);
+}
+
+html[data-theme="light"] .dialogue-progress {
+  color: color-mix(in srgb, var(--p-dialogue-ink) 46%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Theme switcher chrome (report topbar only)                            */
+/* ------------------------------------------------------------------ */
+.theme-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.theme-toggle {
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--p-ink) 34%, transparent);
+  padding: 0 0 0.2rem;
+  color: var(--p-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.78rem, 1.08cqw, 1.08rem);
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--p-accent);
+  color: var(--p-accent);
+}
+
+.palette-select {
+  max-width: 8.5rem;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--p-ink) 34%, transparent);
+  padding: 0 0.1rem 0.2rem;
+  color: var(--p-muted);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.78rem, 1.08cqw, 1.08rem);
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.palette-select:hover {
+  border-color: var(--p-accent);
+  color: var(--p-accent);
+}
+
+.palette-select option {
+  color: var(--p-ink);
+  background: var(--p-raised);
+}
+
+@media (max-width: 760px) {
+  .theme-controls {
+    gap: 0.35rem;
+  }
+
+  .palette-select {
+    max-width: 4.8rem;
+    font-size: 0.78rem;
+  }
+
+  .theme-toggle {
+    font-size: 0.78rem;
+  }
+}

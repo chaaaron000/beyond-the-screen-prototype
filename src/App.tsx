@@ -1,4 +1,9 @@
 import { useEffect, useReducer, useState } from "react";
+import {
+  ThemeControls,
+  type PaletteId,
+  type ThemeMode,
+} from "./components/common/ThemeControls";
 import { ReportScreen } from "./components/report/ReportScreen";
 import { VNScene } from "./components/vn/VNScene";
 import { getFieldRouteContent } from "./content/field-mission/routes";
@@ -52,6 +57,35 @@ export default function App() {
   const [state, dispatch] = useReducer(gameReducer, createInitialState());
   const [transition, setTransition] = useState<PresentationTransition | null>(null);
   const [highlightedRoute, setHighlightedRoute] = useState<ProposalId | null>(null);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    const saved = localStorage.getItem("oasis.theme.mode");
+    return saved === "light" ? "light" : "dark";
+  });
+  const [palette, setPalette] = useState<PaletteId>(() => {
+    const saved = localStorage.getItem("oasis.theme.palette");
+    return (
+      saved === "material" || saved === "onedark" || saved === "github" ||
+      saved === "nord" || saved === "vscode" || saved === "gruvbox"
+    )
+      ? saved
+      : "nord";
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = themeMode;
+    document.documentElement.dataset.palette = palette;
+    localStorage.setItem("oasis.theme.mode", themeMode);
+    localStorage.setItem("oasis.theme.palette", palette);
+  }, [themeMode, palette]);
+
+  const themeControls = (
+    <ThemeControls
+      mode={themeMode}
+      palette={palette}
+      onModeChange={setThemeMode}
+      onPaletteChange={setPalette}
+    />
+  );
 
   useEffect(() => {
     if (!transition) return undefined;
@@ -186,6 +220,7 @@ export default function App() {
             inputLocked={inputLocked}
             highlightedRoute={highlightedRoute}
             activeProposal={transition?.kind === "report-to-vn" ? transition.proposalId : null}
+            themeControls={themeControls}
           />
         )}
         {transition && <PresentationTransitionOverlay transition={transition} />}

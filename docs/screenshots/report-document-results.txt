@@ -1,7 +1,7 @@
 - paragraph: 조사 결과
 - heading "도착한 기록" [level=2]
 - article:
-  - paragraph: 현장 확인 / 보관 구역
-  - heading "보관 구역 조명 단말 의존성" [level=3]
-  - paragraph: 바이크 현장에서 보관 구역 조명은 현장 유지보수·인증 단말 없이는 켤 수 없다는 점을 확인했다.
-  - button "조명 의존성 기록 보기"
+  - paragraph: 미라 / 주 발전 계통 상태 분석
+  - heading "주 발전 계통 상태" [level=3]
+  - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+  - button "전력 상태 기록 보기"

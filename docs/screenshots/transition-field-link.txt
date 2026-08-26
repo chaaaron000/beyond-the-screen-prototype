@@ -1,13 +1,3 @@
-- main:
-  - paragraph: OASIS / ACT 02 / DAY 01
-  - paragraph: OASIS · 생활 구역 03
-  - button "시나리오 다시 시작" [disabled]
-  - region "비주얼 노벨 장면":
-    - img "미라"
-    - img "한서윤"
-  - text: 당신
-  - paragraph: 발전소부터 보자.
-  - complementary "장면 조작 안내": 대사록 ◐ 숨기기 ◒ 메뉴창 Esc 빨리 감기 Ctrl 오토 모드 F10
-- status "FIELD LINK / 발전 구역 현장":
-  - paragraph: FIELD LINK / 발전 구역 현장
-  - paragraph: 발전 구역
+- status "FIELD LINK / 바이크 현장":
+  - paragraph: FIELD LINK / 바이크 현장
+  - paragraph: 보관 구역

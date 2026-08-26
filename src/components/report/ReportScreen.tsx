@@ -47,6 +47,7 @@ interface ReportScreenProps {
   inputLocked?: boolean;
   highlightedRoute?: ProposalId | null;
   activeProposal?: ProposalId | null;
+  themeControls?: ReactNode;
 }
 
 interface TimelineBlock {
@@ -1511,6 +1512,7 @@ export function ReportScreen({
   inputLocked = false,
   highlightedRoute = null,
   activeProposal = null,
+  themeControls,
 }: ReportScreenProps) {
   const [openWindows, setOpenWindows] = useState<FloatingWindowState[]>([]);
   const [proposalDialog, setProposalDialog] = useState<{ id: ProposalId; evidenceIds: EvidenceId[] } | null>(null);
@@ -1660,6 +1662,7 @@ export function ReportScreen({
         <div className="report-topbar-right">
           <span>현재 시각</span>
           <time>{formatClock(displayClockMinutes)}</time>
+          {themeControls}
           <button type="button" disabled={isInputLocked} onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
         </div>
       </header>
