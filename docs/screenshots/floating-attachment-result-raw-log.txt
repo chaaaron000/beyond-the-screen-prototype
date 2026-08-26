@@ -125,6 +125,17 @@
       - text: "미라: 주 발전 계통 상태 분석 완료"
       - emphasis: 결과 보기
     - button "알림 닫기": ×
+  - dialog "조사 결과":
+    - paragraph: WORK COMPLETE / REPORT IN
+    - heading "조사 결과" [level=2]
+    - button "조사 결과 닫기": 닫기
+    - article:
+      - paragraph: 미라 · 완료
+      - heading "주 발전 계통 상태 분석" [level=3]
+      - paragraph: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
+      - strong: 주 발전 계통 상태
+      - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+      - button "전력 상태 기록 보기"
   - dialog "주 발전 계통 / 전력 상태":
     - paragraph: OASIS / ATTACHMENT
     - heading "주 발전 계통 / 전력 상태" [level=2]
@@ -139,17 +150,6 @@
       - text: 지속성 장시간 유지 어려움
       - emphasis: 분석
     - paragraph: 주 발전 계통 정지 이후 생활 구역 설비가 비상·제한 전력에 의존하는 상태 기록이다.
-  - dialog "조사 결과":
-    - paragraph: WORK COMPLETE / REPORT IN
-    - heading "조사 결과" [level=2]
-    - button "조사 결과 닫기": 닫기
-    - article:
-      - paragraph: 미라 · 완료
-      - heading "주 발전 계통 상태 분석" [level=3]
-      - paragraph: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
-      - strong: 주 발전 계통 상태
-      - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
-      - button "전력 상태 기록 보기"
   - dialog "발전소를 조사한다 / 대화 기록":
     - paragraph: OASIS / CONVERSATION LOG
     - heading "발전소를 조사한다 / 대화 기록" [level=2]
