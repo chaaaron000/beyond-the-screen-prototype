@@ -1,4 +1,4 @@
-import type { Dispatch } from "react";
+import type { Dispatch, MouseEvent } from "react";
 import type { GameAction, GameState, Speaker } from "../../types/game";
 
 interface VNSceneProps {
@@ -23,16 +23,21 @@ function speakerLabel(speaker: Speaker): string {
 
 export function VNScene({ state, dispatch, onAdvanceDialogue, disabled = false }: VNSceneProps) {
   const line = state.dialogue[state.dialogueIndex];
-  const isLastLine = state.dialogueIndex >= state.dialogue.length - 1;
   const activeSpeaker = line?.speaker ?? "narrator";
   const assetBaseUrl = import.meta.env.BASE_URL;
+  const advanceDialogue = onAdvanceDialogue ?? (() => dispatch({ type: "ADVANCE_DIALOGUE" }));
+
+  const handleScreenClick = (event: MouseEvent<HTMLElement>) => {
+    if (disabled || (event.target as Element).closest("button, .stage-controls")) return;
+    advanceDialogue();
+  };
 
   return (
-    <main className="vn-shell">
+    <main className="vn-shell" onClick={handleScreenClick}>
       <header className="vn-topbar">
         <div>
           <p className="eyebrow">OASIS / ACT 02 / DAY 01</p>
-          <h1>화면 너머의 너</h1>
+          <p className="stage-label">OASIS · 생활 구역 03</p>
         </div>
         <button
           className="quiet-button"
@@ -44,13 +49,13 @@ export function VNScene({ state, dispatch, onAdvanceDialogue, disabled = false }
         </button>
       </header>
 
-      <section className={`vn-stage vn-stage--${activeSpeaker}`} aria-label="비주얼 노벨 장면">
-        <div className="stage-label">OASIS · 생활 구역 03</div>
-        <div className="stage-window" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
+      <section
+        className={`vn-stage vn-stage--${activeSpeaker}`}
+        aria-label="비주얼 노벨 장면"
+        style={{
+          backgroundImage: `linear-gradient(rgba(8, 13, 16, 0.5), rgba(8, 13, 16, 0.5)), url("${assetBaseUrl}assets/backgrounds/oasis-living-area-03.png")`,
+        }}
+      >
         <div
           className={`character character--mira ${
             activeSpeaker === "mira" ? "character--active" : "character--resting"
@@ -65,28 +70,14 @@ export function VNScene({ state, dispatch, onAdvanceDialogue, disabled = false }
         >
           <img src={`${assetBaseUrl}assets/characters/서윤.png`} alt="한서윤" />
         </div>
-        <div className="stage-floor" aria-hidden="true" />
       </section>
 
       <div className="dialogue-layer">
         <div className={`dialogue-box dialogue-box--${activeSpeaker}`}>
           <div className="dialogue-heading">
-            <span className={`speaker-dot speaker-dot--${line?.speaker ?? "narrator"}`} />
             <span>{speakerLabel(line?.speaker ?? "narrator")}</span>
-            <span className="dialogue-progress">
-              {state.dialogueIndex + 1} / {state.dialogue.length}
-            </span>
           </div>
           <p className="dialogue-text">{line?.text}</p>
-          <button
-            className="continue-button"
-            type="button"
-            disabled={disabled}
-            onClick={onAdvanceDialogue ?? (() => dispatch({ type: "ADVANCE_DIALOGUE" }))}
-          >
-            {isLastLine ? "보고서 열기" : "계속"}
-            <span aria-hidden="true">→</span>
-          </button>
         </div>
         <aside className="stage-controls" aria-label="장면 조작 안내">
           <div className="control-row">

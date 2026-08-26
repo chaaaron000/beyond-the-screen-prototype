@@ -5574,6 +5574,111 @@ body {
   background: rgba(218, 231, 234, 0.08);
 }
 
+/* Penpot 01: full-scene VN composition with dialogue placed on the vignette. */
+.vn-topbar {
+  padding: 2.29cqw 2.64cqw;
+}
+
+.vn-topbar .eyebrow {
+  margin: 0;
+  font-size: 1.11cqw;
+}
+
+.vn-topbar .stage-label {
+  position: static;
+  margin: 0.42cqw 0 0;
+  color: #b7c1c1;
+  font-size: 0.69cqw;
+}
+
+.vn-topbar .quiet-button {
+  width: 11.11cqw;
+  margin-top: 1.39cqw;
+  font-size: 1.25cqw;
+  text-align: center;
+}
+
+.vn-stage {
+  padding: 0;
+  background-position: center;
+  background-size: cover;
+}
+
+.vn-stage::before {
+  display: none;
+}
+
+.vn-stage::after {
+  height: 49.4%;
+  background: linear-gradient(180deg, rgba(8, 13, 16, 0), rgba(8, 13, 16, 0.68) 45%, #080d10 100%);
+}
+
+.character,
+.character--active,
+.character--resting {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+.character--mira {
+  left: 9.38%;
+  bottom: -39.5%;
+  height: 135.2%;
+}
+
+.character--seoyun {
+  right: auto;
+  bottom: -45.5%;
+  left: 53.68%;
+  height: 143.95%;
+}
+
+.dialogue-layer {
+  inset: 0;
+  display: block;
+  height: 100%;
+  padding: 0;
+}
+
+.dialogue-box {
+  position: absolute;
+  top: 66.79%;
+  left: 15.14%;
+  width: 62%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dialogue-heading {
+  display: block;
+  padding: 0;
+  border: 0;
+  font-size: 3.33cqw;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.dialogue-text {
+  min-height: 0;
+  margin: 1.67cqw 0 0 3.26cqw;
+  font-size: 1.875cqw;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.stage-controls {
+  position: absolute;
+  top: 74.94%;
+  left: 84.44%;
+  display: grid;
+  width: 12.5%;
+  margin: 0;
+  font-size: 0.83cqw;
+}
+
 .report-topbar {
   border-bottom-color: var(--plan-line);
   background: #161f24;
