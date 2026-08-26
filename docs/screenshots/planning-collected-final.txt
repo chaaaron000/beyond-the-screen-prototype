@@ -1,0 +1,17 @@
+- tabpanel "추가 수집한 정보 1":
+  - paragraph: FIELD NOTES / COLLECTED
+  - heading "조사로 새로 얻은 근거와 기록" [level=3]
+  - paragraph: 다시 확인할 근거
+  - heading "확보한 정보" [level=2]
+  - article:
+    - paragraph: 미라 / 주 발전 계통 상태 분석
+    - button "주 발전 계통 상태 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.":
+      - strong: 주 발전 계통 상태
+      - text: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+  - region "최근 조사 결과":
+    - paragraph: FIELD NOTES / RESULTS
+    - heading "최근 결과" [level=3]
+    - button "미라 · 주 발전 계통 상태 분석 완료 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다. 열기":
+      - text: 미라 · 주 발전 계통 상태 분석 완료
+      - strong: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
+      - emphasis: 열기

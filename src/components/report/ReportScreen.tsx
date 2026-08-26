@@ -26,6 +26,7 @@ import {
 import {
   getAvailableTasks,
   getNextCompletionMinutes,
+  getNextCompletionTaskIds,
   getTask,
 } from "../../game/reducer";
 import type {
@@ -1429,6 +1430,13 @@ function PlanningPanel({
 }) {
   const nextStep = getNextCompletionMinutes(state);
   const nextClock = nextStep === null ? null : state.clockMinutes + nextStep;
+  const nextCompletionTaskIds = getNextCompletionTaskIds(state);
+  const nextCompletionLabel =
+    nextCompletionTaskIds.length === 0
+      ? ""
+      : nextCompletionTaskIds
+          .map((taskId) => getTask(taskId).title)
+          .join(", ");
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const overviewEndRef = useRef<HTMLDivElement | null>(null);
   const [showDeadlineReminder, setShowDeadlineReminder] = useState(false);
@@ -1471,8 +1479,8 @@ function PlanningPanel({
             onClick={onAdvance}
           >
             <span>
-              <b>{isAdvancing ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "다음 작업 완료까지 시간 진행"}</b>
-              {nextClock !== null && !isAdvancing && <small>다음 완료: {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
+              <b>{isAdvancing ? "시간이 흐르는 중…" : nextClock === null ? "진행할 작업이 없습니다" : "조사 시작"}</b>
+              {nextClock !== null && !isAdvancing && <small>다음 완료: {nextCompletionLabel} · {formatClock(nextClock)} · {formatDuration(nextStep ?? 0)} 후</small>}
               {isAdvancing && <small>작업 완료 시점으로 이동하고 있습니다</small>}
             </span>
             <strong>{nextClock === null ? "—" : formatClock(isAdvancing ? displayClockMinutes : nextClock)}</strong>

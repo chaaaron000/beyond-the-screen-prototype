@@ -1,0 +1,163 @@
+- main:
+  - paragraph: OASIS / ACT 02 / DAY 01
+  - strong: 생활 구역 03 · 조사 브리핑
+  - text: 현재 시각
+  - time: 09:30
+  - button "처음부터"
+  - region "정보 문서":
+    - article:
+      - text: OASIS / 생활 구역 03 / 공유 작업 문서
+      - paragraph: 2120-03-21 / ACT 02 · DAY 01
+      - heading "시설 정보" [level=1]
+      - paragraph: 두 사람이 보내오는 자료를 읽고, 다음 움직임을 함께 정한다.
+      - paragraph: 현재 상황
+      - heading "아침의 운영 기록" [level=2]
+      - paragraph: 주 발전 계통이 오프라인 상태다.
+      - paragraph: 냉장 설비는 고장 난 주 전원 대신 비상 전원으로 버티고 있다.
+      - paragraph: 냉장 설비의 온도가 상승 중이지만 보존 한계 시각은 아직 분석되지 않았다.
+      - paragraph: 서윤의 바이크는 오래 방치되어 현재 상태를 알 수 없다.
+      - paragraph: 발전 구역의 정확한 접근 조건은 아직 확인되지 않았다.
+      - region "행동별 논쟁":
+        - paragraph: 행동별 논쟁
+        - heading "무엇을 먼저 할지" [level=2]
+        - text: 읽은 자리에서 바로 제안
+        - article:
+          - text: "01"
+          - heading "발전소를 조사한다" [level=3]
+          - button "제안하기"
+          - blockquote:
+            - text: 한서윤
+            - paragraph: “거기 지금 바로 들어갈 수 있는지도 모르잖아.”
+          - blockquote:
+            - text: MIRAGE
+            - paragraph: “주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”
+          - button "대화 LOG RAW 독립 창으로 원문 열기"
+        - article:
+          - text: "02"
+          - heading "바이크를 확인한다" [level=3]
+          - button "제안하기"
+          - blockquote:
+            - text: 한서윤
+            - paragraph: “난 바이크부터 보고 싶은데?”
+          - blockquote:
+            - text: MIRAGE
+            - paragraph: “아닌데요? 발전소 가봐야 하는데.”
+          - button "대화 LOG RAW 독립 창으로 원문 열기"
+        - article:
+          - text: "03"
+          - heading "냉장 시설을 확인한다" [level=3]
+          - button "제안하기"
+          - blockquote:
+            - text: 한서윤
+            - paragraph: “계속 온도가 오르는 건 좀 걸리는데.”
+          - blockquote:
+            - text: MIRAGE
+            - paragraph: “아직 얼마나 급한지는 모르잖아요.”
+          - button "대화 LOG RAW 독립 창으로 원문 열기"
+      - paragraph: 조사 결과
+      - heading "도착한 기록" [level=2]
+      - article:
+        - paragraph: 미라 / 주 발전 계통 상태 분석
+        - heading "주 발전 계통 상태" [level=3]
+        - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+        - button "전력 상태 기록 보기"
+      - region "현장 확인 기록":
+        - paragraph: 현장 기록
+        - heading "확인한 장소" [level=2]
+        - paragraph: 아직 현장에서 돌아온 기록이 없다.
+      - paragraph: 문서 사용법
+      - heading "읽는 곳, 정하는 곳" [level=2]
+      - paragraph: 본문의 행동별 논쟁에서 제안을 시작하고, 조사 요청과 시간 진행은 오른쪽 계획판에서 조정할 수 있습니다.
+  - separator "보고서와 조사 계획 너비 조절"
+  - complementary:
+    - paragraph: FIELD PLAN / LIVE
+    - heading "조사 계획" [level=2]
+    - text: 현재 시각
+    - strong: 09:30
+    - region "시간 제한":
+      - paragraph: 시간 제한
+      - text: 1개 추적 중
+      - article:
+        - heading "냉장 시설" [level=3]
+        - paragraph: 보존 한계 미확인
+        - strong: 분석 필요
+    - region "조사 일정 timeline":
+      - paragraph: 가벼운 일정표
+      - heading "두 사람의 다음 움직임" [level=3]
+      - text: 보존 한계 미확인 현재 미라 대기 중 조사 예정 없음 한서윤 대기 중 조사 예정 없음
+    - region "시간 진행":
+      - button "진행할 작업이 없습니다 —" [disabled]:
+        - text: 진행할 작업이 없습니다
+        - strong: —
+      - paragraph: 작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.
+    - region "조사 계획 상세":
+      - tablist "조사 계획 탭":
+        - tab "조사 일정 편집"
+        - tab "추가 수집한 정보 1" [selected]
+      - tabpanel "추가 수집한 정보 1":
+        - paragraph: FIELD NOTES / COLLECTED
+        - heading "조사로 새로 얻은 근거와 기록" [level=3]
+        - paragraph: 다시 확인할 근거
+        - heading "확보한 정보" [level=2]
+        - article:
+          - paragraph: 미라 / 주 발전 계통 상태 분석
+          - button "주 발전 계통 상태 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.":
+            - strong: 주 발전 계통 상태
+            - text: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+        - region "최근 조사 결과":
+          - paragraph: FIELD NOTES / RESULTS
+          - heading "최근 결과" [level=3]
+          - button "미라 · 주 발전 계통 상태 분석 완료 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다. 열기":
+            - text: 미라 · 주 발전 계통 상태 분석 완료
+            - strong: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
+            - emphasis: 열기
+  - status:
+    - 'button "작업 결과 도착 미라: 주 발전 계통 상태 분석 완료 결과 보기"':
+      - strong: 작업 결과 도착
+      - text: "미라: 주 발전 계통 상태 분석 완료"
+      - emphasis: 결과 보기
+    - button "알림 닫기": ×
+  - dialog "주 발전 계통 / 전력 상태":
+    - paragraph: OASIS / ATTACHMENT
+    - heading "주 발전 계통 / 전력 상태" [level=2]
+    - button "주 발전 계통 / 전력 상태 닫기": 닫기
+    - paragraph:
+      - text: 주 발전 OFFLINE
+      - emphasis: 확인
+    - paragraph:
+      - text: 생활 구역 비상·제한 전력 의존
+      - emphasis: 주의
+    - paragraph:
+      - text: 지속성 장시간 유지 어려움
+      - emphasis: 분석
+    - paragraph: 주 발전 계통 정지 이후 생활 구역 설비가 비상·제한 전력에 의존하는 상태 기록이다.
+  - dialog "조사 결과":
+    - paragraph: WORK COMPLETE / REPORT IN
+    - heading "조사 결과" [level=2]
+    - button "조사 결과 닫기": 닫기
+    - article:
+      - paragraph: 미라 · 완료
+      - heading "주 발전 계통 상태 분석" [level=3]
+      - paragraph: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
+      - strong: 주 발전 계통 상태
+      - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+      - button "전력 상태 기록 보기"
+  - dialog "발전소를 조사한다 / 대화 기록":
+    - paragraph: OASIS / CONVERSATION LOG
+    - heading "발전소를 조사한다 / 대화 기록" [level=2]
+    - button "발전소를 조사한다 / 대화 기록 닫기": 닫기
+    - paragraph:
+      - strong: MIRAGE
+      - text: 주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.
+    - paragraph:
+      - strong: 한서윤
+      - text: 거기 지금 바로 들어갈 수 있는지도 모르잖아.
+    - paragraph:
+      - strong: MIRAGE
+      - text: 발전소 고치면 냉장고도 조명도 같이 해결돼요. 시간 충분한데요?
+    - paragraph:
+      - strong: 한서윤
+      - text: 너 그거 확실해?
+    - paragraph:
+      - strong: MIRAGE
+      - text: 지금 가진 정보로는요.

@@ -45,19 +45,40 @@ export function getScheduledTaskIds(state: GameState): TaskId[] {
   ];
 }
 
-export function getNextCompletionMinutes(state: GameState): number | null {
+export function getNextCompletionTaskIds(state: GameState): TaskId[] {
   // A planned task for an idle actor starts when the player presses the
   // advance button. Include its duration in the preview so the button can be
   // enabled before anything is active, without mutating game state.
-  const remaining = (Object.keys(state.activeTasks) as Actor[])
+  const candidates = (Object.keys(state.activeTasks) as Actor[])
     .map((actor) => {
       const activeTask = state.activeTasks[actor];
-      if (activeTask) return activeTask.remainingMinutes;
+      if (activeTask) {
+        return { taskId: activeTask.taskId, minutes: activeTask.remainingMinutes };
+      }
       const nextTaskId = state.queuedTasks[actor][0];
-      return nextTaskId ? getTask(nextTaskId).durationMinutes : null;
+      return nextTaskId
+        ? { taskId: nextTaskId, minutes: getTask(nextTaskId).durationMinutes }
+        : null;
     })
-    .filter((minutes): minutes is number => minutes !== null);
-  return remaining.length > 0 ? Math.min(...remaining) : null;
+    .filter(
+      (candidate): candidate is { taskId: TaskId; minutes: number } =>
+        candidate !== null,
+    );
+  if (candidates.length === 0) return [];
+  const earliest = Math.min(...candidates.map((candidate) => candidate.minutes));
+  return candidates
+    .filter((candidate) => candidate.minutes === earliest)
+    .map((candidate) => candidate.taskId);
+}
+
+export function getNextCompletionMinutes(state: GameState): number | null {
+  const taskIds = getNextCompletionTaskIds(state);
+  if (taskIds.length === 0) return null;
+  const firstTask = getTask(taskIds[0]);
+  const activeTask = state.activeTasks[firstTask.actor];
+  return activeTask
+    ? activeTask.remainingMinutes
+    : getTask(state.queuedTasks[firstTask.actor][0]).durationMinutes;
 }
 
 export function isActorBusy(state: GameState, actor: Actor): boolean {

@@ -1,7 +1,7 @@
 :root {
   color: #dce7ea;
   background: #151e23;
-  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --ink: #dce7ea;
@@ -124,7 +124,7 @@ button:focus-visible {
 .report-header h1 {
   margin: 0;
   color: #f1eee6;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.23rem, 3cqw, 2.55rem);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -458,7 +458,7 @@ button:focus-visible {
 
 .clock-readout strong {
   color: var(--accent-soft);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.23rem, 2.7cqw, 2.7rem);
   font-weight: 400;
 }
@@ -489,7 +489,7 @@ button:focus-visible {
 
 .status-card strong {
   color: var(--paper);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.93rem, 1.68cqw, 1.68rem);
   font-weight: 400;
 }
@@ -535,7 +535,7 @@ button:focus-visible {
 .section-heading h2 {
   margin: 0;
   color: var(--paper);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.08rem, 2.175cqw, 2.175rem);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -1084,7 +1084,7 @@ body {
 .vn-topbar h1,
 .report-header h1 {
   color: #f2eee4;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 400;
   letter-spacing: -0.045em;
 }
@@ -2027,7 +2027,7 @@ body {
   top: -1.2rem;
   left: 0.3rem;
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.69rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
@@ -2063,7 +2063,7 @@ body {
 .planner-section-heading h3 {
   margin: 0.32rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.425rem, 1.83cqw, 1.83rem);
   font-weight: 400;
   letter-spacing: -0.045em;
@@ -2115,7 +2115,7 @@ body {
 .actor-planning-kicker {
   margin: 0 0 0.18rem;
   color: var(--plan-faint);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.63rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2131,7 +2131,7 @@ body {
 .actor-planning-count {
   margin-left: auto;
   color: var(--plan-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.66rem;
 }
 
@@ -2156,7 +2156,7 @@ body {
 
 .actor-subheading > span {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.705rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2360,7 +2360,7 @@ body {
   border: 1px solid rgba(212, 160, 108, 0.44);
   border-radius: 50%;
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.63rem;
   vertical-align: -0.22rem;
 }
@@ -2386,7 +2386,7 @@ body {
 .collected-information-heading h3 {
   margin: 0.32rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.425rem, 1.83cqw, 1.83rem);
   font-weight: 400;
   letter-spacing: -0.045em;
@@ -2415,7 +2415,7 @@ body {
 .support-panel-heading h3 {
   margin: 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.38rem, 1.8cqw, 1.8rem);
   font-weight: 400;
 }
@@ -2466,7 +2466,7 @@ body {
 
 .result-history-item small {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.63rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -2605,7 +2605,7 @@ body {
 .result-viewer-header h2 {
   margin: 0.3rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.65rem, 2.55cqw, 2.55rem);
   font-weight: 400;
 }
@@ -2644,7 +2644,7 @@ body {
 .result-viewer-actor {
   margin: 0 0 0.3rem;
   color: var(--plan-mira);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.69rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2810,7 +2810,7 @@ body {
 .report-task-meta,
 .work-actor,
 .work-status {
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 1.02rem;
   letter-spacing: 0.08em;
 }
@@ -2844,7 +2844,7 @@ body {
 .document-title-row h1 {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(3.15rem, 5vw, 6.3rem);
   font-weight: 400;
   letter-spacing: -0.075em;
@@ -2873,7 +2873,7 @@ body {
 
 .document-clock strong {
   color: var(--document-amber);
-  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 2.475rem;
   font-weight: 400;
   letter-spacing: -0.04em;
@@ -2911,7 +2911,7 @@ body {
 .report-section-heading h2 {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 2.55rem;
   font-weight: 400;
   letter-spacing: -0.055em;
@@ -2960,7 +2960,7 @@ body {
 
 .opinion-note p {
   margin: 0;
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 1.8rem;
   letter-spacing: -0.035em;
   line-height: 1.55;
@@ -3435,7 +3435,7 @@ body {
 .attachment-viewer-header > div > p {
   margin: 0;
   color: var(--plan-faint);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.72rem, 1.02cqw, 1.02rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -3448,7 +3448,7 @@ body {
 
 .report-topbar strong {
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.23rem, 2.025cqw, 2.025rem);
   font-weight: 400;
   letter-spacing: -0.035em;
@@ -3462,7 +3462,7 @@ body {
 
 .report-topbar-right time {
   color: var(--plan-amber);
-  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.65rem, 2.7cqw, 2.7rem);
   letter-spacing: -0.04em;
 }
@@ -3538,7 +3538,7 @@ body {
 .field-document h1 {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(3.225rem, 7.65cqw, 6.6rem);
   font-weight: 400;
   letter-spacing: -0.09em;
@@ -3579,7 +3579,7 @@ body {
 .field-section-heading p {
   margin: 0;
   color: var(--document-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -3588,7 +3588,7 @@ body {
 .field-section-heading h2 {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.77rem, 2.7cqw, 2.7rem);
   font-weight: 400;
   letter-spacing: -0.065em;
@@ -3632,7 +3632,7 @@ body {
 .field-opinion-note p {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.26rem, 1.92cqw, 1.92rem);
   letter-spacing: -0.04em;
   line-height: 1.55;
@@ -3741,7 +3741,7 @@ body {
 .planning-header h2 {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.8rem, 2.85cqw, 2.85rem);
   font-weight: 400;
   letter-spacing: -0.065em;
@@ -3755,13 +3755,13 @@ body {
 
 .planning-clock span {
   color: var(--plan-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.72rem, 0.93cqw, 0.93rem);
 }
 
 .planning-clock strong {
   color: var(--plan-amber);
-  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.5rem, 2.325cqw, 2.325rem);
   font-weight: 400;
 }
@@ -3793,7 +3793,7 @@ body {
 .deadline-key,
 .deadline-unknown {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.675rem, 0.87cqw, 0.87rem);
   white-space: nowrap;
 }
@@ -3853,7 +3853,7 @@ body {
   top: -1.2rem;
   left: 0.24rem;
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.795rem;
   white-space: nowrap;
 }
@@ -4026,7 +4026,7 @@ body {
   overflow: hidden;
   margin: 0.38rem 0 0;
   color: var(--plan-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
   font-weight: 500;
   line-height: 1;
@@ -4036,7 +4036,7 @@ body {
 
 .deadline-summary-count {
   color: var(--plan-faint);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
   letter-spacing: 0.04em;
 }
@@ -4059,7 +4059,7 @@ body {
 .deadline-summary-status {
   flex: 0 0 auto;
   color: var(--plan-accent);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
   font-weight: 500;
   white-space: nowrap;
@@ -4168,7 +4168,7 @@ body {
 
 .queue-index {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .queue-title {
@@ -4288,7 +4288,7 @@ body {
 .task-picker .field-section-heading h2,
 .evidence-sidebar .field-section-heading h2 {
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.5rem, 2.025cqw, 2.025rem);
 }
 
@@ -4391,7 +4391,7 @@ body {
 
 .opinion-drawer summary small {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.645rem, 0.78cqw, 0.78rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -4546,7 +4546,7 @@ body {
   align-items: center;
   gap: 0.35rem;
   color: var(--plan-faint);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.69rem;
   letter-spacing: 0.06em;
   white-space: nowrap;
@@ -4571,7 +4571,7 @@ body {
 .attachment-viewer-header h2 {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.5rem, 2.325cqw, 2.325rem);
   font-weight: 400;
   letter-spacing: -0.055em;
@@ -4605,7 +4605,7 @@ body {
   justify-content: space-between;
   gap: 1rem;
   color: var(--plan-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.75rem;
 }
 
@@ -4655,7 +4655,7 @@ body {
   border-bottom: 1px solid var(--plan-line);
   padding: 0.65rem 0;
   color: var(--plan-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
   line-height: 1.5;
 }
@@ -4691,7 +4691,7 @@ body {
 
 .photo-placeholder span {
   color: rgba(236, 231, 220, 0.58);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.825rem;
   letter-spacing: 0.16em;
 }
@@ -4749,7 +4749,7 @@ body {
   border: 1px solid var(--plan-amber);
   padding: 0.3rem 0.4rem;
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.84rem;
 }
 
@@ -4885,7 +4885,7 @@ body {
 .actor-planning-arrow {
   align-self: center;
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 1.5rem;
   line-height: 1;
 }
@@ -4935,7 +4935,7 @@ body {
 .proposal-ledger-heading p {
   margin: 0 0 0.38rem;
   color: var(--document-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -4944,7 +4944,7 @@ body {
 .proposal-ledger-heading h2 {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.77rem, 2.7cqw, 2.7rem);
   font-weight: 400;
   letter-spacing: -0.065em;
@@ -4993,7 +4993,7 @@ body {
 
 .proposal-entry-title > span {
   color: var(--document-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.96rem;
   letter-spacing: 0.08em;
 }
@@ -5001,7 +5001,7 @@ body {
 .proposal-entry-title h3 {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.38rem, 1.875cqw, 1.875rem);
   font-weight: 500;
   letter-spacing: -0.045em;
@@ -5057,7 +5057,7 @@ body {
   display: block;
   margin-bottom: 0.48rem;
   color: var(--document-muted);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.87rem;
   font-style: normal;
   letter-spacing: 0.08em;
@@ -5075,7 +5075,7 @@ body {
 .proposal-position p {
   margin: 0;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.17rem, 1.575cqw, 1.575rem);
   line-height: 1.55;
   letter-spacing: -0.035em;
@@ -5113,7 +5113,7 @@ body {
 
 .proposal-raw-log summary > span {
   flex: 1 1 auto;
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.915rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -5143,7 +5143,7 @@ body {
 
 .proposal-raw-lines strong {
   color: var(--document-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.855rem;
   font-weight: 500;
 }
@@ -5182,7 +5182,7 @@ body {
 .proposal-dialog-header h2 {
   margin: 0.35rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(2.025rem, 3.3cqw, 3.3rem);
   font-weight: 400;
   letter-spacing: -0.065em;
@@ -5214,14 +5214,14 @@ body {
 
 .proposal-dialog-action > span {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.87rem;
   letter-spacing: 0.1em;
 }
 
 .proposal-dialog-action strong {
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 1.8rem;
   font-weight: 400;
 }
@@ -5259,7 +5259,7 @@ body {
 
 .proposal-evidence-heading > strong {
   color: var(--plan-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.99rem;
   font-weight: 400;
 }
@@ -5327,7 +5327,7 @@ body {
 
 .proposal-selected-evidence p {
   color: var(--plan-mira);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.84rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -5942,7 +5942,7 @@ body {
 .deadline-reminder span {
   flex: 0 0 auto;
   color: var(--plan-accent);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
   white-space: nowrap;
 }
@@ -5996,7 +5996,7 @@ body {
 .floating-window-header p {
   margin: 0;
   color: var(--plan-accent);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -6005,7 +6005,7 @@ body {
 .floating-window-header h2 {
   margin: 0.32rem 0 0;
   color: var(--plan-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.575rem, 2.475cqw, 2.475rem);
   font-weight: 400;
   letter-spacing: -0.055em;
@@ -6063,7 +6063,7 @@ body {
 }
 
 .proposal-raw-log-button > span {
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.915rem;
   letter-spacing: 0.08em;
 }
@@ -6097,7 +6097,7 @@ body {
 
 .raw-log-window-lines strong {
   color: var(--plan-accent);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.855rem;
   font-weight: 500;
 }
@@ -6147,7 +6147,7 @@ body {
   gap: 0.45rem;
   color: #dce7ea;
   background: #0b1217;
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   pointer-events: auto;
   text-align: center;
   transition: opacity 240ms ease, background-color 240ms ease;
@@ -6184,7 +6184,7 @@ body {
 
 .presentation-transition-location {
   color: #7fa5aa;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.17rem, 2.1cqw, 1.95rem);
   letter-spacing: 0.03em;
 }
@@ -6231,7 +6231,7 @@ body {
 .field-route-record-kicker {
   margin: 0;
   color: var(--document-amber);
-  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.81rem;
   letter-spacing: 0.09em;
 }
@@ -6239,7 +6239,7 @@ body {
 .field-route-record h3 {
   margin: 0.35rem 0 0.45rem;
   color: var(--document-ink);
-  font-family: Iowan Old Style, Baskerville, "Noto Serif KR", Georgia, serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.275rem, 1.65cqw, 1.65rem);
   font-weight: 500;
 }

@@ -13,6 +13,7 @@ import {
   gameReducer,
   getAvailableTasks,
   getNextCompletionMinutes,
+  getNextCompletionTaskIds,
 } from "./reducer";
 import type { EvidenceId, GameState, ProposalId } from "../types/game";
 
@@ -379,5 +380,37 @@ describe("planning and explicit time advancement", () => {
     expect(state.completedTaskIds).toContain("powerAnalysis");
     expect(state.activeTasks.mira).toBeNull();
     expect(state.queuedTasks.mira).toEqual(["refrigerationAnalysis"]);
+  });
+
+  it("reports the tasks completing at the next advancement", () => {
+    let state = openReport();
+    state = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    state = gameReducer(state, {
+      type: "PLAN_TASK",
+      taskId: "refrigerationAnalysis",
+    });
+
+    expect(getNextCompletionTaskIds(state)).toEqual(["powerAnalysis"]);
+
+    state = gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+    expect(getNextCompletionTaskIds(state)).toEqual(["refrigerationAnalysis"]);
+  });
+
+  it("reports both tasks when they complete at the same time", () => {
+    let state = openReport();
+    state = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    state = gameReducer(state, { type: "PLAN_TASK", taskId: "refrigerationAnalysis" });
+    state = gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+
+    state = gameReducer(state, {
+      type: "PLAN_TASK",
+      taskId: "powerAnalysis",
+    });
+    expect(getNextCompletionTaskIds(state)).toEqual(["refrigerationAnalysis"]);
+  });
+
+  it("returns empty list when nothing is scheduled", () => {
+    expect(getNextCompletionTaskIds(openReport())).toEqual([]);
+    expect(getNextCompletionMinutes(openReport())).toBeNull();
   });
 });

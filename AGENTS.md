@@ -34,8 +34,13 @@
 - Do not leave a Vite host running after the task is complete.
 
 ## Playtest Screenshots
-- Capture representative play screens while testing the implemented VN flow, including the VN scene and report screen when available.
-- For the report screen, scroll from top to bottom and capture each viewport or section separately so the full report is visible; do not rely on one cropped image.
+- Capture representative play screens as **PNG** using `node scripts/screenshot.mjs`, which also writes a `<name>.txt` Playwright ARIA snapshot with live text, so agents that cannot view images can still verify the captured UI.
+- Requires a running dev host (see Development Host Lifecycle).
+- Usage: `node scripts/screenshot.mjs --name <file> --selector <css> [--flow vn|none] [--plan <taskId> ...]`
+  - `--flow vn` (default) advances the VN dialogue to the report screen; `--flow none` captures the current page as-is.
+  - `--plan <taskId>` plans a task after reaching the report screen (repeatable).
+  - Example: `node scripts/screenshot.mjs --name planning-schedule-bottom --selector ".advance-time-block" --plan powerAnalysis`
+- For the report screen, capture each viewport or section separately so the full report is visible; do not rely on one cropped capture.
 - Store committed screenshots under `docs/screenshots/` with stable, descriptive filenames.
 - Add or update a `## Screenshots` section in `README.md` with relative Markdown image links to the current screenshots.
 - Add every report screenshot to `README.md` in top-to-bottom order.

@@ -1,0 +1,7 @@
+- paragraph: 조사 결과
+- heading "도착한 기록" [level=2]
+- article:
+  - paragraph: 현장 확인 / 보관 구역
+  - heading "보관 구역 조명 단말 의존성" [level=3]
+  - paragraph: 바이크 현장에서 보관 구역 조명은 현장 유지보수·인증 단말 없이는 켤 수 없다는 점을 확인했다.
+  - button "조명 의존성 기록 보기"
