@@ -8,7 +8,6 @@
 ## Implementation Approval
 - In Codex sessions, remain read-only until the user explicitly asks to implement, change, fix, apply, or start implementation.
 - Before approval, limit work to inspection, analysis, diagnosis, design, planning, and other non-mutating checks.
-- When implementation is approved, invoke Sol Advisor orchestration and declare its route before the first implementation tool call.
 - Treat approval as scoped to the requested change; obtain new approval before materially expanding implementation scope.
 - For any Penpot-related request, use the `penpot-act2-prototype` MCP server.
 
@@ -44,6 +43,7 @@
 - Use `scripts/screenshot.mjs` as the canonical flow driver; extend it to emit SVG before capturing if the required SVG output is not yet supported.
 - Use repeatable `--act` steps for exact states; `--plan <taskId>` remains a shortcut for planning tasks.
 - Example: `node scripts/screenshot.mjs --name planning-schedule-bottom --selector ".advance-time-block" --plan powerAnalysis`.
+- Always capture the full game screen once, then additionally capture each panel separately; do not upload only partial captures to `README.md`.
 - For the report screen, capture each viewport or section separately so the full report is visible; do not rely on one cropped capture.
 - Use stable, descriptive filenames and update `README.md` with relative Markdown image links to every current SVG.
 - Add every report screenshot to `README.md` in top-to-bottom order.
