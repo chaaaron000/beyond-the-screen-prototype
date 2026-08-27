@@ -1,33 +1,32 @@
 - region "행동별 논쟁":
-  - paragraph: 행동별 논쟁
-  - heading "무엇을 먼저 할지" [level=2]
+  - heading "행동 후보" [level=2]
   - article:
-    - heading "01발전소를 조사한다" [level=3]
+    - heading "발전소를 조사한다" [level=3]
+    - button "제안하기"
     - blockquote:
       - text: 한서윤
       - paragraph: “거기 지금 바로 들어갈 수 있는지도 모르잖아.”
     - blockquote:
       - text: MIRAGE
       - paragraph: “주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”
-    - button "제안하기"
     - button "대화 LOG RAW"
   - article:
-    - heading "02바이크를 확인한다" [level=3]
+    - heading "바이크를 확인한다" [level=3]
+    - button "제안하기"
     - blockquote:
       - text: 한서윤
       - paragraph: “난 바이크부터 보고 싶은데?”
     - blockquote:
       - text: MIRAGE
       - paragraph: “아닌데요? 발전소 가봐야 하는데.”
-    - button "제안하기"
     - button "대화 LOG RAW"
   - article:
-    - heading "03냉장 시설을 확인한다" [level=3]
+    - heading "냉장 시설을 확인한다" [level=3]
+    - button "제안하기"
     - blockquote:
       - text: 한서윤
       - paragraph: “계속 온도가 오르는 건 좀 걸리는데.”
     - blockquote:
       - text: MIRAGE
       - paragraph: “아직 얼마나 급한지는 모르잖아요.”
-    - button "제안하기"
     - button "대화 LOG RAW"

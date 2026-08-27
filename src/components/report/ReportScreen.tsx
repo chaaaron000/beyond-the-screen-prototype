@@ -363,10 +363,9 @@ function DeadlineReminder({
   );
 }
 
-function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+function SectionHeading({ title }: { title: string }) {
   return (
     <header className="field-section-heading">
-      <p>{eyebrow}</p>
       <h2>{title}</h2>
     </header>
   );
@@ -792,7 +791,7 @@ function EvidenceSidebar({
 }) {
   return (
     <section className="evidence-sidebar">
-      <SectionHeading eyebrow="다시 확인할 근거" title="확보한 정보" />
+      <SectionHeading title="확보한 정보" />
       {state.discoveredEvidence.length === 0 ? (
         <p className="panel-empty">아직 도착한 조사 기록이 없습니다.</p>
       ) : (
@@ -924,7 +923,7 @@ function ProposalLedger({
   const seoyunBusy = state.activeTasks.seoyun !== null;
   return (
     <section className="proposal-ledger" aria-label="행동별 논쟁">
-      <SectionHeading eyebrow="행동별 논쟁" title="무엇을 먼저 할지" />
+      <SectionHeading title="행동 후보" />
       <div className="proposal-list">
         {PROPOSALS.map((proposal) => {
           const presentation = getProposalPresentation(state, proposal.id);
@@ -932,23 +931,8 @@ function ProposalLedger({
           const miraSummary = getDialogue(presentation.summaryDialogueIds.mira)[0];
           return (
           <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
-            <h3 className="proposal-entry-title">
-              <span>{proposal.number}</span>
-              {proposal.title}
-            </h3>
-
-            <div className="proposal-positions">
-              <blockquote className="proposal-position">
-                <cite>한서윤</cite>
-                <p>“{seoyunSummary.text}”</p>
-              </blockquote>
-              <blockquote className="proposal-position">
-                <cite>MIRAGE</cite>
-                <p>“{miraSummary.text}”</p>
-              </blockquote>
-            </div>
-
-            <div className="proposal-entry-actions">
+            <div className="proposal-entry-header">
+              <h3 className="proposal-entry-title">{proposal.title}</h3>
               <button
                 type="button"
                 className="proposal-start-button"
@@ -962,6 +946,20 @@ function ProposalLedger({
                     ? "한서윤 작업 중"
                     : "제안하기"}
               </button>
+            </div>
+
+            <div className="proposal-positions">
+              <blockquote className="proposal-position">
+                <cite>한서윤</cite>
+                <p>“{seoyunSummary.text}”</p>
+              </blockquote>
+              <blockquote className="proposal-position">
+                <cite>MIRAGE</cite>
+                <p>“{miraSummary.text}”</p>
+              </blockquote>
+            </div>
+
+            <div className="proposal-entry-actions">
               <button
                 type="button"
                 className="proposal-raw-log-button"
@@ -1004,9 +1002,11 @@ function FieldDocument({
         <h1>시설 정보</h1>
       </header>
       <section className="field-document-section">
-        <SectionHeading eyebrow="현재 상황" title="아침의 운영 기록" />
+        <SectionHeading title="분석 요약" />
         <div className="situation-copy">
-          {KNOWN_FACTS.map((fact) => <p key={fact}>{fact}</p>)}
+          <ul>
+            {KNOWN_FACTS.map((fact) => <li key={fact}>{fact}</li>)}
+          </ul>
         </div>
       </section>
 
@@ -1019,7 +1019,7 @@ function FieldDocument({
       />
 
       <section className="field-document-section">
-        <SectionHeading eyebrow="조사 결과" title="도착한 기록" />
+        <SectionHeading title="도착한 기록" />
         {state.discoveredEvidence.length === 0 ? (
           <p className="document-empty">아직 추가로 확인한 정보가 이 문서에 들어오지 않았다.</p>
         ) : (
@@ -1029,7 +1029,6 @@ function FieldDocument({
               const attachment = ATTACHMENTS[evidenceId];
               return (
                 <article className="document-record" key={evidenceId}>
-                  <p className="record-source">{evidence.source}</p>
                   <h3>{evidence.title}</h3>
                   <p>{evidence.detail}</p>
                   <button type="button" className="attachment-link" onClick={() => onOpenAttachment(attachment)}>
@@ -1043,7 +1042,7 @@ function FieldDocument({
       </section>
 
       <section className="field-document-section field-document-section--field-log" aria-label="현장 확인 기록">
-        <SectionHeading eyebrow="현장 기록" title="확인한 장소" />
+        <SectionHeading title="확인한 장소" />
         {completedRoutes.length === 0 ? (
           <p className="document-empty">아직 현장에서 돌아온 기록이 없다.</p>
         ) : (
@@ -1057,10 +1056,12 @@ function FieldDocument({
                   data-route-id={proposal.id}
                   key={proposal.id}
                 >
-                  <p className="record-source">현장 확인 완료</p>
                   <h3>{route.location}</h3>
-                  <p className="field-route-record-note">{route.reportResult.fieldNote}</p>
-                  <p className="field-route-record-summary">{route.reportResult.summary}</p>
+                  <p className="field-route-record-note">
+                    {route.reportResult.fieldNote}
+                    {"\n"}
+                    {route.reportResult.summary}
+                  </p>
                   <ul>
                     {route.reportResult.facts.map((fact) => <li key={fact}>{fact}</li>)}
                   </ul>

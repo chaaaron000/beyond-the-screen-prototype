@@ -1397,7 +1397,6 @@ body {
 }
 
 .report-topbar-right span,
-.record-source,
 .deadline-readout > span,
 .timeline-axis,
 .timeline-lane-label small,
@@ -1473,82 +1472,69 @@ body {
   width: min(100%, 46rem);
   min-height: 100%;
   margin: 0 auto;
-  padding: clamp(1.35rem, 3.4cqw, 3.5rem) clamp(1.4rem, 4.4cqw, 4.7rem) 4.5rem;
+  padding: 3rem clamp(1.4rem, 4.4cqw, 4.7rem) 3rem;
   color: var(--document-ink);
   background: var(--document-paper);
 }
 
 .field-document-header {
-  margin-bottom: clamp(2.4rem, 4.6cqw, 4.4rem);
+  margin-bottom: var(--block-gap, 1rem);
+  border-bottom: 1px solid var(--document-line);
+  padding-bottom: 1rem;
 }
 
 .field-document h1 {
   margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(2.4rem, 4.4cqw, 3.4rem);
+  font-size: 2.25rem;
   font-weight: 700;
-  letter-spacing: -0.055em;
-  line-height: 1.15;
+  letter-spacing: -0.045em;
+  line-height: 3rem;
 }
 
 .field-document-section {
-  margin-top: clamp(2.6rem, 4.8cqw, 4.6rem);
-}
-
-.field-document-section:first-of-type {
-  margin-top: 0;
+  margin-top: 1rem;
+  padding-bottom: 0;
 }
 
 .field-section-heading {
-  margin-bottom: 1.1rem;
-}
-
-.field-section-heading p {
-  margin: 0 0 0.3rem;
-  color: var(--document-faint);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
 }
 
 .field-section-heading h2 {
   margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.5rem, 2.2cqw, 1.9rem);
+  font-size: 1.875rem;
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.3;
+  letter-spacing: -0.03em;
+  line-height: 2.5rem;
 }
 
 .situation-copy {
-  border-top: 0;
-  padding-top: 0.2rem;
+  padding-top: 0;
 }
 
-.situation-copy p {
-  max-width: 47rem;
-  margin: 0 0 0.7rem;
-  border-bottom: 0;
-  padding: 0;
+.situation-copy ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.situation-copy li {
+  margin: 0;
   color: var(--document-ink);
-  font-size: clamp(1.14rem, 1.53cqw, 1.53rem);
-  line-height: 1.75;
-  letter-spacing: -0.02em;
-}
-
-.situation-copy p:last-child {
-  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.01em;
 }
 
 .document-empty {
   max-width: 42rem;
   margin: 0;
   color: var(--document-muted);
-  font-size: clamp(1.08rem, 1.32cqw, 1.32rem);
-  line-height: 1.8;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .document-records {
@@ -1556,43 +1542,38 @@ body {
 }
 
 .document-record {
-  margin-top: 1.4rem;
+  margin: 0;
   border-bottom: 0;
   padding: 0;
 }
 
-.record-source {
-  margin-bottom: 0.3rem;
-  color: var(--document-faint);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
 .document-record h3 {
-  margin: 0 0 0.38rem;
+  margin: 0;
   color: var(--document-ink);
-  font-size: clamp(1.14rem, 1.5cqw, 1.5rem);
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 2.125rem;
   letter-spacing: -0.02em;
 }
 
-.document-record > p:not(.record-source) {
+.document-record > p {
   max-width: 46rem;
   margin: 0;
   color: var(--document-ink);
-  font-size: clamp(1.05rem, 1.275cqw, 1.275rem);
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.01em;
 }
 
 .attachment-link {
   display: inline;
-  margin-top: 0.55rem;
+  margin-top: 0;
   border: 0;
   padding: 0;
   color: var(--document-accent);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.93rem, 1.11cqw, 1.11rem);
+  font-size: 1rem;
   text-decoration: underline;
   text-underline-offset: 0.22em;
 }
@@ -2073,10 +2054,6 @@ body {
   font-size: clamp(1.5rem, 2.025cqw, 2.025rem);
 }
 
-.evidence-sidebar .field-section-heading p {
-  color: var(--plan-amber);
-}
-
 .panel-empty {
   margin: 0;
   color: var(--plan-faint);
@@ -2469,44 +2446,50 @@ body {
 
 /* Proposal ledger: the document presents arguments by action, not by speaker. */
 .proposal-ledger {
-  margin-top: clamp(2.6rem, 4.8cqw, 4.6rem);
+  margin-top: 1rem;
+  border-bottom: 1px solid var(--document-line);
+  padding-bottom: 1rem;
 }
 
 .proposal-list {
   display: grid;
-  gap: 2.6rem;
+  gap: 1rem;
 }
 
 .proposal-entry {
   padding: 0;
 }
 
+.proposal-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .proposal-entry-title {
   display: block;
-  margin: 0 0 0.85rem;
+  margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.27rem, 1.75cqw, 1.75rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.35;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 2.125rem;
 }
 
 .proposal-entry-title > span {
-  margin-right: 0.5rem;
-  color: var(--document-faint);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  display: none;
 }
 
 .proposal-start-button {
+  flex: 0 0 auto;
   border: 1px solid color-mix(in srgb, var(--document-ink) 32%, transparent);
   padding: 0.42rem 0.85rem;
   color: var(--document-ink);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.87rem, 1.08cqw, 1.08rem);
+  font-size: 0.8125rem;
 }
 
 .proposal-start-button:hover:not(:disabled) {
@@ -2521,38 +2504,40 @@ body {
 
 .proposal-positions {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .proposal-position {
+  display: grid;
+  grid-template-columns: 4.625rem minmax(0, 1fr);
+  gap: 0;
+  align-items: baseline;
   margin: 0;
   padding: 0;
 }
 
 .proposal-position cite {
-  display: block;
-  margin-bottom: 0.2rem;
   color: var(--document-faint);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  line-height: 1.5rem;
 }
 
 .proposal-position p {
   margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.05rem, 1.4cqw, 1.4rem);
-  line-height: 1.65;
-  letter-spacing: -0.02em;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.01em;
 }
 
 .proposal-entry-actions {
   display: flex;
   align-items: center;
-  gap: 1.1rem;
+  gap: 0;
   margin-top: 1rem;
 }
 
@@ -2562,7 +2547,7 @@ body {
   color: var(--document-accent);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.87rem, 1.08cqw, 1.08rem);
+  font-size: 1rem;
   text-decoration: underline;
   text-underline-offset: 0.22em;
 }
@@ -3070,13 +3055,8 @@ body {
   background: var(--document-paper);
 }
 
-.field-section-heading p,
-.record-source {
-  color: var(--document-faint);
-}
-
 .document-empty,
-.document-record > p:not(.record-source) {
+.document-record > p {
   color: var(--document-ink);
 }
 
@@ -3475,12 +3455,12 @@ body {
 }
 
 .field-document-section--field-log {
-  margin-top: clamp(1.5rem, 3cqw, 3rem);
+  margin-top: 1rem;
 }
 
 .field-route-records {
   display: grid;
-  gap: 1.6rem;
+  gap: 1rem;
 }
 
 .field-route-record {
@@ -3493,35 +3473,31 @@ body {
 }
 
 .field-route-record h3 {
-  margin: 0 0 0.45rem;
+  margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.275rem, 1.65cqw, 1.65rem);
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 2.125rem;
   letter-spacing: -0.02em;
 }
 
-.field-route-record-note,
-.field-route-record-summary {
+.field-route-record-note {
   margin: 0;
   color: var(--document-muted);
-  font-size: clamp(0.81rem, 1.095cqw, 1.095rem);
-  line-height: 1.7;
-}
-
-.field-route-record-summary {
-  margin-top: 0.42rem;
-  color: var(--document-ink);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  white-space: pre-line;
 }
 
 .field-route-record ul {
   display: grid;
-  gap: 0.22rem;
-  margin: 0.6rem 0 0;
+  gap: 0;
+  margin: 0;
   padding-left: 1.1rem;
   color: var(--document-muted);
-  font-size: clamp(0.75rem, 1.02cqw, 1.02rem);
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 @keyframes presentation-record-pulse {

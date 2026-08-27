@@ -38,11 +38,15 @@
 - Do not leave a Vite host running after the task is complete.
 
 ## Report Document Typography
-- Base report document typography on Notion's default document scale.
+- Base report document typography on Notion's default document scale; font family is Noto Sans KR for all report text.
 - Scale: Page title 36px/700, H1 30px/700, H2 24px/600, H3 20px/600, Body 16px/400, Secondary 14px/400~500, Metadata 12px/400~500.
 - Do not use text smaller than 16px for player-readable content: body paragraphs, character opinions/quotes, and evidence descriptions.
-- Metadata (12px) is only for labels the player does not need to read, such as section eyebrows or timestamps.
+- Use Metadata (12px) and Secondary (14px) only for image captions or descriptions; do not attach them anywhere else.
 - Do not add decorative metadata text; omit it entirely when it does not help reading.
+- Render each typography role as a fixed-height block: Page title 48px, H1 40px, H2 34px, Body 24px per line, Secondary 21px, Metadata 18px.
+- Use a single vertical gap of 16px between all blocks.
+- Separate every H1 section from preceding content with a 1px divider, 16px above and 16px below it.
+- Keep dark and light report layouts at identical block positions and sizes; vary only the palette colors.
 
 ## Penpot Structure
 - Within each board, group shapes by document section (one group per document section, proposal entry, or dialog block) following the document's order; never leave all shapes flat in one board.

@@ -1,27 +1,29 @@
 /*
- * Report typography follows Notion's block hierarchy:
- * page title, H2 section, H3 item, body, then metadata. The scale is fixed
- * in rem so changing the report column width does not change text size.
+ * Report typography follows Notion's default document scale:
+ * Page title 36px/700, H1 30px/700, H2 24px/600, H3 20px/600,
+ * Body 16px/400, Secondary 14px/400~500, Metadata 12px/400~500.
+ * Each role renders as a fixed-height block with a single 16px gap
+ * between blocks, so the web document matches the Penpot boards.
  */
 .report-shell {
-  --type-meta: 0.6875rem;
-  --type-caption: 0.75rem;
+  --type-meta: 0.75rem;
+  --type-caption: 0.8125rem;
   --type-control: 0.8125rem;
   --type-body-small: 0.875rem;
   --type-body: 1rem;
-  --type-h3: 1.125rem;
-  --type-h2: 1.5rem;
-  --type-h1: 2.5rem;
+  --type-h3: 1.25rem;
+  --type-h2: 1.875rem;
+  --type-h1: 2.25rem;
+  --block-gap: 1rem;
+  --block-title: 3rem;
+  --block-h1: 2.5rem;
+  --block-h2: 2.125rem;
+  --block-body: 1.5rem;
+  --block-secondary: 1.3125rem;
+  --block-meta: 1.125rem;
 }
 
 /* Shared document chrome */
-.field-section-heading p,
-.record-source,
-.proposal-entry-title > span {
-  font-size: var(--type-meta);
-  line-height: 1.35;
-}
-
 .report-topbar strong {
   font-size: var(--type-body);
   line-height: 1.35;
@@ -45,58 +47,70 @@
   font-size: var(--type-control);
 }
 
-/* Notion-like document blocks: H1 > H2 > H3 > body. */
+/* Notion-like document blocks: Page title > H1 > H2 > body. */
 .field-document {
   font-size: var(--type-body);
 }
 
 .field-document h1 {
   font-size: var(--type-h1);
-  line-height: 1.15;
+  min-height: var(--block-title);
+  line-height: var(--block-title);
   letter-spacing: -0.045em;
 }
 
 .field-section-heading h2 {
   font-size: var(--type-h2);
-  line-height: 1.25;
+  min-height: var(--block-h1);
+  line-height: var(--block-h1);
   letter-spacing: -0.03em;
 }
 
-.situation-copy p {
+.situation-copy ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.situation-copy li {
   font-size: var(--type-body);
-  line-height: 1.65;
+  min-height: var(--block-body);
+  line-height: var(--block-body);
 }
 
 .proposal-position p {
   font-size: var(--type-body);
-  line-height: 1.6;
+  min-height: var(--block-body);
+  line-height: var(--block-body);
 }
 
 .proposal-position cite {
-  font-size: var(--type-caption);
+  font-size: var(--type-body);
+  min-height: var(--block-body);
+  line-height: var(--block-body);
 }
 
 .document-empty {
   font-size: var(--type-body);
-  line-height: 1.65;
+  min-height: var(--block-body);
+  line-height: var(--block-body);
 }
 
 .document-record h3,
 .field-route-record h3,
 .proposal-entry-title {
   font-size: var(--type-h3);
-  line-height: 1.35;
+  min-height: var(--block-h2);
+  line-height: var(--block-h2);
 }
 
-.document-record > p:not(.record-source),
-.field-route-record-note,
-.field-route-record-summary {
-  font-size: var(--type-body-small);
-  line-height: 1.6;
+.document-record > p,
+.field-route-record-note {
+  font-size: var(--type-body);
+  line-height: 1.5;
 }
 
 .field-route-record ul {
-  font-size: var(--type-body-small);
+  font-size: var(--type-body);
   line-height: 1.5;
 }
 
@@ -204,7 +218,8 @@
 
 .proposal-dialog-header h2 {
   font-size: var(--type-h2);
-  line-height: 1.25;
+  min-height: var(--block-h1);
+  line-height: var(--block-h1);
 }
 
 .result-viewer-entry h3,
