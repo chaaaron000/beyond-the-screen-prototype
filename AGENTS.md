@@ -13,18 +13,16 @@
 | Task | Command |
 |------|---------|
 | Start host in background (PowerShell) | `$hostProcess = Start-Process cmd.exe -ArgumentList "/c","npm run dev" -PassThru` |
+| Run tests | `npm test` |
+| Run one test file | `npm test -- <path/to/file.test.ts>` |
 | Build and type-check | `npm run build` |
-| Preview production build | `npm run preview` |
 
 ## Verification
-- Changes are incomplete until they are verified.
 - Always run relevant automated tests and `npm run build` before completion.
-- Existing tests covering changed behavior must continue to pass.
 - Changes to `src/game/`, scheduling, time progression, evidence, proposal evaluation, or knowledge state require deterministic automated tests.
-- Add or update tests when changing game logic.
 - Prefer automated component or E2E tests for testable UI interactions.
 - Use browser or manual testing for visual and end-to-end checks such as layout, typography, responsive behavior, animations, and complete player flows.
-- Before reporting completion, fix failures caused by the change and briefly report what was verified.
+- Report automated tests, build, and exercised browser flows separately.
 
 ## Development Host Lifecycle
 - Never run `npm run dev` in the foreground during browser or manual testing.
@@ -34,17 +32,14 @@
 - Do not leave a Vite host running after the task is complete.
 
 ## Playtest Screenshots
-- Capture representative play screens as **PNG** using `node scripts/screenshot.mjs`, which also writes a `<name>.txt` Playwright ARIA snapshot with live text, so agents that cannot view images can still verify the captured UI.
-- Requires a running dev host (see Development Host Lifecycle).
-- Usage: `node scripts/screenshot.mjs --name <file> --selector <css> [--flow vn|none] [--plan <taskId> ...]`
-  - `--flow vn` (default) advances the VN dialogue to the report screen; `--flow none` captures the current page as-is.
-  - `--plan <taskId>` plans a task after reaching the report screen (repeatable).
-  - Example: `node scripts/screenshot.mjs --name planning-schedule-bottom --selector ".advance-time-block" --plan powerAnalysis`
+- After visual or player-flow changes, capture every affected representative play state as a real-pixel **PNG**; do not substitute SVG mockups for screenshots.
+- With the development host running, use `node scripts/screenshot.mjs --name <file> --selector <css> [--flow vn|none] [--act <action> ...]`.
+- Keep each generated `<name>.png` and matching `<name>.txt` Playwright ARIA snapshot together under `docs/screenshots/`.
+- Use repeatable `--act` steps for exact states; `--plan <taskId>` remains a shortcut for planning tasks.
+- Example: `node scripts/screenshot.mjs --name planning-schedule-bottom --selector ".advance-time-block" --plan powerAnalysis`.
 - For the report screen, capture each viewport or section separately so the full report is visible; do not rely on one cropped capture.
-- Store committed screenshots under `docs/screenshots/` with stable, descriptive filenames.
-- Add or update a `## Screenshots` section in `README.md` with relative Markdown image links to the current screenshots.
+- Use stable, descriptive filenames and update `README.md` with relative Markdown image links to every current PNG.
 - Add every report screenshot to `README.md` in top-to-bottom order.
-- After each feature or visual change, retake affected screenshots and replace the README references so they show the current implementation.
 - Do not use `.openchamber/screenshots/` as README assets because `.openchamber/` is ignored.
 
 ## Key Conventions
