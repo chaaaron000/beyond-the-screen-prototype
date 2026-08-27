@@ -5,6 +5,12 @@
 - Prioritize validating the intended VN flow and interaction behavior over production hardening.
 - Mobile portrait-ratio testing is not required unless the user explicitly requests it.
 
+## Implementation Approval
+- In Codex sessions, remain read-only until the user explicitly asks to implement, change, fix, apply, or start implementation.
+- Before approval, limit work to inspection, analysis, diagnosis, design, planning, and other non-mutating checks.
+- When implementation is approved, invoke Sol Advisor orchestration and declare its route before the first implementation tool call.
+- Treat approval as scoped to the requested change; obtain new approval before materially expanding implementation scope.
+
 ## Package Manager
 - Use **npm**; `package-lock.json` is the lockfile.
 - Install dependencies with `npm install`.
