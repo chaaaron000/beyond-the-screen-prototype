@@ -2,10 +2,10 @@
 /**
  * Playwright screenshot tool for the prototype.
  *
- * Captures a DOM element as a real-pixel PNG plus a Playwright ARIA
- * snapshot as `<name>.txt` (live text, so agents that cannot view images
- * can still verify the captured UI). Requires a running dev host (see
- * AGENTS.md).
+ * Captures a DOM element as a real-pixel PNG, an SVG-wrapped exact raster,
+ * and a Playwright ARIA snapshot as `<name>.txt` (live text, so agents that
+ * cannot view images can still verify the captured UI). Requires a running
+ * dev host (see AGENTS.md).
  *
  * Usage:
  *   node scripts/screenshot.mjs --name <file> --selector <css> [options]
@@ -34,6 +34,8 @@
  *   --url <url>        App URL (default: http://localhost:5173/beyond-the-screen-prototype/)
  *   --out <dir>        Output directory (default: docs/screenshots)
  *   --viewport <w,h>   Browser viewport (default: 1440,900)
+ *   --theme <mode>      Seed saved theme before app startup (light|dark)
+ *   --palette <id>      Seed saved palette before app startup
  */
 import { readFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -84,6 +86,8 @@ function parseArgs(argv) {
     else if (key === "--url") args.url = value;
     else if (key === "--out") args.out = value;
     else if (key === "--viewport") args.viewport = value;
+    else if (key === "--theme") args.theme = value;
+    else if (key === "--palette") args.palette = value;
   }
   return args;
 }
@@ -238,6 +242,15 @@ async function main() {
 
   try {
     const page = await browser.newPage({ viewport: { width, height } });
+    if (args.theme || args.palette) {
+      await page.addInitScript(
+        ({ theme, palette }) => {
+          if (theme) localStorage.setItem("oasis.theme.mode", theme);
+          if (palette) localStorage.setItem("oasis.theme.palette", palette);
+        },
+        { theme: args.theme, palette: args.palette },
+      );
+    }
     await page.goto(args.url, { waitUntil: "networkidle0" });
     await sleep(1200);
 
@@ -262,13 +275,29 @@ async function main() {
     const outDir = resolve(ROOT, args.out);
     await mkdir(outDir, { recursive: true });
     const pngPath = join(outDir, `${args.name}.png`);
+    const svgPath = join(outDir, `${args.name}.svg`);
     const txtPath = join(outDir, `${args.name}.txt`);
 
-    await locator.screenshot({ path: pngPath, animations: "disabled" });
+    const bounds = await locator.boundingBox();
+    if (!bounds) {
+      console.error(`FAIL: selector "${args.selector}" has no visible bounds`);
+      process.exit(1);
+    }
+    const png = await locator.screenshot({ animations: "disabled" });
+    await writeFile(pngPath, png);
+    const svgWidth = Math.max(1, Math.round(bounds.width));
+    const svgHeight = Math.max(1, Math.round(bounds.height));
+    const svg = [
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">`,
+      `<image width="${svgWidth}" height="${svgHeight}" href="data:image/png;base64,${png.toString("base64")}"/>`,
+      "</svg>",
+    ].join("");
+    await writeFile(svgPath, svg, "utf8");
     const ariaSnapshot = await locator.ariaSnapshot();
     await writeFile(txtPath, ariaSnapshot, "utf8");
 
     console.log(`Saved ${pngPath}`);
+    console.log(`Saved ${svgPath}`);
     console.log(`Saved ${txtPath}`);
   } finally {
     await browser.close();

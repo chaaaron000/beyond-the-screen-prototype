@@ -32,13 +32,13 @@
 - Do not leave a Vite host running after the task is complete.
 
 ## Playtest Screenshots
-- After visual or player-flow changes, capture every affected representative play state as a real-pixel **PNG**; do not substitute SVG mockups for screenshots.
-- With the development host running, use `node scripts/screenshot.mjs --name <file> --selector <css> [--flow vn|none] [--act <action> ...]`.
-- Keep each generated `<name>.png` and matching `<name>.txt` Playwright ARIA snapshot together under `docs/screenshots/`.
+- After visual or player-flow changes, capture every affected representative play state as **SVG**.
+- Store each `<name>.svg` and matching `<name>.txt` Playwright ARIA snapshot together under `docs/screenshots/`.
+- Use `scripts/screenshot.mjs` as the canonical flow driver; extend it to emit SVG before capturing if the required SVG output is not yet supported.
 - Use repeatable `--act` steps for exact states; `--plan <taskId>` remains a shortcut for planning tasks.
 - Example: `node scripts/screenshot.mjs --name planning-schedule-bottom --selector ".advance-time-block" --plan powerAnalysis`.
 - For the report screen, capture each viewport or section separately so the full report is visible; do not rely on one cropped capture.
-- Use stable, descriptive filenames and update `README.md` with relative Markdown image links to every current PNG.
+- Use stable, descriptive filenames and update `README.md` with relative Markdown image links to every current SVG.
 - Add every report screenshot to `README.md` in top-to-bottom order.
 - Do not use `.openchamber/screenshots/` as README assets because `.openchamber/` is ignored.
 

@@ -5,7 +5,7 @@
  * Every UI color in global.css flows through the --p-* tokens below, which are remapped onto the
  * legacy document/plan variable groups so the existing report and planning CSS themes itself.
  *
- * VN scene imagery stays cinematic (night) in both modes; its chrome was brightened from the tokens.
+ * VN scene imagery and chrome stay cinematic (night) in both modes.
  * Presentation covers also stay night; they are the same cinematic language as the VN scene.
  */
 
@@ -356,6 +356,20 @@ body {
   background: var(--p-frame);
 }
 
+/* The theme switcher belongs to the report UI. Keep the complete VN frame
+ * visually stable even while the saved report theme is light. */
+.game-viewport--vn {
+  color-scheme: dark;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(50, 54, 53, 0.34), transparent 42rem),
+    #0d0f14;
+}
+
+.game-screen--vn {
+  border-color: rgba(231, 228, 220, 0.18);
+  background: #171818;
+}
+
 .report-shell {
   color: var(--p-ink);
   background:
@@ -372,46 +386,20 @@ html[data-theme="light"] .report-topbar strong {
   color: var(--p-ink);
 }
 
-/* VN chrome: the scene is a night render in both modes. Keep its labels,
- * buttons, and dialogue accent readable by brightening the palette tokens
- * toward white only inside the scene. */
-html[data-theme="dark"] .vn-shell {
-  --accent: var(--p-accent);
-  --accent-soft: var(--p-accent-soft);
-  --mira: var(--p-mira);
-  --seoyun: var(--p-seoyun);
-}
-
-html[data-theme="light"] .vn-shell {
-  /* Only the accent on the dark scene chrome (topbar eyebrow) needs
-   * brightening; dialogue-box accents sit on a light surface, so they keep
-   * the raw (readable) palette values. */
-  --accent: color-mix(in srgb, var(--p-accent) 55%, #ffffff);
+/* VN chrome is deliberately independent from report theme and palette tokens. */
+.vn-shell {
+  color-scheme: dark;
+  --ink: #dce7ea;
+  --faint: #687980;
+  --accent: #7fa5aa;
+  --accent-soft: #b8cdd0;
+  --mira: #8eafad;
+  --seoyun: #a3b2c3;
 }
 
 .vn-shell .quiet-button {
   color: #e5eef0;
   border-bottom-color: rgba(232, 228, 218, 0.42);
-}
-
-/* Dialogue box follows the theme, not the scene (it is the reading surface). */
-html[data-theme="light"] .dialogue-box {
-  border-color: var(--p-line);
-  background: linear-gradient(180deg, var(--p-dialogue-top), var(--p-dialogue-bottom));
-}
-
-html[data-theme="light"] .dialogue-text {
-  color: var(--p-dialogue-ink);
-  text-shadow: none;
-}
-
-html[data-theme="light"] .dialogue-heading,
-html[data-theme="light"] .continue-button {
-  border-color: var(--p-line);
-}
-
-html[data-theme="light"] .dialogue-progress {
-  color: color-mix(in srgb, var(--p-dialogue-ink) 46%, transparent);
 }
 
 /* ------------------------------------------------------------------ */

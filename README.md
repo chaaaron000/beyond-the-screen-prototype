@@ -19,6 +19,10 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ## Screenshots
 
+![VN scene with the saved light theme isolated](docs/screenshots/vn-theme-isolated-light.svg)
+
+![VN scene with the saved dark theme isolated](docs/screenshots/vn-theme-isolated-dark.svg)
+
 ![VN field scene](docs/screenshots/vn-field-scene.png)
 
 ![FIELD LINK transition](docs/screenshots/transition-field-link.png)

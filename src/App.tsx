@@ -208,8 +208,8 @@ export default function App() {
   };
 
   return (
-    <div className="game-viewport">
-      <div className={`game-screen${inputLocked ? " is-presentation-locked" : ""}${transitionClass}`}>
+    <div className={`game-viewport game-viewport--${state.view}`}>
+      <div className={`game-screen game-screen--${state.view}${inputLocked ? " is-presentation-locked" : ""}${transitionClass}`}>
         {state.view === "vn" ? (
           <VNScene state={state} dispatch={dispatch} onAdvanceDialogue={handleAdvanceDialogue} disabled={inputLocked} />
         ) : (
