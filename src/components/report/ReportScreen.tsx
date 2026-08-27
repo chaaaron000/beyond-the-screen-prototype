@@ -403,7 +403,6 @@ function Timeline({
     <section className="timeline-section" aria-label="조사 일정 timeline">
       <div className="timeline-heading">
         <div>
-          <p className="panel-eyebrow">가벼운 일정표</p>
           <h3>두 사람의 다음 움직임</h3>
         </div>
         {knowsDeadline ? (
@@ -499,7 +498,7 @@ function Timeline({
       </div>
       {knowsDeadline && (
         <p className="timeline-note">
-          붉은 영역은 알려진 보존 한계 이후입니다. 일정 위험만 표시하며, 결과를 미리 결정하지 않습니다.
+          붉은 영역은 알려진 보존 한계 이후입니다.
         </p>
       )}
     </section>
@@ -608,7 +607,6 @@ function ActorPlanningCard({
           <div className="actor-planning-identity">
             <img src={avatar} alt="" className="actor-avatar" />
             <div>
-              <p className="actor-planning-kicker">조사 담당</p>
               <h3>{actor === "mira" ? "MIRAGE" : ACTOR_LABEL[actor]}</h3>
             </div>
           </div>
@@ -627,11 +625,10 @@ function ActorPlanningCard({
           </section>
         </div>
 
-        <section className="actor-available-section" aria-label={`${ACTOR_LABEL[actor]} 가능한 조사`}>
-          <div className="actor-subheading">
-            <span>가능한 조사</span>
-            <small>클릭하면 오른쪽 끝에 계획</small>
-          </div>
+          <section className="actor-available-section" aria-label={`${ACTOR_LABEL[actor]} 가능한 조사`}>
+            <div className="actor-subheading">
+              <span>가능한 조사</span>
+            </div>
           {availableTasks.length === 0 ? (
             <p className="actor-empty-message">지금 확인할 수 있는 새 조사가 없습니다.</p>
           ) : (
@@ -656,10 +653,8 @@ function ActorPlanningCard({
           )}
         </section>
 
-        <div className="actor-planning-arrow" aria-hidden="true">→</div>
-
         <section className="actor-queue-section" aria-label={`${ACTOR_LABEL[actor]} 조사 예정`}>
-          <div className="actor-subheading"><span>조사 예정</span><small>시작 전까지 수정 가능</small></div>
+          <div className="actor-subheading"><span>조사 예정</span></div>
           <QueueList
             actor={actor}
             state={{ ...state, queuedTasks: { ...state.queuedTasks, [actor]: plannedTaskIds } }}
@@ -687,74 +682,13 @@ function InvestigationPlanner({
     <section className="investigation-planner" aria-label="캐릭터별 조사 큐">
       <div className="planner-section-heading">
         <div>
-          <p className="panel-eyebrow">QUEUE / HANDOFF</p>
           <h3>조사 순서 정하기</h3>
         </div>
-        <span>예약은 시간을 소비하지 않아요</span>
       </div>
       <div className="actor-planning-grid">
         <ActorPlanningCard actor="mira" state={state} dispatch={dispatch} disabled={disabled} transitionProgress={transitionProgress} />
         <ActorPlanningCard actor="seoyun" state={state} dispatch={dispatch} disabled={disabled} transitionProgress={transitionProgress} />
       </div>
-    </section>
-  );
-}
-
-function ScheduleStatus({ actor, state, dispatch }: { actor: Actor; state: GameState; dispatch: Dispatch<GameAction> }) {
-  const activeTask = state.activeTasks[actor];
-  return (
-    <section className={`schedule-status schedule-status--${actor}`}>
-      <div className="schedule-status-heading">
-        <span className={`actor-name actor-name--${actor}`}>{ACTOR_LABEL[actor]}</span>
-        <span>{activeTask ? "지금 수행 중" : "다음 작업을 기다리는 중"}</span>
-      </div>
-      {activeTask ? (
-        <p className="current-task-line">
-          <strong>{getTask(activeTask.taskId).title}</strong>
-          <span>{formatDuration(activeTask.remainingMinutes)} 남음</span>
-        </p>
-      ) : (
-        <p className="current-task-line current-task-line--empty">현재 실행 중인 작업 없음</p>
-      )}
-      <QueueList actor={actor} state={state} dispatch={dispatch} />
-    </section>
-  );
-}
-
-function TaskPicker({ state, dispatch }: { state: GameState; dispatch: Dispatch<GameAction> }) {
-  const availableTasks = getAvailableTasks(state);
-
-  return (
-    <section className="task-picker">
-      <SectionHeading eyebrow="추가 조사" title="새로 맡길 수 있는 조사" />
-      {availableTasks.length === 0 ? (
-        <p className="panel-empty">지금 확인 가능한 새로운 작업이 없습니다.</p>
-      ) : (
-        <div className="task-picker-list">
-          {availableTasks.map((task) => {
-            const actorBusy = state.activeTasks[task.actor] !== null;
-            return (
-              <article className={`task-option task-option--${task.actor}`} key={task.id}>
-                <div>
-                  <div className="task-option-meta">
-                    <span>{ACTOR_LABEL[task.actor]}</span>
-                    <span>{formatDuration(task.durationMinutes)}</span>
-                  </div>
-                  <h4>{task.title}</h4>
-                  <p>{task.description}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => dispatch({ type: "PLAN_TASK", taskId: task.id })}
-                >
-                  {actorBusy ? "뒤에 계획" : "계획에 추가"}
-                </button>
-              </article>
-            );
-          })}
-        </div>
-      )}
-      <p className="panel-footnote">예약과 순서 변경은 무료입니다. 시간은 아래 진행 버튼을 누를 때만 흐릅니다.</p>
     </section>
   );
 }
@@ -785,7 +719,6 @@ function ProposalEvidenceDialog({
       >
         <header className="proposal-dialog-header">
           <div>
-            <p className="panel-eyebrow">PLAYER PROPOSAL / EVIDENCE</p>
             <h2 id="proposal-dialog-title">제안</h2>
           </div>
           <button type="button" className="proposal-dialog-close" onClick={onCancel}>닫기</button>
@@ -794,13 +727,11 @@ function ProposalEvidenceDialog({
         <div className="proposal-dialog-action">
           <span>{proposal.number}</span>
           <strong>{proposal.title}</strong>
-          <p>행동만 제안하거나, 지금까지 확보한 정보를 함께 제시할 수 있습니다.</p>
         </div>
 
         <div className="proposal-evidence-heading">
           <div>
             <p>함께 제시할 정보</p>
-            <small>근거는 선택 사항입니다. 최대 3개까지 고를 수 있습니다.</small>
           </div>
           <strong>{selectedEvidenceIds.length} / 3</strong>
         </div>
@@ -998,7 +929,6 @@ function ProposalLedger({
           <p>행동별 논쟁</p>
           <h2>무엇을 먼저 할지</h2>
         </div>
-        <span>읽은 자리에서 바로 제안</span>
       </header>
       <div className="proposal-list">
         {PROPOSALS.map((proposal) => {
@@ -1044,7 +974,7 @@ function ProposalLedger({
               disabled={disabled}
               onClick={() => onOpenRawLog(proposal.id)}
             >
-              <span>대화 LOG RAW</span><small>독립 창으로 원문 열기</small><b aria-hidden="true">↗</b>
+              <span>대화 LOG RAW</span><b aria-hidden="true">↗</b>
             </button>
           </article>
           );
@@ -1076,13 +1006,8 @@ function FieldDocument({
   return (
     <article className="field-document">
       <header className="field-document-header">
-        <div className="document-stamp">OASIS / 생활 구역 03 / 공유 작업 문서</div>
-        <p className="field-document-date">2120-03-21 / ACT 02 · DAY 01</p>
         <h1>시설 정보</h1>
-        <p className="field-document-lede">두 사람이 보내오는 자료를 읽고, 다음 움직임을 함께 정한다.</p>
       </header>
-
-      <div className="field-document-rule" />
 
       <section className="field-document-section">
         <SectionHeading eyebrow="현재 상황" title="아침의 운영 기록" />
@@ -1138,7 +1063,6 @@ function FieldDocument({
                   data-route-id={proposal.id}
                   key={proposal.id}
                 >
-                  <p className="field-route-record-kicker">{route.fieldLogUpdatedLabel}</p>
                   <h3>{route.location}</h3>
                   <p className="field-route-record-note">{route.reportResult.fieldNote}</p>
                   <p className="field-route-record-summary">{route.reportResult.summary}</p>
@@ -1151,27 +1075,7 @@ function FieldDocument({
           </div>
         )}
       </section>
-
-      <section className="field-document-section field-document-section--records">
-        <SectionHeading eyebrow="문서 사용법" title="읽는 곳, 정하는 곳" />
-        <p className="document-note">본문의 행동별 논쟁에서 제안을 시작하고, 조사 요청과 시간 진행은 오른쪽 계획판에서 조정할 수 있습니다.</p>
-      </section>
     </article>
-  );
-}
-
-function CompletionNote({ state }: { state: GameState }) {
-  if (state.recentlyCompleted.length === 0) return null;
-  return (
-    <section className="completion-note-panel" aria-live="polite">
-      <p className="panel-eyebrow">방금 도착한 기록</p>
-      {state.recentlyCompleted.map((taskId) => {
-        const task = getTask(taskId);
-        return (
-          <p key={taskId}><strong>{TASK_RESULT_LABELS[taskId]}</strong><span>{task.result.summary}</span></p>
-        );
-      })}
-    </section>
   );
 }
 
@@ -1190,7 +1094,6 @@ function ResultHistory({
   return (
     <section className="support-panel support-panel--results" aria-label="최근 조사 결과">
       <div className="support-panel-heading">
-        <p className="panel-eyebrow">FIELD NOTES / RESULTS</p>
         <h3>최근 결과</h3>
       </div>
       {completed.length === 0 ? (
@@ -1208,7 +1111,6 @@ function ResultHistory({
                 onClick={() => onOpenResult(taskId)}
               >
                 <span>
-                  <small>{ACTOR_LABEL[task.actor]} · {TASK_RESULT_LABELS[taskId]}</small>
                   <strong>{task.result.summary}</strong>
                 </span>
                 <em>열기</em>
@@ -1364,7 +1266,6 @@ function PlanningTabs({
           aria-labelledby="planning-tab-button-collected"
         >
           <header className="collected-information-heading">
-            <p className="panel-eyebrow">FIELD NOTES / COLLECTED</p>
             <h3>조사로 새로 얻은 근거와 기록</h3>
           </header>
           <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} disabled={disabled} />
@@ -1453,7 +1354,6 @@ function PlanningPanel({
         />
         <header className="planning-header">
           <div>
-            <p className="panel-eyebrow">FIELD PLAN / LIVE</p>
             <h2>조사 계획</h2>
           </div>
           <div className="planning-clock">
@@ -1480,7 +1380,6 @@ function PlanningPanel({
             </span>
             <strong>{nextClock === null ? "—" : formatClock(isAdvancing ? displayClockMinutes : nextClock)}</strong>
           </button>
-          <p className="advance-time-note">작업을 예약하거나 순서를 바꾸는 것만으로는 시간이 흐르지 않습니다.</p>
         </section>
         <div className="planning-overview-end" ref={overviewEndRef} aria-hidden="true" />
 
@@ -1650,7 +1549,6 @@ export function ReportScreen({
     <main className="report-shell">
       <header className="report-topbar">
         <div>
-          <p className="report-topbar-eyebrow">OASIS / ACT 02 / DAY 01</p>
           <strong>생활 구역 03 · 조사 브리핑</strong>
         </div>
         <div className="report-topbar-right">

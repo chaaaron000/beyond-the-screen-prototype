@@ -36,7 +36,6 @@ export function VNScene({ state, dispatch, onAdvanceDialogue, disabled = false }
     <main className="vn-shell" onClick={handleScreenClick}>
       <header className="vn-topbar">
         <div>
-          <p className="eyebrow">OASIS / ACT 02 / DAY 01</p>
           <p className="stage-label">OASIS · 생활 구역 03</p>
         </div>
         <button

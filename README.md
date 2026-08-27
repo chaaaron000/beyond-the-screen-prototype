@@ -19,6 +19,8 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ## Screenshots
 
+![VN scene cleaned](docs/screenshots/vn-scene-cleaned.svg)
+
 ![VN scene with the saved light theme isolated](docs/screenshots/vn-theme-isolated-light.svg)
 
 ![VN scene with the saved dark theme isolated](docs/screenshots/vn-theme-isolated-dark.svg)
@@ -29,7 +31,11 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![FIELD LOG transition](docs/screenshots/transition-field-log.png)
 
+![Proposal dialog cleaned](docs/screenshots/proposal-dialog-cleaned.svg)
+
 ![Proposal evidence dialog](docs/screenshots/proposal-evidence-dialog.png)
+
+![Report shell cleaned](docs/screenshots/report-cleaned.svg)
 
 ![Report document top](docs/screenshots/report-document-top-current.png)
 
@@ -41,9 +47,13 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report document bottom](docs/screenshots/report-document-bottom-current.png)
 
+![Planning schedule cleaned](docs/screenshots/planning-schedule-cleaned.svg)
+
 ![Planning schedule with compact deadline tracker](docs/screenshots/planning-schedule-top.png)
 
 ![Timeline and advance time control](docs/screenshots/planning-schedule-bottom.png)
+
+![Collected information tab cleaned](docs/screenshots/planning-collected-cleaned.svg)
 
 ![Collected information tab with advance control](docs/screenshots/planning-collected-final.png)
 

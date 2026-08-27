@@ -15,15 +15,10 @@
 }
 
 /* Shared document chrome */
-.report-topbar-eyebrow,
-.document-stamp,
-.field-document-date,
 .field-section-heading p,
 .record-source,
-.field-route-record-kicker,
 .proposal-ledger-heading p,
-.proposal-entry-title > span,
-.proposal-raw-log summary > span {
+.proposal-entry-title > span {
   font-size: var(--type-meta);
   line-height: 1.35;
 }
@@ -46,11 +41,8 @@
 .report-topbar-right button,
 .theme-toggle,
 .palette-select,
-.document-restart,
-.task-request-button,
 .attachment-link,
-.proposal-start-button,
-.proposal-raw-log-button small {
+.proposal-start-button {
   font-size: var(--type-control);
 }
 
@@ -65,15 +57,6 @@
   letter-spacing: -0.055em;
 }
 
-.field-document-lede {
-  font-size: var(--type-body-small);
-  line-height: 1.6;
-}
-
-.field-document-date {
-  font-size: var(--type-caption);
-}
-
 .field-section-heading h2,
 .proposal-ledger-heading h2 {
   font-size: var(--type-h2);
@@ -86,19 +69,16 @@
   line-height: 1.65;
 }
 
-.field-opinion-note p,
 .proposal-position p {
   font-size: var(--type-body);
   line-height: 1.55;
 }
 
-.field-opinion-note cite,
 .proposal-position cite {
   font-size: var(--type-caption);
 }
 
-.document-empty,
-.document-note {
+.document-empty {
   font-size: var(--type-body);
   line-height: 1.65;
 }
@@ -112,8 +92,7 @@
 
 .document-record > p:not(.record-source),
 .field-route-record-note,
-.field-route-record-summary,
-.proposal-raw-lines p {
+.field-route-record-summary {
   font-size: var(--type-body-small);
   line-height: 1.6;
 }
@@ -121,17 +100,6 @@
 .field-route-record ul {
   font-size: var(--type-body-small);
   line-height: 1.5;
-}
-
-.new-record-note p {
-  font-size: var(--type-body);
-  line-height: 1.65;
-}
-
-.proposal-ledger-heading > span,
-.proposal-position cite,
-.proposal-raw-log summary small {
-  font-size: var(--type-caption);
 }
 
 /* The planning pane is a compact sidebar, but keeps the same hierarchy. */
@@ -149,18 +117,11 @@
   line-height: 1;
 }
 
-.panel-eyebrow,
 .deadline-key,
 .deadline-unknown,
 .timeline-axis,
 .timeline-lane-label small,
-.schedule-status-heading > span:last-child,
-.task-option-meta,
-.advance-time-note,
-.panel-footnote,
-.completion-note-panel > p,
-.sidebar-evidence > p,
-.attachment-viewer-header > div > p {
+.sidebar-evidence > p {
   font-size: var(--type-meta);
   line-height: 1.35;
 }
@@ -178,17 +139,12 @@
 .timeline-note,
 .queue-empty,
 .queue-list li,
-.current-task-line,
 .advance-time-control,
-.advance-time-note,
-.completion-note-panel > p:not(:first-child),
-.task-option p,
 .panel-empty {
   font-size: var(--type-body-small);
 }
 
 .timeline-lane-label > span,
-.actor-name,
 .actor-planning-header h3 {
   font-size: var(--type-body-small);
   line-height: 1.35;
@@ -199,11 +155,9 @@
 }
 
 .deadline-summary-copy h3,
-.task-option h4,
 .sidebar-evidence strong,
 .actor-available-task strong,
-.result-history-item strong,
-.opinion-drawer-list strong {
+.result-history-item strong {
   font-size: var(--type-body-small);
   line-height: 1.35;
 }
@@ -213,18 +167,13 @@
 .deadline-summary-status,
 .actor-planning-count,
 .actor-subheading > span,
-.actor-subheading small,
 .actor-current-task,
 .actor-empty-message,
 .actor-available-task small,
 .actor-available-task em,
 .queue-actions button,
 .advance-time-control strong,
-.opinion-drawer summary small,
-.opinion-drawer summary b,
-.opinion-drawer-list span,
 .sidebar-evidence button span,
-.result-history-item small,
 .result-history-item em {
   font-size: var(--type-caption);
 }
@@ -235,19 +184,10 @@
   line-height: 1.35;
 }
 
-.planner-section-heading > span {
-  font-size: var(--type-meta);
-}
-
-.actor-planning-kicker {
-  font-size: var(--type-meta);
-}
-
 .advance-time-control b {
   font-size: var(--type-body-small);
 }
 
-.task-picker .field-section-heading h2,
 .evidence-sidebar .field-section-heading h2 {
   font-size: var(--type-h3);
 }
@@ -257,7 +197,6 @@
 .result-viewer-evidence p,
 .raw-log-window-lines p,
 .proposal-dialog-action p,
-.proposal-evidence-heading small,
 .proposal-no-evidence,
 .proposal-selected-evidence span,
 .proposal-evidence-option small {
@@ -265,8 +204,6 @@
   line-height: 1.55;
 }
 
-.attachment-viewer-header h2,
-.result-viewer-header h2,
 .proposal-dialog-header h2 {
   font-size: var(--type-h2);
   line-height: 1.25;
@@ -282,7 +219,6 @@
 .result-viewer-evidence strong,
 .proposal-dialog-action > span,
 .proposal-selected-evidence p,
-.proposal-dialog-action strong,
 .proposal-evidence-heading > strong {
   font-size: var(--type-caption);
 }
@@ -307,8 +243,7 @@
   font-size: var(--type-caption);
 }
 
-.raw-log-window-lines strong,
-.proposal-raw-lines strong {
+.raw-log-window-lines strong {
   font-size: var(--type-caption);
 }
 
