@@ -33,19 +33,19 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Proposal dialog cleaned](docs/screenshots/proposal-dialog-cleaned.svg)
 
-![Proposal evidence dialog](docs/screenshots/proposal-evidence-dialog.png)
+![Proposal evidence dialog](docs/screenshots/proposal-evidence-dialog.svg)
 
-![Report shell cleaned](docs/screenshots/report-cleaned.svg)
+![Report shell cleaned](docs/screenshots/report-shell-cleaned.svg)
 
-![Report document top](docs/screenshots/report-document-top-current.png)
+![Report document top](docs/screenshots/report-document-top.svg)
 
-![Action debate cards without background fill](docs/screenshots/report-action-debate-transparent.svg)
+![Report action debate as document text](docs/screenshots/report-action-debate-document.svg)
 
-![Report document results section](docs/screenshots/report-document-results.png)
+![Report document results section](docs/screenshots/report-document-results.svg)
 
-![Report document field log section](docs/screenshots/report-document-field-log-current.png)
+![Report document field log section](docs/screenshots/report-document-field-log.svg)
 
-![Report document bottom](docs/screenshots/report-document-bottom-current.png)
+![Report document light theme](docs/screenshots/report-document-light.svg)
 
 ![Planning schedule cleaned](docs/screenshots/planning-schedule-cleaned.svg)
 
@@ -102,8 +102,8 @@ npm run build
 ## 디자인 방향
 
 - VN 모드는 두 캐릭터의 스탠딩 이미지를 중심으로 한 따뜻한 장면과 대화 패널로 구성합니다.
-- 보고서 모드는 SaaS 대시보드 대신 OASIS 내부 브리핑 문서를 읽는 흐름을 사용합니다.
-- 보고서의 정보는 카드보다 타이포그래피, 여백, 구분선, 주석으로 계층화합니다.
+- 보고서 모드는 SaaS 대시보드 대신 내부 운영 문서를 읽는 흐름을 사용합니다.
+- 보고서 문서 영역은 Notion 기본 문서처럼 제목, heading, paragraph, blockquote, 단순 목록, 텍스트 링크, 얇은 divider만으로 계층화하고 카드·배지·색 블록 장식을 두지 않습니다.
 - 현재 화자는 이름, 색상, 명도 대비로 구분하며 캐릭터 이미지는 확대·축소하지 않습니다.
 
 ## 에셋 추가 위치

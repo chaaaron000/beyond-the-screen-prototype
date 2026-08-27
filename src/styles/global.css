@@ -530,14 +530,6 @@ body {
   background: rgba(241, 238, 230, 0.08);
 }
 
-/* Report mode is a brief, not a collection of application panels. */
-.report-shell {
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.012), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.08)),
-    #1b1c1a;
-}
-
-
 @media (max-width: 760px) {
   html,
   body,
@@ -1338,7 +1330,7 @@ body {
   --document-muted: #6e8087;
   --document-faint: #9baab0;
   --document-line: #c7d3d7;
-  --document-amber: #60858b;
+  --document-accent: #60858b;
   --document-mira: #527f80;
   --document-seoyun: #71849a;
   display: block;
@@ -1346,9 +1338,7 @@ body {
   overflow-y: auto;
   min-height: 100%;
   color: var(--document-ink);
-  background:
-    linear-gradient(90deg, rgba(69, 73, 67, 0.04), transparent 22%, transparent 78%, rgba(69, 73, 67, 0.04)),
-    var(--document-paper);
+  background: var(--document-paper);
   scrollbar-color: rgba(170, 110, 63, 0.55) transparent;
   scrollbar-width: thin;
 }
@@ -1480,34 +1470,30 @@ body {
 }
 
 .field-document {
-  width: min(100%, 56rem);
+  width: min(100%, 46rem);
   min-height: 100%;
   margin: 0 auto;
-  padding: clamp(1.35rem, 3.4cqw, 3.5rem) clamp(1.4rem, 4.4cqw, 4.7rem) 4rem;
+  padding: clamp(1.35rem, 3.4cqw, 3.5rem) clamp(1.4rem, 4.4cqw, 4.7rem) 4.5rem;
   color: var(--document-ink);
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--document-amber) 4%, transparent), transparent 17%, transparent 83%, color-mix(in srgb, var(--document-amber) 4%, transparent)),
-    var(--document-paper);
+  background: var(--document-paper);
 }
 
 .field-document-header {
-  position: relative;
-  padding-left: clamp(0.8rem, 1.5cqw, 1.6rem);
-  border-left: 2px solid var(--document-amber);
+  margin-bottom: clamp(2.4rem, 4.6cqw, 4.4rem);
 }
 
 .field-document h1 {
   margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(3.225rem, 7.65cqw, 6.6rem);
-  font-weight: 400;
-  letter-spacing: -0.09em;
-  line-height: 0.98;
+  font-size: clamp(2.4rem, 4.4cqw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1.15;
 }
 
 .field-document-section {
-  margin-top: clamp(2.9rem, 5.2cqw, 5.6rem);
+  margin-top: clamp(2.6rem, 4.8cqw, 4.6rem);
 }
 
 .field-document-section:first-of-type {
@@ -1515,29 +1501,26 @@ body {
 }
 
 .field-section-heading {
-  display: grid;
-  gap: 0.38rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--document-line);
-  padding-bottom: 0.75rem;
+  margin-bottom: 1.1rem;
 }
 
 .field-section-heading p {
-  margin: 0;
-  color: var(--document-amber);
+  margin: 0 0 0.3rem;
+  color: var(--document-faint);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .field-section-heading h2 {
   margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.77rem, 2.7cqw, 2.7rem);
-  font-weight: 400;
-  letter-spacing: -0.065em;
+  font-size: clamp(1.5rem, 2.2cqw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.3;
 }
 
 .situation-copy {
@@ -1547,13 +1530,17 @@ body {
 
 .situation-copy p {
   max-width: 47rem;
-  margin: 0;
-  border-bottom: 1px solid rgba(80, 105, 113, 0.13);
-  padding: 0.75rem 0 0.85rem;
+  margin: 0 0 0.7rem;
+  border-bottom: 0;
+  padding: 0;
   color: var(--document-ink);
   font-size: clamp(1.14rem, 1.53cqw, 1.53rem);
-  line-height: 1.8;
-  letter-spacing: -0.025em;
+  line-height: 1.75;
+  letter-spacing: -0.02em;
+}
+
+.situation-copy p:last-child {
+  margin-bottom: 0;
 }
 
 .document-empty {
@@ -1565,18 +1552,20 @@ body {
 }
 
 .document-records {
-  border-top: 1px solid var(--document-line);
+  border-top: 0;
 }
 
 .document-record {
-  border-bottom: 1px solid var(--document-line);
-  padding: 1rem 0 1.15rem;
+  margin-top: 1.4rem;
+  border-bottom: 0;
+  padding: 0;
 }
 
 .record-source {
-  margin-bottom: 0.5rem;
-  color: var(--document-mira);
-  font-size: 0.915rem;
+  margin-bottom: 0.3rem;
+  color: var(--document-faint);
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .document-record h3 {
@@ -1584,33 +1573,31 @@ body {
   color: var(--document-ink);
   font-size: clamp(1.14rem, 1.5cqw, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
 .document-record > p:not(.record-source) {
   max-width: 46rem;
   margin: 0;
-  color: var(--document-muted);
+  color: var(--document-ink);
   font-size: clamp(1.05rem, 1.275cqw, 1.275rem);
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
 .attachment-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.38rem;
-  margin-top: 0.75rem;
+  display: inline;
+  margin-top: 0.55rem;
   border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--document-amber) 48%, transparent);
-  padding: 0 0 0.2rem;
-  color: var(--document-amber);
+  padding: 0;
+  color: var(--document-accent);
   background: transparent;
   cursor: pointer;
   font-size: clamp(0.93rem, 1.11cqw, 1.11rem);
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
 }
 
 .attachment-link:hover {
-  border-color: var(--document-amber);
   color: var(--document-ink);
 }
 
@@ -2482,160 +2469,112 @@ body {
 
 /* Proposal ledger: the document presents arguments by action, not by speaker. */
 .proposal-ledger {
-  margin-top: clamp(2.9rem, 5.2cqw, 5.6rem);
-}
-
-.proposal-ledger-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.1rem;
-  border-bottom: 1px solid var(--document-line);
-  padding-bottom: 0.75rem;
-}
-
-.proposal-ledger-heading p {
-  margin: 0 0 0.38rem;
-  color: var(--document-amber);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.proposal-ledger-heading h2 {
-  margin: 0;
-  color: var(--document-ink);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.77rem, 2.7cqw, 2.7rem);
-  font-weight: 400;
-  letter-spacing: -0.065em;
+  margin-top: clamp(2.6rem, 4.8cqw, 4.6rem);
 }
 
 .proposal-list {
   display: grid;
-  gap: 1.2rem;
+  gap: 2.6rem;
 }
 
 .proposal-entry {
-  border: 1px solid var(--document-line);
-  border-left: 3px solid var(--document-amber);
-  background: transparent;
-}
-
-.proposal-entry:nth-child(2) {
-  border-left-color: var(--document-seoyun);
-}
-
-.proposal-entry:nth-child(3) {
-  border-left-color: var(--document-mira);
-}
-
-.proposal-entry-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--document-line);
-  padding: 0.82rem 0.95rem;
+  padding: 0;
 }
 
 .proposal-entry-title {
-  display: flex;
-  min-width: 0;
-  align-items: baseline;
-  gap: 0.68rem;
+  display: block;
+  margin: 0 0 0.85rem;
+  color: var(--document-ink);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(1.27rem, 1.75cqw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.35;
 }
 
 .proposal-entry-title > span {
-  color: var(--document-amber);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.96rem;
-  letter-spacing: 0.08em;
-}
-
-.proposal-entry-title h3 {
-  margin: 0;
-  color: var(--document-ink);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.38rem, 1.875cqw, 1.875rem);
-  font-weight: 500;
-  letter-spacing: -0.045em;
+  margin-right: 0.5rem;
+  color: var(--document-faint);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .proposal-start-button {
-  flex: 0 0 auto;
-  border: 1px solid color-mix(in srgb, var(--document-amber) 55%, transparent);
-  padding: 0.4rem 0.58rem;
-  color: var(--document-amber);
-  background: color-mix(in srgb, var(--document-amber) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--document-ink) 32%, transparent);
+  padding: 0.42rem 0.85rem;
+  color: var(--document-ink);
+  background: transparent;
   cursor: pointer;
   font-size: clamp(0.87rem, 1.08cqw, 1.08rem);
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
 .proposal-start-button:hover:not(:disabled) {
-  border-color: var(--document-amber);
-  color: var(--document-paper);
-  background: var(--document-amber);
+  border-color: var(--document-ink);
 }
 
 .proposal-start-button:disabled {
+  border-color: transparent;
+  color: var(--document-faint);
   cursor: not-allowed;
-  opacity: 0.45;
 }
 
 .proposal-positions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: 0.75rem;
 }
 
 .proposal-position {
-  min-height: 6.2rem;
   margin: 0;
-  padding: 0.9rem 0.95rem 1rem;
-}
-
-.proposal-position + .proposal-position {
-  border-left: 1px solid var(--document-line);
-}
-
-.proposal-position--seoyun {
-  border-top: 2px solid var(--document-seoyun);
-}
-
-.proposal-position--mira {
-  border-top: 2px solid var(--document-mira);
+  padding: 0;
 }
 
 .proposal-position cite {
   display: block;
-  margin-bottom: 0.48rem;
-  color: var(--document-muted);
+  margin-bottom: 0.2rem;
+  color: var(--document-faint);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.87rem;
+  font-size: 0.8rem;
   font-style: normal;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.proposal-position--seoyun cite {
-  color: var(--document-seoyun);
-}
-
-.proposal-position--mira cite {
-  color: var(--document-mira);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .proposal-position p {
   margin: 0;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.17rem, 1.575cqw, 1.575rem);
-  line-height: 1.55;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.05rem, 1.4cqw, 1.4rem);
+  line-height: 1.65;
+  letter-spacing: -0.02em;
+}
+
+.proposal-entry-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-top: 1rem;
+}
+
+.proposal-raw-log-button {
+  border: 0;
+  padding: 0;
+  color: var(--document-accent);
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(0.87rem, 1.08cqw, 1.08rem);
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.proposal-raw-log-button:hover:not(:disabled) {
+  color: var(--document-ink);
+}
+
+.proposal-raw-log-button:disabled {
+  color: var(--document-faint);
+  cursor: not-allowed;
+  text-decoration: none;
 }
 
 
@@ -2655,7 +2594,7 @@ body {
   display: grid;
   place-items: center;
   padding: 1.2rem;
-  background: color-mix(in srgb, var(--plan-frame) 68%, transparent);
+  background: color-mix(in srgb, var(--plan-frame) 62%, transparent);
 }
 
 .proposal-dialog {
@@ -2663,11 +2602,10 @@ body {
   max-height: 90%;
   overflow: auto;
   border: 1px solid color-mix(in srgb, var(--plan-line-base) 32%, transparent);
-  border-left: 3px solid var(--plan-amber);
-  padding: clamp(1rem, 2.1cqw, 2rem);
+  padding: clamp(1.2rem, 2.1cqw, 2rem);
   color: var(--plan-ink);
   background: var(--plan-panel-raised);
-  box-shadow: 0 1.6rem 3rem rgba(0, 0, 0, 0.46);
+  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.32);
 }
 
 .proposal-dialog-header {
@@ -2680,29 +2618,29 @@ body {
 }
 
 .proposal-dialog-header h2 {
-  margin: 0.35rem 0 0;
+  margin: 0;
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(2.025rem, 3.3cqw, 3.3rem);
-  font-weight: 400;
-  letter-spacing: -0.065em;
+  font-size: clamp(1.5rem, 2.4cqw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
 }
 
 .proposal-dialog-close,
 .proposal-cancel-button {
   border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--plan-line-base) 32%, transparent);
-  padding: 0 0 0.2rem;
+  padding: 0;
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
   font-size: 0.87rem;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
 }
 
 .proposal-dialog-close:hover,
 .proposal-cancel-button:hover {
-  border-color: var(--plan-amber);
-  color: var(--plan-amber);
+  color: var(--plan-ink);
 }
 
 .proposal-dialog-action {
@@ -2713,17 +2651,19 @@ body {
 }
 
 .proposal-dialog-action > span {
-  color: var(--plan-amber);
+  color: var(--plan-faint);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.87rem;
-  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .proposal-dialog-action strong {
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 1.8rem;
-  font-weight: 400;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 .proposal-dialog-action p,
@@ -2737,29 +2677,24 @@ body {
 
 .proposal-evidence-heading {
   display: flex;
-  align-items: end;
+  align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 0 0.6rem;
-}
-
-.proposal-evidence-heading > div {
-  display: grid;
-  gap: 0.18rem;
 }
 
 .proposal-evidence-heading p,
 .proposal-selected-evidence p {
   margin: 0;
   color: var(--plan-ink);
-  font-size: 1.08rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .proposal-evidence-heading > strong {
-  color: var(--plan-amber);
+  color: var(--plan-faint);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.99rem;
+  font-size: 0.87rem;
   font-weight: 400;
 }
 
@@ -2778,16 +2713,11 @@ body {
   cursor: pointer;
 }
 
-.proposal-evidence-option:hover:not(:has(input:disabled)),
-.proposal-evidence-option.is-selected {
-  background: color-mix(in srgb, var(--plan-accent) 7.000000000000001%, transparent);
-}
-
 .proposal-evidence-option input {
   width: 0.9rem;
   height: 0.9rem;
   margin: 0.12rem 0 0;
-  accent-color: var(--plan-amber);
+  accent-color: var(--plan-accent);
 }
 
 .proposal-evidence-option > span {
@@ -2820,56 +2750,51 @@ body {
   display: grid;
   gap: 0.24rem;
   margin-top: 1rem;
-  border-left: 2px solid var(--plan-mira);
-  padding: 0.1rem 0 0.1rem 0.7rem;
+  padding: 0;
 }
 
 .proposal-selected-evidence p {
-  color: var(--plan-mira);
+  color: var(--plan-faint);
   font-family: "Noto Sans KR", sans-serif;
   font-size: 0.84rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.proposal-selected-evidence ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--plan-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 .proposal-dialog-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 1.25rem;
   margin-top: 1.25rem;
   border-top: 1px solid var(--plan-line);
   padding-top: 1rem;
 }
 
 .proposal-confirm-button {
-  border: 1px solid var(--plan-amber);
-  padding: 0.58rem 0.72rem;
-  color: var(--plan-on-accent);
-  background: var(--plan-amber);
+  border: 1px solid var(--plan-ink);
+  padding: 0.5rem 0.9rem;
+  color: var(--plan-ink);
+  background: transparent;
   cursor: pointer;
   font-size: 0.96rem;
 }
 
 .proposal-confirm-button:hover {
-  color: var(--plan-ink);
-  background: transparent;
+  background: color-mix(in srgb, var(--plan-ink) 8%, transparent);
 }
 
 @media (max-width: 760px) {
-  .proposal-ledger-heading {
-    align-items: start;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
   .proposal-positions {
-    grid-template-columns: 1fr;
-  }
-
-  .proposal-position + .proposal-position {
-    border-top: 1px solid var(--document-line);
-    border-left: 0;
+    gap: 0.6rem;
   }
 }
 
@@ -2903,7 +2828,7 @@ body {
   --document-muted: #6e8087;
   --document-faint: #9baab0;
   --document-line: #c7d3d7;
-  --document-amber: #60858b;
+  --document-accent: #60858b;
   --document-mira: #527f80;
   --document-seoyun: #71849a;
   --plan-ink: #dce7ea;
@@ -3142,23 +3067,17 @@ body {
 
 .field-document {
   color: var(--document-ink);
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--document-amber) 4%, transparent), transparent 17%, transparent 83%, color-mix(in srgb, var(--document-amber) 4%, transparent)),
-    var(--document-paper);
-}
-
-.field-document-header {
-  border-left-color: var(--document-amber);
+  background: var(--document-paper);
 }
 
 .field-section-heading p,
 .record-source {
-  color: var(--document-amber);
+  color: var(--document-faint);
 }
 
 .document-empty,
 .document-record > p:not(.record-source) {
-  color: var(--document-muted);
+  color: var(--document-ink);
 }
 
 .field-document h1,
@@ -3167,24 +3086,11 @@ body {
   color: var(--document-ink);
 }
 
-.field-section-heading,
-.document-records,
-.document-record {
-  border-color: var(--document-line);
-}
-
-.situation-copy p {
-  border-bottom-color: color-mix(in srgb, var(--document-amber) 14%, transparent);
-  color: var(--document-ink);
-}
-
 .attachment-link {
-  border-bottom-color: color-mix(in srgb, var(--document-amber) 48%, transparent);
-  color: var(--document-amber);
+  color: var(--document-accent);
 }
 
 .attachment-link:hover {
-  border-color: var(--document-amber);
   color: var(--document-ink);
 }
 
@@ -3208,87 +3114,6 @@ body {
 
 .graph-deadline {
   stroke: var(--plan-alert);
-}
-
-.proposal-ledger-heading {
-  border-bottom-color: var(--document-line);
-}
-
-.proposal-ledger-heading p,
-.proposal-entry-title > span,
-
-.proposal-ledger-heading h2,
-.proposal-entry-title h3,
-.proposal-position p {
-  color: var(--document-ink);
-}
-
-.proposal-position cite,
-
-.proposal-entry {
-  border-color: var(--document-line);
-  border-left-color: var(--document-amber);
-  background: transparent;
-}
-
-.proposal-entry:nth-child(2),
-.proposal-position--seoyun,
-.proposal-position--seoyun cite {
-  border-color: var(--document-seoyun);
-  color: var(--document-seoyun);
-}
-
-.proposal-entry:nth-child(3),
-.proposal-position--mira,
-.proposal-position--mira cite {
-  border-color: var(--document-mira);
-  color: var(--document-mira);
-}
-
-.proposal-entry-header,
-.proposal-position + .proposal-position,
-
-.proposal-start-button {
-  border-color: rgba(96, 133, 139, 0.55);
-  color: var(--document-amber);
-  background: color-mix(in srgb, var(--document-amber) 7%, transparent);
-}
-
-.proposal-start-button:hover:not(:disabled) {
-  border-color: var(--document-amber);
-  color: var(--document-paper);
-  background: var(--document-amber);
-}
-
-
-
-
-
-.proposal-dialog {
-  border-color: rgba(204, 222, 226, 0.28);
-  border-left-color: var(--plan-accent);
-  background: var(--plan-panel-raised);
-}
-
-.proposal-dialog-close:hover,
-.proposal-cancel-button:hover {
-  border-color: var(--plan-accent);
-  color: var(--plan-accent);
-}
-
-.proposal-evidence-option:hover:not(:has(input:disabled)),
-.proposal-evidence-option.is-selected {
-  background: rgba(127, 165, 170, 0.09);
-}
-
-.proposal-evidence-option input {
-  accent-color: var(--plan-accent);
-}
-
-.proposal-confirm-button {
-  border-color: var(--plan-accent);
-  color: #172125;
-  background: var(--plan-accent);
 }
 
 /* Adjustable field desk and persistent deadline context. */
@@ -3522,41 +3347,6 @@ body {
   width: min(35rem, calc(100vw - 2rem));
 }
 
-.proposal-raw-log-button {
-  display: grid;
-  width: 100%;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.75rem;
-  border: 0;
-  border-top: 1px solid var(--document-line);
-  padding: 0.72rem 0.95rem;
-  color: var(--document-amber);
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-}
-
-.proposal-raw-log-button:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--document-amber) 8%, transparent);
-}
-
-.proposal-raw-log-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.45;
-}
-
-.proposal-raw-log-button > span {
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.915rem;
-  letter-spacing: 0.08em;
-}
-
-.proposal-raw-log-button b {
-  font-size: 1.08rem;
-  font-weight: 400;
-}
-
 .raw-log-window-lines {
   margin-top: 0.85rem;
   border-top: 1px solid var(--plan-line);
@@ -3690,29 +3480,25 @@ body {
 
 .field-route-records {
   display: grid;
-  gap: 0.8rem;
+  gap: 1.6rem;
 }
 
 .field-route-record {
-  border-top: 1px solid var(--document-line);
-  border-bottom: 1px solid var(--document-line);
-  padding: 0.85rem 0;
+  padding: 0;
   color: var(--document-ink);
-  background: color-mix(in srgb, var(--document-amber) 4%, transparent);
-  transition: background-color 180ms ease, box-shadow 180ms ease;
 }
 
 .field-route-record--highlighted {
-  background: color-mix(in srgb, var(--document-amber) 13%, transparent);
-  box-shadow: inset 2px 0 0 var(--document-amber);
+  background: transparent;
 }
 
 .field-route-record h3 {
-  margin: 0.35rem 0 0.45rem;
+  margin: 0 0 0.45rem;
   color: var(--document-ink);
   font-family: "Noto Sans KR", sans-serif;
   font-size: clamp(1.275rem, 1.65cqw, 1.65rem);
-  font-weight: 500;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .field-route-record-note,
@@ -3762,10 +3548,4 @@ body {
   .presentation-transition--vn-to-report .presentation-transition-record {
     animation: none;
   }
-}
-
-.proposal-entry--active {
-  border-color: var(--document-amber);
-  background: transparent;
-  box-shadow: inset 2px 0 0 var(--document-amber);
 }

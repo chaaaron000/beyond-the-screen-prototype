@@ -19,6 +19,7 @@
  *                      (repeatable, in order):
  *                        plan:<taskId>       plan a task (aria-label title match)
  *                        propose:<n>         open proposal dialog for PROPOSALS[n]
+ *                        evidence:<n>        toggle Nth proposal evidence checkbox
  *                        confirm             confirm the proposal dialog
  *                        advance             click the advance-time control
  *                        tab:<schedule|collected>  switch planning tab
@@ -30,6 +31,7 @@
  *                                            title bar and verify it moved
  *                        dialogue-all        advance VN dialogue until report or
  *                                            vn-to-report field-log transition
+ *                        scroll:<selector>   scroll the element to its bottom
  *                        wait:<ms>           wait milliseconds
  *                        wait-for:<selector> wait until selector appears
  *                        wait-visible:<selector> poll until selector is visible
@@ -194,6 +196,9 @@ async function runAct(page, act) {
     case "propose":
       await clickNth(page, ".proposal-start-button", Number(value ?? 0));
       return;
+    case "evidence":
+      await clickNth(page, ".proposal-evidence-option input", Number(value ?? 0));
+      return;
     case "confirm":
       await clickNth(page, ".proposal-confirm-button", 0);
       return;
@@ -232,6 +237,13 @@ async function runAct(page, act) {
         });
         await sleep(250);
       }
+      return;
+    case "scroll":
+      await page.evaluate((selector) => {
+        const el = document.querySelector(selector);
+        if (el) el.scrollTop = el.scrollHeight;
+      }, value ?? ".document-scroll");
+      await sleep(300);
       return;
     case "wait":
       await sleep(Number(value ?? 0));

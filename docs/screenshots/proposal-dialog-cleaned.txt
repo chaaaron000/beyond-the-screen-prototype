@@ -7,6 +7,7 @@
   - strong: 0 / 3
   - paragraph: 아직 확보한 정보가 없습니다. 행동만 제안할 수 있습니다.
   - paragraph: 선택한 근거
-  - text: · 근거 없이 행동만 제안
+  - list:
+    - listitem: 근거 없이 행동만 제안
   - button "취소"
   - button "제시하시겠습니까?"

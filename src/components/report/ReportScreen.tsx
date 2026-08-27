@@ -730,9 +730,7 @@ function ProposalEvidenceDialog({
         </div>
 
         <div className="proposal-evidence-heading">
-          <div>
-            <p>함께 제시할 정보</p>
-          </div>
+          <p>함께 제시할 정보</p>
           <strong>{selectedEvidenceIds.length} / 3</strong>
         </div>
 
@@ -765,11 +763,13 @@ function ProposalEvidenceDialog({
 
         <div className="proposal-selected-evidence">
           <p>선택한 근거</p>
-          {selectedEvidenceIds.length === 0 ? (
-            <span>· 근거 없이 행동만 제안</span>
-          ) : (
-            selectedEvidenceIds.map((evidenceId) => <span key={evidenceId}>· {EVIDENCE[evidenceId].title}</span>)
-          )}
+          <ul>
+            {selectedEvidenceIds.length === 0 ? (
+              <li>근거 없이 행동만 제안</li>
+            ) : (
+              selectedEvidenceIds.map((evidenceId) => <li key={evidenceId}>{EVIDENCE[evidenceId].title}</li>)
+            )}
+          </ul>
         </div>
 
         <footer className="proposal-dialog-actions">
@@ -924,12 +924,7 @@ function ProposalLedger({
   const seoyunBusy = state.activeTasks.seoyun !== null;
   return (
     <section className="proposal-ledger" aria-label="행동별 논쟁">
-      <header className="proposal-ledger-heading">
-        <div>
-          <p>행동별 논쟁</p>
-          <h2>무엇을 먼저 할지</h2>
-        </div>
-      </header>
+      <SectionHeading eyebrow="행동별 논쟁" title="무엇을 먼저 할지" />
       <div className="proposal-list">
         {PROPOSALS.map((proposal) => {
           const presentation = getProposalPresentation(state, proposal.id);
@@ -937,11 +932,23 @@ function ProposalLedger({
           const miraSummary = getDialogue(presentation.summaryDialogueIds.mira)[0];
           return (
           <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
-            <header className="proposal-entry-header">
-              <div className="proposal-entry-title">
-                <span>{proposal.number}</span>
-                <h3>{proposal.title}</h3>
-              </div>
+            <h3 className="proposal-entry-title">
+              <span>{proposal.number}</span>
+              {proposal.title}
+            </h3>
+
+            <div className="proposal-positions">
+              <blockquote className="proposal-position">
+                <cite>한서윤</cite>
+                <p>“{seoyunSummary.text}”</p>
+              </blockquote>
+              <blockquote className="proposal-position">
+                <cite>MIRAGE</cite>
+                <p>“{miraSummary.text}”</p>
+              </blockquote>
+            </div>
+
+            <div className="proposal-entry-actions">
               <button
                 type="button"
                 className="proposal-start-button"
@@ -953,29 +960,17 @@ function ProposalLedger({
                   ? "현장 확인 완료"
                   : seoyunBusy
                     ? "한서윤 작업 중"
-                    : <>제안하기 <span aria-hidden="true">↗</span></>}
+                    : "제안하기"}
               </button>
-            </header>
-
-            <div className="proposal-positions">
-              <blockquote className="proposal-position proposal-position--seoyun">
-                <cite>한서윤</cite>
-                <p>“{seoyunSummary.text}”</p>
-              </blockquote>
-              <blockquote className="proposal-position proposal-position--mira">
-                <cite>MIRAGE</cite>
-                <p>“{miraSummary.text}”</p>
-              </blockquote>
+              <button
+                type="button"
+                className="proposal-raw-log-button"
+                disabled={disabled}
+                onClick={() => onOpenRawLog(proposal.id)}
+              >
+                대화 LOG RAW
+              </button>
             </div>
-
-            <button
-              type="button"
-              className="proposal-raw-log-button"
-              disabled={disabled}
-              onClick={() => onOpenRawLog(proposal.id)}
-            >
-              <span>대화 LOG RAW</span><b aria-hidden="true">↗</b>
-            </button>
           </article>
           );
         })}
@@ -1008,7 +1003,6 @@ function FieldDocument({
       <header className="field-document-header">
         <h1>시설 정보</h1>
       </header>
-
       <section className="field-document-section">
         <SectionHeading eyebrow="현재 상황" title="아침의 운영 기록" />
         <div className="situation-copy">
@@ -1039,7 +1033,7 @@ function FieldDocument({
                   <h3>{evidence.title}</h3>
                   <p>{evidence.detail}</p>
                   <button type="button" className="attachment-link" onClick={() => onOpenAttachment(attachment)}>
-                    <span aria-hidden="true">↗</span>{attachment.label}
+                    {attachment.label}
                   </button>
                 </article>
               );
@@ -1063,6 +1057,7 @@ function FieldDocument({
                   data-route-id={proposal.id}
                   key={proposal.id}
                 >
+                  <p className="record-source">현장 확인 완료</p>
                   <h3>{route.location}</h3>
                   <p className="field-route-record-note">{route.reportResult.fieldNote}</p>
                   <p className="field-route-record-summary">{route.reportResult.summary}</p>

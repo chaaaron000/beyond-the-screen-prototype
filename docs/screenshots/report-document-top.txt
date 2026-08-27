@@ -43,11 +43,7 @@
         - button "대화 LOG RAW"
     - paragraph: 조사 결과
     - heading "도착한 기록" [level=2]
-    - article:
-      - paragraph: 미라 / 주 발전 계통 상태 분석
-      - heading "주 발전 계통 상태" [level=3]
-      - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
-      - button "전력 상태 기록 보기"
+    - paragraph: 아직 추가로 확인한 정보가 이 문서에 들어오지 않았다.
     - region "현장 확인 기록":
       - paragraph: 현장 기록
       - heading "확인한 장소" [level=2]

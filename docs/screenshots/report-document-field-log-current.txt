@@ -1,9 +1,0 @@
-- article:
-  - paragraph: FIELD LOG UPDATED / 바이크 현장 기록
-  - heading "보관 구역" [level=3]
-  - paragraph: 보관 구역 조명을 켜려 했지만 현장 단말 인증이 필요해 바이크를 자세히 확인하지 못했다.
-  - paragraph: 어두운 보관 구역에서는 바이크를 자세히 확인할 수 없었고, 조명에는 현장 단말이 필요하다.
-  - list:
-    - listitem: 보관 구역 현장 확인을 완료했다.
-    - listitem: 보관 구역이 어두워 바이크 상태를 자세히 확인할 수 없었다.
-    - listitem: 보관 구역 조명은 현장 단말 인증에 의존한다.

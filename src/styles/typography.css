@@ -17,7 +17,6 @@
 /* Shared document chrome */
 .field-section-heading p,
 .record-source,
-.proposal-ledger-heading p,
 .proposal-entry-title > span {
   font-size: var(--type-meta);
   line-height: 1.35;
@@ -53,15 +52,14 @@
 
 .field-document h1 {
   font-size: var(--type-h1);
-  line-height: 1.1;
-  letter-spacing: -0.055em;
+  line-height: 1.15;
+  letter-spacing: -0.045em;
 }
 
-.field-section-heading h2,
-.proposal-ledger-heading h2 {
+.field-section-heading h2 {
   font-size: var(--type-h2);
   line-height: 1.25;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
 }
 
 .situation-copy p {
@@ -71,7 +69,7 @@
 
 .proposal-position p {
   font-size: var(--type-body);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .proposal-position cite {
@@ -85,7 +83,7 @@
 
 .document-record h3,
 .field-route-record h3,
-.proposal-entry-title h3 {
+.proposal-entry-title {
   font-size: var(--type-h3);
   line-height: 1.35;
 }

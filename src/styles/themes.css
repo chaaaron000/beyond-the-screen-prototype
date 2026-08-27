@@ -316,7 +316,7 @@ html[data-theme="light"][data-palette="gruvbox"] {
   --document-muted: var(--p-muted);
   --document-faint: var(--p-faint);
   --document-line: var(--p-line);
-  --document-amber: var(--p-accent);
+  --document-accent: var(--p-accent);
   --document-mira: var(--p-mira);
   --document-seoyun: var(--p-seoyun);
   --plan-ink: var(--p-ink);
@@ -372,9 +372,7 @@ body {
 
 .report-shell {
   color: var(--p-ink);
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--p-accent) 3%, transparent), transparent 22%, transparent 78%, color-mix(in srgb, var(--p-accent) 3%, transparent)),
-    var(--p-surface);
+  background: var(--p-surface);
 }
 
 .report-topbar {
