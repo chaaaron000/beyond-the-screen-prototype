@@ -33,6 +33,8 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report document top](docs/screenshots/report-document-top-current.png)
 
+![Action debate cards without background fill](docs/screenshots/report-action-debate-transparent.svg)
+
 ![Report document results section](docs/screenshots/report-document-results.png)
 
 ![Report document field log section](docs/screenshots/report-document-field-log-current.png)

@@ -4932,7 +4932,7 @@ body {
 .proposal-entry {
   border: 1px solid var(--document-line);
   border-left: 3px solid var(--document-amber);
-  background: color-mix(in srgb, var(--document-ink) 5%, transparent);
+  background: transparent;
 }
 
 .proposal-entry:nth-child(2) {
@@ -5742,7 +5742,7 @@ body {
 .proposal-entry {
   border-color: var(--document-line);
   border-left-color: var(--document-amber);
-  background: rgba(247, 251, 252, 0.3);
+  background: transparent;
 }
 
 .proposal-entry:nth-child(2),
@@ -6309,6 +6309,6 @@ body {
 
 .proposal-entry--active {
   border-color: var(--document-amber);
-  background: color-mix(in srgb, var(--document-amber) 13%, transparent);
+  background: transparent;
   box-shadow: inset 2px 0 0 var(--document-amber);
 }
