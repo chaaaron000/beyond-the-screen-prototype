@@ -4534,31 +4534,6 @@ body {
   cursor: grabbing;
 }
 
-.floating-window-actions {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.floating-window-drag-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--plan-faint);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.69rem;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.floating-window-drag-hint i {
-  width: 1rem;
-  height: 0.55rem;
-  background: radial-gradient(circle, currentColor 1px, transparent 1.5px) 0 0 / 0.34rem 0.28rem;
-  opacity: 0.7;
-}
-
 .attachment-viewer-header {
   display: flex;
   align-items: start;
@@ -4586,13 +4561,6 @@ body {
   margin-top: 1.1rem;
   border: 1px solid var(--plan-line);
   background: var(--plan-sunken);
-}
-
-.attachment-caption {
-  margin: 0.8rem 0 0;
-  color: var(--plan-muted);
-  font-size: clamp(0.825rem, 1.02cqw, 1.02rem);
-  line-height: 1.65;
 }
 
 .attachment-visual--trend {
@@ -5974,61 +5942,107 @@ body {
 
 /* Every reference viewer shares one window chrome. */
 .floating-window {
-  overflow: auto;
+  overflow: hidden;
   max-height: calc(100vh - 2rem);
   border: 1px solid rgba(204, 222, 226, 0.24);
-  border-left: 2px solid var(--plan-accent);
-  padding: clamp(1rem, 2cqw, 1.8rem);
+  padding: 0;
   color: var(--plan-ink);
   background: var(--plan-panel-raised);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.42);
 }
 
 .floating-window-header {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 1rem;
+  position: relative;
+  display: grid;
+  height: 1.5rem;
+  min-height: 1.5rem;
+  place-items: center;
+  overflow: hidden;
   border-bottom: 1px solid var(--plan-line);
-  padding-bottom: 0.8rem;
+  padding: 0 1.75rem 0 0.5rem;
+  background: color-mix(in srgb, var(--plan-panel-raised) 82%, #0b1217);
 }
 
-.floating-window-header p {
+.floating-window-titlebar-label {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+}
+
+.floating-window-titlebar-label h2,
+.floating-window-titlebar-label p,
+.floating-window-titlebar-label span {
   margin: 0;
-  color: var(--plan-accent);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.floating-window-header h2 {
-  margin: 0.32rem 0 0;
+.floating-window-titlebar-label h2 {
+  overflow: hidden;
   color: var(--plan-ink);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.575rem, 2.475cqw, 2.475rem);
-  font-weight: 400;
-  letter-spacing: -0.055em;
+  text-overflow: ellipsis;
 }
 
-.floating-window-header button {
+.floating-window-titlebar-label span {
+  flex: 0 0 auto;
+  color: var(--plan-muted);
+}
+
+.floating-window-titlebar-label p {
+  flex: 0 0 auto;
+  color: var(--plan-accent);
+  letter-spacing: 0.08em;
+}
+
+.floating-window-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
   border: 0;
-  border-bottom: 1px solid rgba(204, 222, 226, 0.3);
-  padding: 0 0 0.2rem;
+  border-left: 1px solid var(--plan-line);
+  padding: 0;
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
-  font-size: 0.825rem;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1rem;
+  line-height: 1;
 }
 
-.floating-window-header button:hover {
-  border-color: var(--plan-accent);
+.floating-window-close:hover {
   color: var(--plan-accent);
+  background: color-mix(in srgb, var(--plan-accent) 9%, transparent);
+}
+
+.floating-window-close:focus-visible {
+  outline: 1px solid var(--plan-accent);
+  outline-offset: -2px;
+}
+
+.floating-window-body {
+  overflow: auto;
+  max-height: calc(100vh - 3.5rem);
+  padding: 1rem;
+  background: var(--plan-panel-raised);
+}
+
+.floating-window-body > :first-child {
+  margin-top: 0;
 }
 
 .attachment-viewer,
 .result-viewer {
-  padding: clamp(1rem, 2cqw, 1.8rem);
+  padding: 0;
   background: var(--plan-panel-raised);
 }
 

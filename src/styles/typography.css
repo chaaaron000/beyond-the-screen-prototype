@@ -253,7 +253,6 @@
 }
 
 /* Inline references use the same body/caption relationship as callouts. */
-.attachment-caption,
 .result-viewer-summary,
 .result-viewer-evidence p,
 .raw-log-window-lines p,
@@ -266,11 +265,6 @@
   line-height: 1.55;
 }
 
-.floating-window-header p {
-  font-size: var(--type-meta);
-}
-
-.floating-window-header h2,
 .attachment-viewer-header h2,
 .result-viewer-header h2,
 .proposal-dialog-header h2 {

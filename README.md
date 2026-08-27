@@ -45,7 +45,13 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Collected information tab with advance control](docs/screenshots/planning-collected-final.png)
 
-![Attachment, result, and raw-log windows](docs/screenshots/floating-attachment-result-raw-log.png)
+![Non-modal attachment window](docs/screenshots/nonmodal-attachment-window.svg)
+
+![Non-modal result window](docs/screenshots/nonmodal-result-window.svg)
+
+![Non-modal raw-log window](docs/screenshots/nonmodal-raw-log-window.svg)
+
+![Attachment, result, and raw-log non-modal windows](docs/screenshots/floating-nonmodal-windows.svg)
 
 ## 실행
 

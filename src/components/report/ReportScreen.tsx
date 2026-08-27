@@ -144,7 +144,6 @@ type FloatingWindowState = FloatingWindowRequest & {
 
 function FloatingWindowFrame({
   windowState,
-  eyebrow,
   title,
   className,
   onClose,
@@ -152,7 +151,6 @@ function FloatingWindowFrame({
   children,
 }: {
   windowState: FloatingWindowState;
-  eyebrow: string;
   title: string;
   className: string;
   onClose: () => void;
@@ -167,21 +165,21 @@ function FloatingWindowFrame({
       ref={draggable.windowRef}
       className={`floating-window ${className}`}
       role="dialog"
+      aria-modal="false"
       aria-labelledby={titleId}
+      data-window-key={windowState.key}
       style={{ ...draggable.windowStyle, zIndex: windowState.zIndex }}
       onPointerDown={onFocus}
     >
       <header className="floating-window-header" {...draggable.dragHandleProps}>
-        <div>
-          <p>{eyebrow}</p>
+        <div className="floating-window-titlebar-label">
           <h2 id={titleId}>{title}</h2>
+          <span aria-hidden="true">-</span>
+          <p>OASIS Viewer</p>
         </div>
-        <div className="floating-window-actions">
-          <span className="floating-window-drag-hint" aria-hidden="true"><i />잡고 이동</span>
-          <button type="button" onClick={onClose} aria-label={`${title} 닫기`}>닫기</button>
-        </div>
+        <button className="floating-window-close" type="button" onClick={onClose} aria-label={`${title} 닫기`}>×</button>
       </header>
-      {children}
+      <div className="floating-window-body">{children}</div>
     </section>
   );
 }
@@ -956,14 +954,12 @@ function AttachmentViewer({
   return (
     <FloatingWindowFrame
       windowState={windowState}
-      eyebrow="OASIS / ATTACHMENT"
       title={attachment.title}
       className="floating-window--attachment attachment-viewer"
       onClose={onClose}
       onFocus={onFocus}
     >
       <AttachmentVisual attachment={attachment} />
-      <p className="attachment-caption">{attachment.caption}</p>
     </FloatingWindowFrame>
   );
 }
@@ -1245,7 +1241,6 @@ function ResultViewer({
   return (
     <FloatingWindowFrame
       windowState={windowState}
-      eyebrow="WORK COMPLETE / REPORT IN"
       title="조사 결과"
       className="floating-window--result result-viewer"
       onClose={onClose}
@@ -1286,7 +1281,6 @@ function RawLogViewer({
   return (
     <FloatingWindowFrame
       windowState={windowState}
-      eyebrow="OASIS / CONVERSATION LOG"
       title={`${proposal.title} / 대화 기록`}
       className="floating-window--raw-log raw-log-viewer"
       onClose={onClose}

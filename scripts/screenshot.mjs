@@ -25,6 +25,9 @@
  *                        open-attachment:<n> open Nth document attachment link
  *                        open-result:<n>     open Nth result history item
  *                        open-rawlog:<n>     open Nth raw-log button
+ *                        drag-window:<n>,<dx>,<dy>
+ *                                            drag Nth floating window by its
+ *                                            title bar and verify it moved
  *                        dialogue-all        advance VN dialogue until report or
  *                                            vn-to-report field-log transition
  *                        wait:<ms>           wait milliseconds
@@ -141,6 +144,28 @@ async function clickNth(page, selector, index) {
   await sleep(400);
 }
 
+async function dragFloatingWindow(page, value) {
+  const [index = 0, dx = 64, dy = 32] = String(value ?? "").split(",").map(Number);
+  const windowLocator = page.locator(".floating-window").nth(index);
+  const titleBar = windowLocator.locator(".floating-window-header");
+  const before = await windowLocator.boundingBox();
+  const handle = await titleBar.boundingBox();
+  if (!before || !handle) throw new Error(`Floating window ${index} is not visible`);
+
+  const startX = handle.x + Math.min(32, Math.max(8, handle.width / 4));
+  const startY = handle.y + handle.height / 2;
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  await page.mouse.move(startX + dx, startY + dy, { steps: 8 });
+  await page.mouse.up();
+  await sleep(250);
+
+  const after = await windowLocator.boundingBox();
+  if (!after || Math.abs(after.x - before.x) < 1 || Math.abs(after.y - before.y) < 1) {
+    throw new Error(`Floating window ${index} did not move from its title bar`);
+  }
+}
+
 async function advanceToReport(page) {
   for (let i = 0; i < 60; i++) {
     const hasReport = await page.evaluate(() =>
@@ -187,6 +212,9 @@ async function runAct(page, act) {
       return;
     case "open-rawlog":
       await clickNth(page, ".proposal-raw-log-button", Number(value ?? 0));
+      return;
+    case "drag-window":
+      await dragFloatingWindow(page, value);
       return;
     case "dialogue-all":
       for (let i = 0; i < 60; i++) {

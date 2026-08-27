@@ -1,0 +1,11 @@
+- dialog "조사 결과":
+  - heading "조사 결과" [level=2]
+  - paragraph: OASIS Viewer
+  - button "조사 결과 닫기": ×
+  - article:
+    - paragraph: 미라 · 완료
+    - heading "주 발전 계통 상태 분석" [level=3]
+    - paragraph: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
+    - strong: 주 발전 계통 상태
+    - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
+    - button "전력 상태 기록 보기"

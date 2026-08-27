@@ -1,0 +1,13 @@
+- dialog "주 발전 계통 / 전력 상태":
+  - heading "주 발전 계통 / 전력 상태" [level=2]
+  - paragraph: OASIS Viewer
+  - button "주 발전 계통 / 전력 상태 닫기": ×
+  - paragraph:
+    - text: 주 발전 OFFLINE
+    - emphasis: 확인
+  - paragraph:
+    - text: 생활 구역 비상·제한 전력 의존
+    - emphasis: 주의
+  - paragraph:
+    - text: 지속성 장시간 유지 어려움
+    - emphasis: 분석

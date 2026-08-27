@@ -1,0 +1,19 @@
+- dialog "발전소를 조사한다 / 대화 기록":
+  - heading "발전소를 조사한다 / 대화 기록" [level=2]
+  - paragraph: OASIS Viewer
+  - button "발전소를 조사한다 / 대화 기록 닫기": ×
+  - paragraph:
+    - strong: MIRAGE
+    - text: 주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.
+  - paragraph:
+    - strong: 한서윤
+    - text: 거기 지금 바로 들어갈 수 있는지도 모르잖아.
+  - paragraph:
+    - strong: MIRAGE
+    - text: 발전소 고치면 냉장고도 조명도 같이 해결돼요. 시간 충분한데요?
+  - paragraph:
+    - strong: 한서윤
+    - text: 너 그거 확실해?
+  - paragraph:
+    - strong: MIRAGE
+    - text: 지금 가진 정보로는요.

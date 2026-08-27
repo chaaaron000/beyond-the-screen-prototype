@@ -10,6 +10,7 @@
 - Before approval, limit work to inspection, analysis, diagnosis, design, planning, and other non-mutating checks.
 - When implementation is approved, invoke Sol Advisor orchestration and declare its route before the first implementation tool call.
 - Treat approval as scoped to the requested change; obtain new approval before materially expanding implementation scope.
+- For any Penpot-related request, use the `penpot-act2-prototype` MCP server.
 
 ## Package Manager
 - Use **npm**; `package-lock.json` is the lockfile.
