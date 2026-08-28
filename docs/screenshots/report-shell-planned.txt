@@ -1,0 +1,122 @@
+- main:
+  - strong: 생활 구역 03 · 조사 브리핑
+  - text: 현재 시각
+  - time: 09:20
+  - button "라이트 테마로 전환": 밝게
+  - combobox "색상 팔레트":
+    - option "Material"
+    - option "One Dark"
+    - option "GitHub"
+    - option "Nord" [selected]
+    - option "VSCode"
+    - option "Gruvbox"
+  - button "처음부터"
+  - region "정보 문서":
+    - article:
+      - heading "시설 정보" [level=1]
+      - heading "분석 요약" [level=2]
+      - list:
+        - listitem: 주 발전 계통이 오프라인 상태다.
+        - listitem: 냉장 설비는 고장 난 주 전원 대신 비상 전원으로 버티고 있다.
+        - listitem: 냉장 설비의 온도가 상승 중이지만 보존 한계 시각은 아직 분석되지 않았다.
+        - listitem: 서윤의 바이크는 오래 방치되어 현재 상태를 알 수 없다.
+        - listitem: 발전 구역의 정확한 접근 조건은 아직 확인되지 않았다.
+      - region "행동별 논쟁":
+        - heading "행동 후보" [level=2]
+        - article:
+          - heading "발전소를 조사한다" [level=3]
+          - button "제안하기"
+          - blockquote:
+            - text: 한서윤
+            - paragraph: “거기 지금 바로 들어갈 수 있는지도 모르잖아.”
+          - blockquote:
+            - text: MIRAGE
+            - paragraph: “주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”
+          - button "대화 LOG RAW"
+        - article:
+          - heading "바이크를 확인한다" [level=3]
+          - button "제안하기"
+          - blockquote:
+            - text: 한서윤
+            - paragraph: “난 바이크부터 보고 싶은데?”
+          - blockquote:
+            - text: MIRAGE
+            - paragraph: “아닌데요? 발전소 가봐야 하는데.”
+          - button "대화 LOG RAW"
+        - article:
+          - heading "냉장 시설을 확인한다" [level=3]
+          - button "제안하기"
+          - blockquote:
+            - text: 한서윤
+            - paragraph: “계속 온도가 오르는 건 좀 걸리는데.”
+          - blockquote:
+            - text: MIRAGE
+            - paragraph: “아직 얼마나 급한지는 모르잖아요.”
+          - button "대화 LOG RAW"
+      - region "현장 확인 기록":
+        - heading "확인한 장소" [level=2]
+        - paragraph: 아직 현장에서 돌아온 기록이 없다.
+  - separator "보고서와 조사 결과 높이 조절"
+  - region "조사 결과":
+    - heading "조사 결과" [level=2]
+    - paragraph: 아직 완료된 조사가 없습니다.
+  - separator "보고서와 조사 계획 너비 조절"
+  - complementary:
+    - text: 현재 09:20
+    - strong: 냉장 시설 · 보존 가능 시간 미확인
+    - heading "조사 계획" [level=2]
+    - region "시간 제한":
+      - paragraph: 시간 제한
+      - article:
+        - heading "냉장 시설" [level=3]
+        - paragraph: 보존 한계 미확인
+        - strong: 분석 필요
+      - article:
+        - heading "주 발전 계통" [level=3]
+        - paragraph: 복구 시각 추정 16:40
+        - strong: 남은 04:00
+      - article:
+        - heading "서윤의 바이크" [level=3]
+        - paragraph: 복귀 시각 미정
+        - strong: 확인 필요
+    - region "조사 일정 timeline":
+      - heading "두 사람의 다음 움직임" [level=3]
+      - text: 현재 미라 조사 예정 주 발전 계통 상태 분석 한서윤 대기 중 조사 예정 없음
+    - region "시간 진행":
+      - 'button "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후 09:30"':
+        - text: "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후"
+        - strong: 09:30
+    - region "캐릭터별 조사 큐":
+      - heading "조사 순서 정하기" [level=3]
+      - article:
+        - heading "MIRAGE" [level=3]
+        - text: 1건 가능
+        - region "미라 현재 진행 중":
+          - text: 현재 진행 중
+          - paragraph: 현재 진행 중인 작업 없음
+        - region "미라 가능한 조사":
+          - text: 가능한 조사
+          - button "냉장 설비 상태 분석 조사 예정에 추가":
+            - strong: 냉장 설비 상태 분석
+            - text: 15분 · 미라가 비상 전원 출력과 냉장 센서 추세를 분석한다.
+            - emphasis: 계획 +
+        - region "미라 조사 예정":
+          - text: 조사 예정
+          - list "미라 조사 예정 목록":
+            - listitem:
+              - text: 1 주 발전 계통 상태 분석
+              - button "주 발전 계통 상태 분석 위로 이동" [disabled]: ↑
+              - button "주 발전 계통 상태 분석 아래로 이동" [disabled]: ↓
+              - button "주 발전 계통 상태 분석 조사 예정에서 제거": ×
+      - article:
+        - heading "한서윤" [level=3]
+        - text: 0건 가능
+        - region "한서윤 현재 진행 중":
+          - text: 현재 진행 중
+          - paragraph: 현재 진행 중인 작업 없음
+        - region "한서윤 가능한 조사":
+          - text: 가능한 조사
+          - paragraph: 지금 확인할 수 있는 새 조사가 없습니다.
+        - region "한서윤 조사 예정":
+          - text: 조사 예정
+          - paragraph: 이후 작업은 비워둔 상태

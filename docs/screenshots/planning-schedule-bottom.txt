@@ -18,32 +18,33 @@
       - strong: 확인 필요
   - region "조사 일정 timeline":
     - heading "두 사람의 다음 움직임" [level=3]
-    - text: 현재 미라 대기 중 조사 예정 없음 한서윤 대기 중 조사 예정 없음
+    - text: 현재 미라 조사 예정 주 발전 계통 상태 분석 한서윤 대기 중 조사 예정 없음
   - region "시간 진행":
-    - button "진행할 작업이 없습니다 —" [disabled]:
-      - text: 진행할 작업이 없습니다
-      - strong: —
+    - 'button "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후 09:30"':
+      - text: "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후"
+      - strong: 09:30
   - region "캐릭터별 조사 큐":
     - heading "조사 순서 정하기" [level=3]
     - article:
       - heading "MIRAGE" [level=3]
-      - text: 2건 가능
+      - text: 1건 가능
       - region "미라 현재 진행 중":
         - text: 현재 진행 중
         - paragraph: 현재 진행 중인 작업 없음
       - region "미라 가능한 조사":
         - text: 가능한 조사
-        - button "주 발전 계통 상태 분석 조사 예정에 추가":
-          - strong: 주 발전 계통 상태 분석
-          - text: 10분 · 미라가 주 발전 계통과 생활 구역 전력 기록을 대조한다.
-          - emphasis: 계획 +
         - button "냉장 설비 상태 분석 조사 예정에 추가":
           - strong: 냉장 설비 상태 분석
           - text: 15분 · 미라가 비상 전원 출력과 냉장 센서 추세를 분석한다.
           - emphasis: 계획 +
       - region "미라 조사 예정":
         - text: 조사 예정
-        - paragraph: 이후 작업은 비워둔 상태
+        - list "미라 조사 예정 목록":
+          - listitem:
+            - text: 1 주 발전 계통 상태 분석
+            - button "주 발전 계통 상태 분석 위로 이동" [disabled]: ↑
+            - button "주 발전 계통 상태 분석 아래로 이동" [disabled]: ↓
+            - button "주 발전 계통 상태 분석 조사 예정에서 제거": ×
     - article:
       - heading "한서윤" [level=3]
       - text: 0건 가능

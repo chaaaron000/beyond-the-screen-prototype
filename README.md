@@ -63,6 +63,8 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Planning schedule after advancing time](docs/screenshots/planning-schedule-advance.svg)
 
+![Report shell with a planned investigation](docs/screenshots/report-shell-planned.svg)
+
 ![Report shell after a completed field route](docs/screenshots/report-shell-field-route.svg)
 
 ![Non-modal attachment window](docs/screenshots/nonmodal-attachment-window.svg)

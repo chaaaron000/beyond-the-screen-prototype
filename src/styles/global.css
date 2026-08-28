@@ -2077,7 +2077,7 @@ body {
 
 .actor-planning-row {
   display: grid;
-  grid-template-columns: minmax(5.9rem, 0.42fr) minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(5.9rem, 0.42fr) minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
   gap: 0.55rem;
   padding: 0.62rem;
@@ -2155,7 +2155,7 @@ body {
 
 @media (max-width: 760px) {
   .actor-planning-row {
-    grid-template-columns: minmax(5.4rem, 0.42fr) minmax(8.5rem, 1fr) auto minmax(8.5rem, 1fr);
+    grid-template-columns: minmax(5.4rem, 0.42fr) minmax(8.5rem, 1fr) minmax(8.5rem, 1fr);
     overflow-x: auto;
   }
 }
