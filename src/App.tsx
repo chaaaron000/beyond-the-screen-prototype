@@ -56,7 +56,7 @@ function PresentationTransitionOverlay({ transition }: { transition: Presentatio
 export default function App() {
   const [state, dispatch] = useReducer(gameReducer, createInitialState());
   const [transition, setTransition] = useState<PresentationTransition | null>(null);
-  const [highlightedRoute, setHighlightedRoute] = useState<ProposalId | null>(null);
+  const [unseenResultRouteIds, setUnseenResultRouteIds] = useState<ReadonlySet<ProposalId>>(new Set());
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
     const saved = localStorage.getItem("oasis.theme.mode");
     return saved === "light" ? "light" : "dark";
@@ -135,7 +135,9 @@ export default function App() {
         }
       } else if (transition.phase === "cover") {
         dispatch({ type: "ADVANCE_DIALOGUE" });
-        if (transition.showFieldLog) setHighlightedRoute(transition.proposalId);
+        if (transition.showFieldLog) {
+          setUnseenResultRouteIds((current) => new Set(current).add(transition.proposalId));
+        }
         setTransition({
           ...transition,
           phase: transition.showFieldLog ? "field-log" : "reveal",
@@ -149,12 +151,6 @@ export default function App() {
 
     return () => window.clearTimeout(timer);
   }, [dispatch, transition]);
-
-  useEffect(() => {
-    if (!highlightedRoute) return undefined;
-    const timer = window.setTimeout(() => setHighlightedRoute(null), 1600);
-    return () => window.clearTimeout(timer);
-  }, [highlightedRoute]);
 
   const inputLocked = transition !== null;
   const transitionClass = transition
@@ -207,6 +203,20 @@ export default function App() {
     });
   };
 
+  const handleRouteResultViewed = (proposalId: ProposalId) => {
+    setUnseenResultRouteIds((current) => {
+      if (!current.has(proposalId)) return current;
+      const next = new Set(current);
+      next.delete(proposalId);
+      return next;
+    });
+  };
+
+  const handleRestart = () => {
+    setUnseenResultRouteIds(new Set());
+    dispatch({ type: "RESTART" });
+  };
+
   return (
     <div className={`game-viewport game-viewport--${state.view}`}>
       <div className={`game-screen game-screen--${state.view}${inputLocked ? " is-presentation-locked" : ""}${transitionClass}`}>
@@ -218,8 +228,10 @@ export default function App() {
             dispatch={dispatch}
             onProposeAction={handleProposal}
             inputLocked={inputLocked}
-            highlightedRoute={highlightedRoute}
             activeProposal={transition?.kind === "report-to-vn" ? transition.proposalId : null}
+            unseenResultRouteIds={unseenResultRouteIds}
+            onRouteResultViewed={handleRouteResultViewed}
+            onRestart={handleRestart}
             themeControls={themeControls}
           />
         )}

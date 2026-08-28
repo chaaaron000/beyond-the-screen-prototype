@@ -26,6 +26,9 @@
  *                                            an open result viewer window
  *                        open-result:<n>     open Nth result row's 열기 control
  *                        open-rawlog:<n>     open Nth raw-log button
+ *                        open-field-result:<n>
+ *                                            open Nth field-result button
+ *                                            (.proposal-result-button)
  *                        drag-window:<n>,<dx>,<dy>
  *                                            drag Nth floating window by its
  *                                            title bar and verify it moved
@@ -237,6 +240,9 @@ async function runAct(page, act) {
       return;
     case "open-rawlog":
       await clickNth(page, ".proposal-raw-log-button", Number(value ?? 0));
+      return;
+    case "open-field-result":
+      await clickNth(page, ".proposal-result-button", Number(value ?? 0));
       return;
     case "drag-window":
       await dragFloatingWindow(page, value);

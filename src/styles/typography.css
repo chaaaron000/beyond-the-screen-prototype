@@ -101,21 +101,10 @@
   line-height: var(--block-body);
 }
 
-.field-route-record h3,
 .proposal-entry-title {
   font-size: var(--type-h3);
   min-height: var(--block-h2);
   line-height: var(--block-h2);
-}
-
-.field-route-record-note {
-  font-size: var(--type-body);
-  line-height: 1.5;
-}
-
-.field-route-record ul {
-  font-size: var(--type-body);
-  line-height: 1.5;
 }
 
 /* The planning pane mirrors the Penpot 10/After board. */

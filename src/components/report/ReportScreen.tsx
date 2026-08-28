@@ -46,8 +46,13 @@ interface ReportScreenProps {
   dispatch: Dispatch<GameAction>;
   onProposeAction?: (proposalId: ProposalId, evidenceIds: EvidenceId[]) => void;
   inputLocked?: boolean;
-  highlightedRoute?: ProposalId | null;
   activeProposal?: ProposalId | null;
+  /** Route IDs whose field result window has not been viewed yet; drives the unseen modifier. */
+  unseenResultRouteIds: ReadonlySet<ProposalId>;
+  /** Invoked when the player opens a completed route's field result window. */
+  onRouteResultViewed: (proposalId: ProposalId) => void;
+  /** Handles restart. */
+  onRestart: () => void;
   themeControls?: ReactNode;
 }
 
@@ -142,7 +147,8 @@ function useDraggableWindow(cascade: number) {
 type FloatingWindowRequest =
   | { key: `attachment:${EvidenceId}`; type: "attachment"; contentId: EvidenceId }
   | { key: `result:${TaskId}`; type: "result"; contentId: TaskId }
-  | { key: `raw-log:${ProposalId}`; type: "raw-log"; contentId: ProposalId };
+  | { key: `raw-log:${ProposalId}`; type: "raw-log"; contentId: ProposalId }
+  | { key: `field-result:${ProposalId}`; type: "field-result"; contentId: ProposalId };
 
 type FloatingWindowState = FloatingWindowRequest & {
   zIndex: number;
@@ -906,15 +912,19 @@ function ProposalLedger({
   state,
   onStartProposal,
   onOpenRawLog,
-  activeProposal,
-  disabled = false,
-}: {
-  state: GameState;
-  onStartProposal: (proposalId: ProposalId) => void;
-  onOpenRawLog: (proposalId: ProposalId) => void;
-  activeProposal?: ProposalId | null;
-  disabled?: boolean;
-}) {
+  onOpenFieldResult,
+   activeProposal,
+   unseenResultRouteIds,
+   disabled = false,
+ }: {
+   state: GameState;
+   onStartProposal: (proposalId: ProposalId) => void;
+   onOpenRawLog: (proposalId: ProposalId) => void;
+   onOpenFieldResult: (proposalId: ProposalId) => void;
+   activeProposal?: ProposalId | null;
+   unseenResultRouteIds: ReadonlySet<ProposalId>;
+   disabled?: boolean;
+ }) {
   const seoyunBusy = state.activeTasks.seoyun !== null;
   return (
     <section className="proposal-ledger" aria-label="행동별 논쟁">
@@ -924,23 +934,36 @@ function ProposalLedger({
           const presentation = getProposalPresentation(state, proposal.id);
           const seoyunSummary = getDialogue(presentation.summaryDialogueIds.seoyun)[0];
           const miraSummary = getDialogue(presentation.summaryDialogueIds.mira)[0];
+          const isExplored = Boolean(state.exploredRoutes[proposal.id]);
+          const isUnseenResult = isExplored && unseenResultRouteIds.has(proposal.id);
           return (
           <article className={`proposal-entry${activeProposal === proposal.id ? " proposal-entry--active" : ""}`} key={proposal.id}>
             <div className="proposal-entry-header">
               <h3 className="proposal-entry-title">{proposal.title}</h3>
-              <button
-                type="button"
-                className="proposal-start-button"
-                disabled={disabled || seoyunBusy || state.exploredRoutes[proposal.id]}
-                title={seoyunBusy ? "한서윤이 현재 다른 현장 작업을 수행 중입니다." : undefined}
-                onClick={() => onStartProposal(proposal.id)}
-              >
-                {state.exploredRoutes[proposal.id]
-                  ? "현장 확인 완료"
-                  : seoyunBusy
-                    ? "한서윤 작업 중"
-                    : "제안하기"}
-              </button>
+              {isExplored ? (
+                <button
+                  type="button"
+                  className={`proposal-result-button${isUnseenResult ? " proposal-result-button--unseen" : ""}`}
+                  data-route-id={proposal.id}
+                  data-result-unseen={isUnseenResult ? "true" : "false"}
+                  aria-label={`${proposal.title} 현장 확인 결과 열기${isUnseenResult ? " (새 결과)" : ""}`}
+                  disabled={disabled}
+                  onClick={() => onOpenFieldResult(proposal.id)}
+                >
+                  결과 확인
+                  {isUnseenResult && <span className="sr-only"> · 새 결과</span>}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="proposal-start-button"
+                  disabled={disabled || seoyunBusy}
+                  title={seoyunBusy ? "한서윤이 현재 다른 현장 작업을 수행 중입니다." : undefined}
+                  onClick={() => onStartProposal(proposal.id)}
+                >
+                  {seoyunBusy ? "한서윤 작업 중" : "제안하기"}
+                </button>
+              )}
             </div>
 
             <div className="proposal-positions">
@@ -976,19 +999,19 @@ function FieldDocument({
   state,
   onStartProposal,
   onOpenRawLog,
-  highlightedRoute,
-  activeProposal,
-  disabled = false,
-}: {
-  state: GameState;
-  onStartProposal: (proposalId: ProposalId) => void;
-  onOpenRawLog: (proposalId: ProposalId) => void;
-  highlightedRoute?: ProposalId | null;
-  activeProposal?: ProposalId | null;
-  disabled?: boolean;
-}) {
-  const completedRoutes = PROPOSALS.filter((proposal) => state.exploredRoutes[proposal.id]);
-
+   onOpenFieldResult,
+   unseenResultRouteIds,
+   activeProposal,
+   disabled = false,
+ }: {
+   state: GameState;
+   onStartProposal: (proposalId: ProposalId) => void;
+   onOpenRawLog: (proposalId: ProposalId) => void;
+   onOpenFieldResult: (proposalId: ProposalId) => void;
+   unseenResultRouteIds: ReadonlySet<ProposalId>;
+   activeProposal?: ProposalId | null;
+   disabled?: boolean;
+ }) {
   return (
     <article className="field-document">
       <header className="field-document-header">
@@ -1007,40 +1030,11 @@ function FieldDocument({
         state={state}
         onStartProposal={onStartProposal}
         onOpenRawLog={onOpenRawLog}
+        onOpenFieldResult={onOpenFieldResult}
+        unseenResultRouteIds={unseenResultRouteIds}
         activeProposal={activeProposal}
         disabled={disabled}
       />
-
-      <section className="field-document-section field-document-section--field-log" aria-label="현장 확인 기록">
-        <SectionHeading title="확인한 장소" />
-        {completedRoutes.length === 0 ? (
-          <p className="document-empty">아직 현장에서 돌아온 기록이 없다.</p>
-        ) : (
-          <div className="field-route-records" aria-live="polite">
-            {completedRoutes.map((proposal) => {
-              const route = getFieldRouteContent(proposal.id);
-              const isHighlighted = highlightedRoute === proposal.id;
-              return (
-                <article
-                  className={`field-route-record${isHighlighted ? " field-route-record--highlighted" : ""}`}
-                  data-route-id={proposal.id}
-                  key={proposal.id}
-                >
-                  <h3>{route.location}</h3>
-                  <p className="field-route-record-note">
-                    {route.reportResult.fieldNote}
-                    {"\n"}
-                    {route.reportResult.summary}
-                  </p>
-                  <ul>
-                    {route.reportResult.facts.map((fact) => <li key={fact}>{fact}</li>)}
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
     </article>
   );
 }
@@ -1158,6 +1152,38 @@ function RawLogViewer({
           </p>
         ))}
       </div>
+    </FloatingWindowFrame>
+  );
+}
+
+function FieldResultViewer({
+  proposal,
+  windowState,
+  onClose,
+  onFocus,
+}: {
+  proposal: ProposalDefinition;
+  windowState: FloatingWindowState;
+  onClose: () => void;
+  onFocus: () => void;
+}) {
+  const route = getFieldRouteContent(proposal.id);
+  return (
+    <FloatingWindowFrame
+      windowState={windowState}
+      title={`${proposal.title} / 현장 확인 결과`}
+      className="floating-window--field-result field-result-viewer"
+      onClose={onClose}
+      onFocus={onFocus}
+    >
+      <article className="field-result-entry" data-route-id={proposal.id}>
+        <p className="field-result-location">{route.location}</p>
+        <p className="field-result-note">{route.reportResult.fieldNote}</p>
+        <p className="field-result-summary">{route.reportResult.summary}</p>
+        <ul className="field-result-facts">
+          {route.reportResult.facts.map((fact) => <li key={fact}>{fact}</li>)}
+        </ul>
+      </article>
     </FloatingWindowFrame>
   );
 }
@@ -1332,8 +1358,10 @@ export function ReportScreen({
   dispatch,
   onProposeAction,
   inputLocked = false,
-  highlightedRoute = null,
   activeProposal = null,
+  unseenResultRouteIds,
+  onRouteResultViewed,
+  onRestart,
   themeControls,
 }: ReportScreenProps) {
   const [openWindows, setOpenWindows] = useState<FloatingWindowState[]>([]);
@@ -1430,6 +1458,11 @@ export function ReportScreen({
 
   const openResultViewer = (taskId: TaskId) => {
     openWindow({ key: `result:${taskId}`, type: "result", contentId: taskId });
+  };
+
+  const openFieldResultViewer = (proposalId: ProposalId) => {
+    openWindow({ key: `field-result:${proposalId}`, type: "field-result", contentId: proposalId });
+    onRouteResultViewed(proposalId);
   };
 
   const startResize = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -1539,7 +1572,7 @@ export function ReportScreen({
           <span>현재 시각</span>
           <time>{formatClock(displayClockMinutes)}</time>
           {themeControls}
-          <button type="button" disabled={isInputLocked} onClick={() => dispatch({ type: "RESTART" })}>처음부터</button>
+          <button type="button" disabled={isInputLocked} onClick={onRestart}>처음부터</button>
         </div>
       </header>
       <div
@@ -1558,7 +1591,8 @@ export function ReportScreen({
                 state={state}
                 onStartProposal={startProposal}
                 onOpenRawLog={(proposalId) => openWindow({ key: `raw-log:${proposalId}`, type: "raw-log", contentId: proposalId })}
-                highlightedRoute={highlightedRoute}
+                onOpenFieldResult={openFieldResultViewer}
+                unseenResultRouteIds={unseenResultRouteIds}
                 activeProposal={activeProposal}
                 disabled={isInputLocked}
               />
@@ -1630,6 +1664,8 @@ export function ReportScreen({
             return <ResultViewer key={windowState.key} taskId={windowState.contentId} onOpenAttachment={openAttachmentViewer} {...commonProps} />;
           case "raw-log":
             return <RawLogViewer key={windowState.key} proposal={getProposal(windowState.contentId)} state={state} {...commonProps} />;
+          case "field-result":
+            return <FieldResultViewer key={windowState.key} proposal={getProposal(windowState.contentId)} {...commonProps} />;
         }
       })}
       {proposalDialog && (

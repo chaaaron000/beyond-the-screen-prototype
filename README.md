@@ -15,7 +15,7 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 5. 작업이 완료되면 완료 기록이 아래 조사 결과 판에 한 줄씩 쌓입니다. 각 행의 `열기`를 누르면 기존 플로팅 결과 창에서 세부 내용과 첨부 자료를 확인할 수 있습니다. 보고서와 조사 결과 판의 높이, 보고서와 조사 계획 판의 너비는 구분선을 드래그해 조절할 수 있습니다.
 6. 확보한 정보에 따라 시작 가능한 조사와 대사 분기가 달라집니다. 제안이 수락되면 한서윤이 실제 현장으로 이동하며, 방문 전체가 콘텐츠에 정의된 세계 시간을 소비합니다. 같은 시간 동안 이미 진행 중인 MIRAGE 조사도 진행되지만 다음 예약 작업은 자동 시작하지 않습니다.
 7. 승인된 현장 방문만 FIELD LINK와 FIELD LOG UPDATED 기록을 거칩니다. 거절된 제안은 짧은 fade와 거절 대화 뒤 보고서로 돌아옵니다.
-8. 돌아온 장소·현장 메모·사실은 보고서 문서의 `확인한 장소` 섹션에 누적됩니다. 완료한 방문은 `현장 확인 완료`로 남고 다시 제안할 수 없습니다.
+8. 현장 방문이 완료되면 해당 액션의 버튼이 강조된 활성 `결과 확인` 버튼으로 바뀝니다. 버튼을 누르면 경로 세부 내용이 비모달 플로팅 창으로 열리고 새 결과 강조가 해제되며, 완료한 경로는 다시 제안할 수 없습니다.
 
 ## Screenshots
 
@@ -41,8 +41,6 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report action debate as document text](docs/screenshots/report-action-debate-document.svg)
 
-![Report document field log section](docs/screenshots/report-document-field-log.svg)
-
 ![Report document light theme](docs/screenshots/report-document-light.svg)
 
 ![Investigation results empty](docs/screenshots/investigation-results-empty.svg)
@@ -65,7 +63,13 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report shell with a planned investigation](docs/screenshots/report-shell-planned.svg)
 
-![Report shell after a completed field route](docs/screenshots/report-shell-field-route.svg)
+![Full screen with an unseen field route result button](docs/screenshots/field-result-button-unseen-full.svg)
+
+![Report shell with an unseen field route result button](docs/screenshots/field-result-button-unseen.svg)
+
+![Full screen with the field route result window open](docs/screenshots/field-result-window-full.svg)
+
+![Report shell with the field route result window open](docs/screenshots/field-result-window.svg)
 
 ![Non-modal attachment window](docs/screenshots/nonmodal-attachment-window.svg)
 

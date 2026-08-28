@@ -2218,6 +2218,66 @@ body {
   cursor: not-allowed;
 }
 
+/* Visually hidden but available to screen readers (e.g. '새 결과' on the result button). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Result control mirrors the start button; --unseen raises a quiet operational
+   marker (accent border, accent text, one dot) that disappears once seen. */
+.proposal-result-button {
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--document-ink) 32%, transparent);
+  padding: 0.42rem 0.85rem;
+  color: var(--document-ink);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.proposal-result-button:hover:not(:disabled) {
+  border-color: var(--document-ink);
+}
+
+.proposal-result-button:focus-visible {
+  outline: 2px solid var(--document-accent);
+  outline-offset: 2px;
+}
+
+.proposal-result-button:disabled {
+  border-color: transparent;
+  color: var(--document-faint);
+  cursor: not-allowed;
+}
+
+/* Unseen marker: accent border/text plus a small status dot. Scoped to
+   :not(:disabled) so a disabled control never keeps the emphasized accent. */
+.proposal-result-button--unseen:not(:disabled) {
+  border-color: var(--document-accent);
+  color: var(--document-accent);
+}
+
+.proposal-result-button--unseen:not(:disabled)::before {
+  display: inline-block;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+  vertical-align: 0.05em;
+}
+
 .proposal-positions {
   display: grid;
   gap: 1rem;
@@ -3250,6 +3310,59 @@ body {
   font-weight: 500;
 }
 
+/* Field result viewer: one route's field log, using the shared window chrome.
+   Window geometry only here; scrolling and max-height come from .floating-window(-body). */
+.field-result-viewer {
+  top: clamp(6rem, 16vh, 9rem);
+  right: clamp(1rem, 8vw, 6rem);
+  width: min(34rem, calc(100vw - 2rem));
+}
+
+.field-result-entry {
+  display: grid;
+  gap: 0.6rem;
+  color: var(--plan-ink);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.field-result-location {
+  margin: 0;
+  border-left: 2px solid var(--plan-amber);
+  padding-left: 0.55rem;
+  color: var(--plan-amber);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+.field-result-note {
+  margin: 0;
+  border-left: 2px solid var(--plan-line);
+  padding-left: 0.62rem;
+  color: var(--plan-muted);
+  white-space: pre-line;
+}
+
+.field-result-summary {
+  margin: 0;
+  color: var(--plan-ink);
+}
+
+.field-result-facts {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.1rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--plan-muted);
+}
+
+.field-result-facts li {
+  min-height: 1.5rem;
+}
+
 @media (max-width: 760px) {
   .report-workspace {
     grid-template-columns: minmax(0, 1.1fr) minmax(15rem, 0.9fr);
@@ -3359,52 +3472,6 @@ body {
   animation: presentation-record-pulse 1.2s ease-in-out infinite;
 }
 
-.field-document-section--field-log {
-  margin-top: 0;
-}
-
-.field-route-records {
-  display: grid;
-  gap: 1rem;
-}
-
-.field-route-record {
-  padding: 0;
-  color: var(--document-ink);
-}
-
-.field-route-record--highlighted {
-  background: transparent;
-}
-
-.field-route-record h3 {
-  margin: 0;
-  color: var(--document-ink);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 2.125rem;
-  letter-spacing: -0.02em;
-}
-
-.field-route-record-note {
-  margin: 0;
-  color: var(--document-muted);
-  font-size: 1rem;
-  line-height: 1.5rem;
-  white-space: pre-line;
-}
-
-.field-route-record ul {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--document-muted);
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 @keyframes presentation-record-pulse {
   0%, 100% { opacity: 0.42; transform: translateY(2.15rem) scaleX(0.94); }
   50% { opacity: 0.9; transform: translateY(2.15rem) scaleX(1); }
@@ -3414,8 +3481,7 @@ body {
   .game-screen.is-presentation-locked > :not(.presentation-transition),
   .presentation-transition,
   .presentation-transition-label,
-  .presentation-transition-location,
-  .field-route-record {
+  .presentation-transition-location {
     transition: none;
   }
 

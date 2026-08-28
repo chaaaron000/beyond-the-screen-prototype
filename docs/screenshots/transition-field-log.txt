@@ -25,7 +25,7 @@
         - heading "행동 후보" [level=2]
         - article:
           - heading "발전소를 조사한다" [level=3]
-          - button "현장 확인 완료" [disabled]
+          - button "발전소를 조사한다 현장 확인 결과 열기 (새 결과)" [disabled]: 결과 확인 · 새 결과
           - blockquote:
             - text: 한서윤
             - paragraph: “거기 지금 바로 들어갈 수 있는지도 모르잖아.”
@@ -53,15 +53,6 @@
             - text: MIRAGE
             - paragraph: “아직 얼마나 급한지는 모르잖아요.”
           - button "대화 LOG RAW" [disabled]
-      - region "현장 확인 기록":
-        - heading "확인한 장소" [level=2]
-        - article:
-          - heading "발전 구역" [level=3]
-          - paragraph: 발전 구역 입구의 격리·접근 절차에 막혔고, 현장 인증 단말 없이는 해제할 수 없었다. 발전 구역 접근은 막혀 있고, 현장 인증 단말이 필요하다.
-          - list:
-            - listitem: 발전 구역 입구 현장 확인을 완료했다.
-            - listitem: 발전 구역 입구는 격리·접근 절차로 막혀 내부 설비에 접근할 수 없다.
-            - listitem: 발전 구역 접근 절차에는 현장 인증 단말이 필요하다.
   - separator "보고서와 조사 결과 높이 조절"
   - region "조사 결과":
     - heading "조사 결과" [level=2]
