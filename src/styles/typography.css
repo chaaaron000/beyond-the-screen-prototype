@@ -3,7 +3,8 @@
  * Page title 36px/700, H1 30px/700, H2 24px/600, H3 20px/600,
  * Body 16px/400, Secondary 14px/400~500, Metadata 12px/400~500.
  * Each role renders as a fixed-height block with a single 16px gap
- * between blocks, so the web document matches the Penpot boards.
+ * between blocks. H1 section dividers get 32px above and 16px below,
+ * so the web document matches the Penpot boards.
  */
 .report-shell {
   --type-meta: 0.75rem;
@@ -15,6 +16,7 @@
   --type-h2: 1.875rem;
   --type-h1: 2.25rem;
   --block-gap: 1rem;
+  --divider-gap-above: 2rem;
   --block-title: 3rem;
   --block-h1: 2.5rem;
   --block-h2: 2.125rem;

@@ -1472,13 +1472,13 @@ body {
   width: min(100%, 46rem);
   min-height: 100%;
   margin: 0 auto;
-  padding: 3rem clamp(1.4rem, 4.4cqw, 4.7rem) 3rem;
+  padding: calc(var(--divider-gap-above, 2rem) - 1rem) clamp(1.4rem, 4.4cqw, 4.7rem) 3rem;
   color: var(--document-ink);
   background: var(--document-paper);
 }
 
 .field-document-header {
-  margin-bottom: var(--block-gap, 1rem);
+  margin-bottom: 0;
   border-bottom: 1px solid var(--document-line);
   padding-bottom: 1rem;
 }
@@ -1494,12 +1494,32 @@ body {
 }
 
 .field-document-section {
-  margin-top: 1rem;
+  margin-top: 0;
   padding-bottom: 0;
 }
 
 .field-section-heading {
   margin-bottom: 1rem;
+  border-top: 1px solid var(--document-line);
+  padding-top: 1rem;
+}
+
+.field-section-heading {
+  margin-bottom: 1rem;
+  margin-top: var(--divider-gap-above, 2rem);
+  border-top: 1px solid var(--document-line);
+  padding-top: 1rem;
+}
+
+.field-document-header + * .field-section-heading,
+.proposal-ledger + .field-document-section .field-section-heading {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 1rem;
+}
+
+.field-document-header + .field-document-section {
+  margin-top: 0;
 }
 
 .field-section-heading h2 {
@@ -2446,7 +2466,7 @@ body {
 
 /* Proposal ledger: the document presents arguments by action, not by speaker. */
 .proposal-ledger {
-  margin-top: 1rem;
+  margin-top: 0;
   border-bottom: 1px solid var(--document-line);
   padding-bottom: 1rem;
 }
@@ -3455,7 +3475,7 @@ body {
 }
 
 .field-document-section--field-log {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .field-route-records {

@@ -1,64 +1,46 @@
-- region "정보 문서":
-  - article:
-    - heading "시설 정보" [level=1]
-    - heading "분석 요약" [level=2]
-    - list:
-      - listitem: 주 발전 계통이 오프라인 상태다.
-      - listitem: 냉장 설비는 고장 난 주 전원 대신 비상 전원으로 버티고 있다.
-      - listitem: 냉장 설비의 온도가 상승 중이지만 보존 한계 시각은 아직 분석되지 않았다.
-      - listitem: 서윤의 바이크는 오래 방치되어 현재 상태를 알 수 없다.
-      - listitem: 발전 구역의 정확한 접근 조건은 아직 확인되지 않았다.
-    - region "행동별 논쟁":
-      - heading "행동 후보" [level=2]
-      - article:
-        - heading "발전소를 조사한다" [level=3]
-        - button "현장 확인 완료" [disabled]
-        - blockquote:
-          - text: 한서윤
-          - paragraph: “거기 지금 바로 들어갈 수 있는지도 모르잖아.”
-        - blockquote:
-          - text: MIRAGE
-          - paragraph: “주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”
-        - button "대화 LOG RAW"
-      - article:
-        - heading "바이크를 확인한다" [level=3]
-        - button "제안하기"
-        - blockquote:
-          - text: 한서윤
-          - paragraph: “난 바이크부터 보고 싶은데?”
-        - blockquote:
-          - text: MIRAGE
-          - paragraph: “아닌데요? 발전소 가봐야 하는데.”
-        - button "대화 LOG RAW"
-      - article:
-        - heading "냉장 시설을 확인한다" [level=3]
-        - button "제안하기"
-        - blockquote:
-          - text: 한서윤
-          - paragraph: “계속 온도가 오르는 건 좀 걸리는데.”
-        - blockquote:
-          - text: MIRAGE
-          - paragraph: “아직 얼마나 급한지는 모르잖아요.”
-        - button "대화 LOG RAW"
-    - heading "도착한 기록" [level=2]
+- article:
+  - heading "시설 정보" [level=1]
+  - heading "분석 요약" [level=2]
+  - list:
+    - listitem: 주 발전 계통이 오프라인 상태다.
+    - listitem: 냉장 설비는 고장 난 주 전원 대신 비상 전원으로 버티고 있다.
+    - listitem: 냉장 설비의 온도가 상승 중이지만 보존 한계 시각은 아직 분석되지 않았다.
+    - listitem: 서윤의 바이크는 오래 방치되어 현재 상태를 알 수 없다.
+    - listitem: 발전 구역의 정확한 접근 조건은 아직 확인되지 않았다.
+  - region "행동별 논쟁":
+    - heading "행동 후보" [level=2]
     - article:
-      - heading "주 발전 계통 상태" [level=3]
-      - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
-      - button "전력 상태 기록 보기"
+      - heading "발전소를 조사한다" [level=3]
+      - button "제안하기"
+      - blockquote:
+        - text: 한서윤
+        - paragraph: “거기 지금 바로 들어갈 수 있는지도 모르잖아.”
+      - blockquote:
+        - text: MIRAGE
+        - paragraph: “주 발전 계통부터요. 여기 살아있는 설비 대부분이 거기 물려 있어요.”
+      - button "대화 LOG RAW"
     - article:
-      - heading "발전 구역 입구 현장 기록" [level=3]
-      - paragraph: 입구 셔터는 내려가 있고 외부에서 내부 설비 상태는 확인할 수 없다.
-      - button "발전 구역 지도 보기"
+      - heading "바이크를 확인한다" [level=3]
+      - button "제안하기"
+      - blockquote:
+        - text: 한서윤
+        - paragraph: “난 바이크부터 보고 싶은데?”
+      - blockquote:
+        - text: MIRAGE
+        - paragraph: “아닌데요? 발전소 가봐야 하는데.”
+      - button "대화 LOG RAW"
     - article:
-      - heading "발전 구역 현장 인증 조건" [level=3]
-      - paragraph: 발전 구역 입구의 격리 절차는 현장 인증 단말 없이는 해제할 수 없다.
-      - button "접근 로그 열기"
-    - region "현장 확인 기록":
-      - heading "확인한 장소" [level=2]
-      - article:
-        - heading "발전 구역" [level=3]
-        - paragraph: 발전 구역 입구의 격리·접근 절차에 막혔고, 현장 인증 단말 없이는 해제할 수 없었다. 발전 구역 접근은 막혀 있고, 현장 인증 단말이 필요하다.
-        - list:
-          - listitem: 발전 구역 입구 현장 확인을 완료했다.
-          - listitem: 발전 구역 입구는 격리·접근 절차로 막혀 내부 설비에 접근할 수 없다.
-          - listitem: 발전 구역 접근 절차에는 현장 인증 단말이 필요하다.
+      - heading "냉장 시설을 확인한다" [level=3]
+      - button "제안하기"
+      - blockquote:
+        - text: 한서윤
+        - paragraph: “계속 온도가 오르는 건 좀 걸리는데.”
+      - blockquote:
+        - text: MIRAGE
+        - paragraph: “아직 얼마나 급한지는 모르잖아요.”
+      - button "대화 LOG RAW"
+  - heading "도착한 기록" [level=2]
+  - paragraph: 아직 추가로 확인한 정보가 이 문서에 들어오지 않았다.
+  - region "현장 확인 기록":
+    - heading "확인한 장소" [level=2]
+    - paragraph: 아직 현장에서 돌아온 기록이 없다.
