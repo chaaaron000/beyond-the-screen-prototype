@@ -49,7 +49,6 @@
 .report-topbar-right button,
 .theme-toggle,
 .palette-select,
-.attachment-link,
 .proposal-start-button {
   font-size: var(--type-control);
 }
@@ -102,7 +101,6 @@
   line-height: var(--block-body);
 }
 
-.document-record h3,
 .field-route-record h3,
 .proposal-entry-title {
   font-size: var(--type-h3);
@@ -110,7 +108,6 @@
   line-height: var(--block-h2);
 }
 
-.document-record > p,
 .field-route-record-note {
   font-size: var(--type-body);
   line-height: 1.5;
@@ -149,14 +146,8 @@
   line-height: 1.35;
 }
 
-.sidebar-evidence > p {
-  font-size: var(--type-meta);
-  line-height: 1.5;
-}
-
 .timeline-heading h3,
-.deadline-summary-label,
-.support-panel-heading h3 {
+.deadline-summary-label {
   font-size: var(--type-h2);
   min-height: 2.5rem;
   line-height: 2.5rem;
@@ -171,7 +162,9 @@
 .queue-empty,
 .queue-list li,
 .advance-time-control,
-.panel-empty {
+.results-table th,
+.results-table td,
+.results-empty {
   font-size: var(--type-body);
 }
 
@@ -187,9 +180,7 @@
 
 .deadline-summary-copy h3,
 .deadline-summary-copy p,
-.sidebar-evidence strong,
-.actor-available-task strong,
-.result-history-item strong {
+.actor-available-task strong {
   font-size: var(--plan-type-item);
   line-height: 1.5;
 }
@@ -203,15 +194,12 @@
 .actor-available-task small,
 .actor-available-task em,
 .queue-actions button,
-.advance-time-control strong,
-.sidebar-evidence button span,
-.result-history-item em {
+.advance-time-control strong {
   font-size: var(--plan-type-item-status);
   font-weight: 500;
 }
 
-.planner-section-heading h3,
-.collected-information-heading h3 {
+.planner-section-heading h3 {
   font-size: var(--type-h2);
   min-height: 2.5rem;
   line-height: 2.5rem;
@@ -222,8 +210,9 @@
   font-size: 1rem;
 }
 
-.evidence-sidebar .field-section-heading h2 {
-  font-size: var(--type-h3);
+/* Results table: compact player-readable rows. */
+.results-table tbody td .results-open-button {
+  font-size: var(--type-body);
 }
 
 /* Inline references use the same body/caption relationship as callouts. */

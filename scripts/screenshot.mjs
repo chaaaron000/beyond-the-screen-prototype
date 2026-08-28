@@ -22,13 +22,15 @@
  *                        evidence:<n>        toggle Nth proposal evidence checkbox
  *                        confirm             confirm the proposal dialog
  *                        advance             click the advance-time control
- *                        tab:<schedule|collected>  switch planning tab
- *                        open-attachment:<n> open Nth document attachment link
- *                        open-result:<n>     open Nth result history item
+ *                        open-attachment:<n> open Nth attachment button inside
+ *                                            an open result viewer window
+ *                        open-result:<n>     open Nth result row's 열기 control
  *                        open-rawlog:<n>     open Nth raw-log button
  *                        drag-window:<n>,<dx>,<dy>
  *                                            drag Nth floating window by its
  *                                            title bar and verify it moved
+ *                        drag-results:<dy>   drag the horizontal results resizer
+ *                                            by dy pixels and verify it moved
  *                        dialogue-all        advance VN dialogue until report or
  *                                            vn-to-report field-log transition
  *                        scroll:<selector>   scroll the element to its bottom
@@ -168,6 +170,28 @@ async function dragFloatingWindow(page, value) {
   }
 }
 
+async function dragResultsSeparator(page, value) {
+  const dy = Number(value ?? 80) || 80;
+  const handle = page.locator(".workspace-resizer--horizontal");
+  const resultsPane = page.locator(".results-pane");
+  const handleBox = await handle.boundingBox();
+  const before = await resultsPane.boundingBox();
+  if (!handleBox || !before) throw new Error("Results resizer or results pane is not visible");
+
+  const startX = handleBox.x + handleBox.width / 2;
+  const startY = handleBox.y + handleBox.height / 2;
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  await page.mouse.move(startX, startY + dy, { steps: 8 });
+  await page.mouse.up();
+  await sleep(250);
+
+  const after = await resultsPane.boundingBox();
+  if (!after || Math.abs(after.height - before.height) < 1) {
+    throw new Error(`Results pane height did not change after dragging by ${dy}px`);
+  }
+}
+
 async function advanceToReport(page) {
   for (let i = 0; i < 60; i++) {
     const hasReport = await page.evaluate(() =>
@@ -205,21 +229,20 @@ async function runAct(page, act) {
     case "advance":
       await clickNth(page, ".advance-time-control", 0);
       return;
-    case "tab":
-      if (value === "collected") await clickNth(page, "#planning-tab-button-collected", 0);
-      else await clickNth(page, "#planning-tab-button-schedule", 0);
-      return;
     case "open-attachment":
-      await clickNth(page, ".attachment-link", Number(value ?? 0));
+      await clickNth(page, ".result-viewer-evidence button", Number(value ?? 0));
       return;
     case "open-result":
-      await clickNth(page, ".result-history-item", Number(value ?? 0));
+      await clickNth(page, ".results-table tbody .results-open-button", Number(value ?? 0));
       return;
     case "open-rawlog":
       await clickNth(page, ".proposal-raw-log-button", Number(value ?? 0));
       return;
     case "drag-window":
       await dragFloatingWindow(page, value);
+      return;
+    case "drag-results":
+      await dragResultsSeparator(page, value);
       return;
     case "dialogue-all":
       for (let i = 0; i < 60; i++) {

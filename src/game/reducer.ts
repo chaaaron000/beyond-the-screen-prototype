@@ -22,6 +22,9 @@ export function getTask(taskId: TaskId): TaskDefinition {
   return TASKS.find((task) => task.id === taskId)!;
 }
 
+/** Fixed actor iteration order so simultaneous completions log deterministically. */
+const ACTOR_ORDER: Actor[] = ["mira", "seoyun"];
+
 export function getAvailableTasks(state: GameState): TaskDefinition[] {
   const scheduledTaskIds = new Set(getScheduledTaskIds(state));
   return TASKS.filter(
@@ -93,13 +96,12 @@ export function advanceElapsedTime(
 
   const activeTasks = { ...state.activeTasks };
   const completedTaskIds = [...state.completedTaskIds];
+  const taskCompletionLog = [...state.taskCompletionLog];
   const discoveredEvidence = [...state.discoveredEvidence];
   const recentlyCompleted: TaskId[] = [];
 
-  (Object.entries(activeTasks) as [
-    Actor,
-    GameState["activeTasks"][Actor],
-  ][]).forEach(([actor, activeTask]) => {
+  ACTOR_ORDER.forEach((actor) => {
+    const activeTask = activeTasks[actor];
     if (!activeTask) return;
     if (activeTask.remainingMinutes > elapsedMinutes) {
       activeTasks[actor] = {
@@ -111,6 +113,11 @@ export function advanceElapsedTime(
 
     const task = getTask(activeTask.taskId);
     if (!completedTaskIds.includes(task.id)) completedTaskIds.push(task.id);
+    taskCompletionLog.push({
+      taskId: task.id,
+      startedAtMinutes: activeTask.startedAtMinutes,
+      completedAtMinutes: state.clockMinutes + activeTask.remainingMinutes,
+    });
     if (
       task.result.evidenceId &&
       !discoveredEvidence.includes(task.result.evidenceId)
@@ -126,6 +133,7 @@ export function advanceElapsedTime(
     clockMinutes: state.clockMinutes + elapsedMinutes,
     activeTasks,
     completedTaskIds,
+    taskCompletionLog,
     discoveredEvidence,
     recentlyCompleted,
     rejectionPressure:
@@ -256,6 +264,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         activeTasks[actor] = {
           taskId: nextTask.id,
           actor,
+          startedAtMinutes: state.clockMinutes,
           remainingMinutes: nextTask.durationMinutes,
         };
       });

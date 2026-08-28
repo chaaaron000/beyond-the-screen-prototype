@@ -16,6 +16,7 @@ import {
   getNextCompletionTaskIds,
 } from "./reducer";
 import type { EvidenceId, GameState, ProposalId } from "../types/game";
+import { INITIAL_CLOCK_MINUTES } from "./clock";
 
 function openReport(state = createInitialState()): GameState {
   let next = state;
@@ -180,6 +181,7 @@ describe("proposal contract", () => {
         seoyun: {
           actor: "seoyun",
           taskId: "terminalSearch",
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
           remainingMinutes: 10,
         },
       },
@@ -233,6 +235,7 @@ describe("field route time and lifecycle", () => {
         mira: {
           actor: "mira",
           taskId: "refrigerationAnalysis",
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
           remainingMinutes: 15,
         },
         seoyun: null,
@@ -254,6 +257,7 @@ describe("field route time and lifecycle", () => {
         mira: {
           actor: "mira",
           taskId: "refrigerationAnalysis",
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
           remainingMinutes: 10,
         },
         seoyun: null,
@@ -265,6 +269,16 @@ describe("field route time and lifecycle", () => {
     expect(completed.activeTasks.mira).toBeNull();
     expect(completed.queuedTasks.mira).toEqual(["powerAnalysis"]);
     expect(completed.completedTaskIds).not.toContain("powerAnalysis");
+    expect(
+      completed.taskCompletionLog.some((record) => record.taskId === "powerAnalysis"),
+    ).toBe(false);
+    expect(completed.taskCompletionLog).toEqual([
+      {
+        taskId: "refrigerationAnalysis",
+        startedAtMinutes: INITIAL_CLOCK_MINUTES,
+        completedAtMinutes: INITIAL_CLOCK_MINUTES + 10,
+      },
+    ]);
   });
 
   it("records the first terminal source once across all three encounters", () => {
@@ -412,5 +426,160 @@ describe("planning and explicit time advancement", () => {
   it("returns empty list when nothing is scheduled", () => {
     expect(getNextCompletionTaskIds(openReport())).toEqual([]);
     expect(getNextCompletionMinutes(openReport())).toBeNull();
+  });
+});
+
+describe("task completion log", () => {
+  it("records nothing when a task is only planned", () => {
+    const state = openReport();
+    const startClock = state.clockMinutes;
+    const planned = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+
+    expect(planned.clockMinutes).toBe(startClock);
+    expect(planned.taskCompletionLog).toEqual([]);
+    expect(planned.queuedTasks.mira).toEqual(["powerAnalysis"]);
+  });
+
+  it("logs exact start and end for a normally completed task", () => {
+    const state = openReport();
+    const startClock = state.clockMinutes;
+    const planned = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    const completed = gameReducer(planned, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+
+    expect(completed.taskCompletionLog).toEqual([
+      {
+        taskId: "powerAnalysis",
+        startedAtMinutes: startClock,
+        completedAtMinutes: startClock + 10,
+      },
+    ]);
+    expect(completed.clockMinutes).toBe(startClock + 10);
+  });
+
+  it("logs successive start and end times for sequentially queued tasks", () => {
+    const state = openReport();
+    const startClock = state.clockMinutes;
+    let next = gameReducer(state, { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    next = gameReducer(next, { type: "PLAN_TASK", taskId: "refrigerationAnalysis" });
+
+    next = gameReducer(next, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+    next = gameReducer(next, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+
+    expect(next.taskCompletionLog).toEqual([
+      {
+        taskId: "powerAnalysis",
+        startedAtMinutes: startClock,
+        completedAtMinutes: startClock + 10,
+      },
+      {
+        taskId: "refrigerationAnalysis",
+        startedAtMinutes: startClock + 10,
+        completedAtMinutes: startClock + 10 + 15,
+      },
+    ]);
+    expect(next.clockMinutes).toBe(startClock + 25);
+  });
+
+  it("logs two stable records when both actors' tasks complete simultaneously", () => {
+    const state = {
+      ...openReport(),
+      activeTasks: {
+        mira: {
+          actor: "mira" as const,
+          taskId: "powerAnalysis" as const,
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
+          remainingMinutes: 10,
+        },
+        seoyun: {
+          actor: "seoyun" as const,
+          taskId: "terminalSearch" as const,
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
+          remainingMinutes: 10,
+        },
+      },
+      queuedTasks: { mira: [], seoyun: [] },
+    };
+
+    const completed = gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+    const first = completed.taskCompletionLog[0];
+    const second = completed.taskCompletionLog[1];
+
+    expect(completed.taskCompletionLog).toHaveLength(2);
+    expect(first).toEqual({
+      taskId: "powerAnalysis",
+      startedAtMinutes: INITIAL_CLOCK_MINUTES,
+      completedAtMinutes: INITIAL_CLOCK_MINUTES + 10,
+    });
+    expect(second).toEqual({
+      taskId: "terminalSearch",
+      startedAtMinutes: INITIAL_CLOCK_MINUTES,
+      completedAtMinutes: INITIAL_CLOCK_MINUTES + 10,
+    });
+    // Re-running the same reduction on the same input is stable.
+    expect(gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" }).taskCompletionLog)
+      .toEqual(completed.taskCompletionLog);
+  });
+
+  it("uses the task's true end time when it finishes during a longer field visit", () => {
+    const state: GameState = {
+      ...openReport(),
+      activeTasks: {
+        mira: {
+          actor: "mira",
+          taskId: "refrigerationAnalysis",
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
+          remainingMinutes: 15,
+        },
+        seoyun: null,
+      },
+    };
+    // Motorcycle route lasts 20 minutes; the task ends at started+15, not +20.
+    const completed = completeRoute(state, "motorcycle");
+
+    expect(completed.clockMinutes).toBe(INITIAL_CLOCK_MINUTES + 20);
+    expect(completed.taskCompletionLog).toEqual([
+      {
+        taskId: "refrigerationAnalysis",
+        startedAtMinutes: INITIAL_CLOCK_MINUTES,
+        completedAtMinutes: INITIAL_CLOCK_MINUTES + 15,
+      },
+    ]);
+  });
+
+  it("preserves the original start time and only decrements remaining on a partial visit", () => {
+    const state: GameState = {
+      ...openReport(),
+      activeTasks: {
+        mira: {
+          actor: "mira",
+          taskId: "refrigerationAnalysis",
+          startedAtMinutes: INITIAL_CLOCK_MINUTES,
+          remainingMinutes: 30,
+        },
+        seoyun: null,
+      },
+    };
+    const completed = completeRoute(state, "motorcycle");
+
+    expect(completed.clockMinutes).toBe(INITIAL_CLOCK_MINUTES + 20);
+    expect(completed.activeTasks.mira).toEqual({
+      actor: "mira",
+      taskId: "refrigerationAnalysis",
+      startedAtMinutes: INITIAL_CLOCK_MINUTES,
+      remainingMinutes: 10,
+    });
+    expect(completed.taskCompletionLog).toEqual([]);
+  });
+
+  it("clears the completion log on restart", () => {
+    const planned = gameReducer(openReport(), {
+      type: "PLAN_TASK",
+      taskId: "powerAnalysis",
+    });
+    const completed = gameReducer(planned, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+    expect(completed.taskCompletionLog.length).toBeGreaterThan(0);
+
+    const restarted = gameReducer(completed, { type: "RESTART" });
+    expect(restarted.taskCompletionLog).toEqual([]);
   });
 });

@@ -1,0 +1,16 @@
+- region "조사 결과":
+  - heading "조사 결과" [level=2]
+  - table:
+    - rowgroup:
+      - row "조사 종료(작업명) 조사 인원 시작 시간 → 종료 시간 열기":
+        - columnheader "조사 종료(작업명)"
+        - columnheader "조사 인원"
+        - columnheader "시작 시간 → 종료 시간"
+        - columnheader "열기"
+    - rowgroup:
+      - row "주 발전 계통 상태 분석 미라 09:20 → 09:30 열기":
+        - rowheader "주 발전 계통 상태 분석"
+        - cell "미라"
+        - cell "09:20 → 09:30"
+        - cell "열기":
+          - button "열기"

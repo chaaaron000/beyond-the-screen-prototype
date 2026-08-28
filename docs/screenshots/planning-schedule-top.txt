@@ -1,63 +1,57 @@
-- heading "조사 계획" [level=2]
-- region "시간 제한":
-  - paragraph: 시간 제한
-  - article:
-    - heading "냉장 시설" [level=3]
-    - paragraph: 보존 한계 미확인
-    - strong: 분석 필요
-  - article:
-    - heading "주 발전 계통" [level=3]
-    - paragraph: 복구 시각 추정 16:40
-    - strong: 남은 04:00
-  - article:
-    - heading "서윤의 바이크" [level=3]
-    - paragraph: 복귀 시각 미정
-    - strong: 확인 필요
-- region "조사 일정 timeline":
-  - heading "두 사람의 다음 움직임" [level=3]
-  - text: 현재 미라 조사 예정 주 발전 계통 상태 분석 냉장 설비 상태 분석 한서윤 대기 중 조사 예정 없음
-- region "시간 진행":
-  - 'button "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후 09:30"':
-    - text: "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후"
-    - strong: 09:30
-- region "조사 계획 상세":
-  - tablist "조사 계획 탭":
-    - tab "조사 일정 편집" [selected]
-    - tab "추가 수집한 정보"
-  - tabpanel "조사 일정 편집":
-    - region "캐릭터별 조사 큐":
-      - heading "조사 순서 정하기" [level=3]
-      - article:
-        - heading "MIRAGE" [level=3]
-        - text: 0건 가능
-        - region "미라 현재 진행 중":
-          - text: 현재 진행 중
-          - paragraph: 현재 진행 중인 작업 없음
-        - region "미라 가능한 조사":
-          - text: 가능한 조사
-          - paragraph: 지금 확인할 수 있는 새 조사가 없습니다.
-        - region "미라 조사 예정":
-          - text: 조사 예정
-          - list "미라 조사 예정 목록":
-            - listitem:
-              - text: 1 주 발전 계통 상태 분석
-              - button "주 발전 계통 상태 분석 위로 이동" [disabled]: ↑
-              - button "주 발전 계통 상태 분석 아래로 이동": ↓
-              - button "주 발전 계통 상태 분석 조사 예정에서 제거": ×
-            - listitem:
-              - text: 2 냉장 설비 상태 분석
-              - button "냉장 설비 상태 분석 위로 이동": ↑
-              - button "냉장 설비 상태 분석 아래로 이동" [disabled]: ↓
-              - button "냉장 설비 상태 분석 조사 예정에서 제거": ×
-      - article:
-        - heading "한서윤" [level=3]
-        - text: 0건 가능
-        - region "한서윤 현재 진행 중":
-          - text: 현재 진행 중
-          - paragraph: 현재 진행 중인 작업 없음
-        - region "한서윤 가능한 조사":
-          - text: 가능한 조사
-          - paragraph: 지금 확인할 수 있는 새 조사가 없습니다.
-        - region "한서윤 조사 예정":
-          - text: 조사 예정
-          - paragraph: 이후 작업은 비워둔 상태
+- complementary:
+  - heading "조사 계획" [level=2]
+  - region "시간 제한":
+    - paragraph: 시간 제한
+    - article:
+      - heading "냉장 시설" [level=3]
+      - paragraph: 보존 한계 미확인
+      - strong: 분석 필요
+    - article:
+      - heading "주 발전 계통" [level=3]
+      - paragraph: 복구 시각 추정 16:40
+      - strong: 남은 04:00
+    - article:
+      - heading "서윤의 바이크" [level=3]
+      - paragraph: 복귀 시각 미정
+      - strong: 확인 필요
+  - region "조사 일정 timeline":
+    - heading "두 사람의 다음 움직임" [level=3]
+    - text: 현재 미라 조사 예정 주 발전 계통 상태 분석 한서윤 대기 중 조사 예정 없음
+  - region "시간 진행":
+    - 'button "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후 09:30"':
+      - text: "조사 시작 다음 완료: 주 발전 계통 상태 분석 · 09:30 · 10분 후"
+      - strong: 09:30
+  - region "캐릭터별 조사 큐":
+    - heading "조사 순서 정하기" [level=3]
+    - article:
+      - heading "MIRAGE" [level=3]
+      - text: 1건 가능
+      - region "미라 현재 진행 중":
+        - text: 현재 진행 중
+        - paragraph: 현재 진행 중인 작업 없음
+      - region "미라 가능한 조사":
+        - text: 가능한 조사
+        - button "냉장 설비 상태 분석 조사 예정에 추가":
+          - strong: 냉장 설비 상태 분석
+          - text: 15분 · 미라가 비상 전원 출력과 냉장 센서 추세를 분석한다.
+          - emphasis: 계획 +
+      - region "미라 조사 예정":
+        - text: 조사 예정
+        - list "미라 조사 예정 목록":
+          - listitem:
+            - text: 1 주 발전 계통 상태 분석
+            - button "주 발전 계통 상태 분석 위로 이동" [disabled]: ↑
+            - button "주 발전 계통 상태 분석 아래로 이동" [disabled]: ↓
+            - button "주 발전 계통 상태 분석 조사 예정에서 제거": ×
+    - article:
+      - heading "한서윤" [level=3]
+      - text: 0건 가능
+      - region "한서윤 현재 진행 중":
+        - text: 현재 진행 중
+        - paragraph: 현재 진행 중인 작업 없음
+      - region "한서윤 가능한 조사":
+        - text: 가능한 조사
+        - paragraph: 지금 확인할 수 있는 새 조사가 없습니다.
+      - region "한서윤 조사 예정":
+        - text: 조사 예정
+        - paragraph: 이후 작업은 비워둔 상태

@@ -15,6 +15,7 @@ export function createInitialState(): GameState {
       seoyun: [],
     },
     completedTaskIds: [],
+    taskCompletionLog: [],
     discoveredEvidence: [],
     recentlyCompleted: [],
     dialogue: getDialogue("opening"),

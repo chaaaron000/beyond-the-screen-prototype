@@ -1,5 +1,4 @@
 - main:
-  - paragraph: OASIS / ACT 02 / DAY 01
   - paragraph: OASIS · 생활 구역 03
   - button "시나리오 다시 시작"
   - region "비주얼 노벨 장면":

@@ -57,7 +57,14 @@ export interface TaskDefinition {
 export interface ActiveTask {
   taskId: TaskId;
   actor: Actor;
+  startedAtMinutes: number;
   remainingMinutes: number;
+}
+
+export interface TaskCompletionRecord {
+  taskId: TaskId;
+  startedAtMinutes: number;
+  completedAtMinutes: number;
 }
 
 export type ExploredRouteRecord = Record<ProposalId, boolean>;
@@ -68,6 +75,7 @@ export interface GameState {
   activeTasks: Record<Actor, ActiveTask | null>;
   queuedTasks: Record<Actor, TaskId[]>;
   completedTaskIds: TaskId[];
+  taskCompletionLog: TaskCompletionRecord[];
   discoveredEvidence: EvidenceId[];
   recentlyCompleted: TaskId[];
   dialogue: DialogueLine[];

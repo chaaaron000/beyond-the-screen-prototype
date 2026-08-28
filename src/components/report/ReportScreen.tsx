@@ -4,6 +4,7 @@ import {
   useState,
   type CSSProperties,
   type Dispatch,
+  type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
@@ -61,6 +62,12 @@ const ACTOR_LABEL: Record<Actor, string> = {
   mira: "미라",
   seoyun: "한서윤",
 };
+
+/** Default share of the left workspace given to the investigation results panel. */
+const RESULTS_HEIGHT_DEFAULT = 38;
+
+/** Height of the horizontal separator row between document and results (.left-workspace row 2). */
+const RESULTS_SEPARATOR_HEIGHT = 10;
 
 const ACTOR_COLOR: Record<Actor, string> = {
   mira: "var(--plan-mira)",
@@ -197,6 +204,8 @@ function getTimelineBlocks(state: GameState, actor: Actor, previewProgress = 0):
     activeTask = {
       taskId: plannedTask.id,
       actor,
+      // Preview-only object: the timeline reads remainingMinutes, never the start time.
+      startedAtMinutes: state.clockMinutes,
       remainingMinutes: Math.max(1, Math.round(plannedTask.durationMinutes - previewStep * previewProgress)),
     };
     plannedTaskIds = plannedTaskIds.slice(1);
@@ -604,6 +613,7 @@ function ActorPlanningCard({
     activeTask = {
       taskId: plannedTask.id,
       actor,
+      startedAtMinutes: state.clockMinutes,
       remainingMinutes: Math.max(1, Math.round(plannedTask.durationMinutes - nextStep * transitionProgress)),
     };
     plannedTaskIds = plannedTaskIds.slice(1);
@@ -800,41 +810,6 @@ function ProposalEvidenceDialog({
   );
 }
 
-function EvidenceSidebar({
-  state,
-  onOpenAttachment,
-  disabled = false,
-}: {
-  state: GameState;
-  onOpenAttachment: (attachment: AttachmentDefinition) => void;
-  disabled?: boolean;
-}) {
-  return (
-    <section className="evidence-sidebar">
-      <SectionHeading title="확보한 정보" />
-      {state.discoveredEvidence.length === 0 ? (
-        <p className="panel-empty">아직 도착한 조사 기록이 없습니다.</p>
-      ) : (
-        <div className="sidebar-evidence-list">
-          {state.discoveredEvidence.map((evidenceId) => {
-            const evidence = EVIDENCE[evidenceId];
-            const attachment = ATTACHMENTS[evidenceId];
-            return (
-              <article className="sidebar-evidence" key={evidenceId}>
-                <p>{evidence.source}</p>
-                <button type="button" disabled={disabled} onClick={() => onOpenAttachment(attachment)}>
-                  <strong>{evidence.title}</strong>
-                  <span>{evidence.detail}</span>
-                </button>
-              </article>
-            );
-          })}
-        </div>
-      )}
-    </section>
-  );
-}
-
 function AttachmentVisual({ attachment }: { attachment: AttachmentDefinition }) {
   if (attachment.evidenceId === "powerGridStatus") {
     return (
@@ -999,7 +974,6 @@ function ProposalLedger({
 
 function FieldDocument({
   state,
-  onOpenAttachment,
   onStartProposal,
   onOpenRawLog,
   highlightedRoute,
@@ -1007,7 +981,6 @@ function FieldDocument({
   disabled = false,
 }: {
   state: GameState;
-  onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onStartProposal: (proposalId: ProposalId) => void;
   onOpenRawLog: (proposalId: ProposalId) => void;
   highlightedRoute?: ProposalId | null;
@@ -1037,29 +1010,6 @@ function FieldDocument({
         activeProposal={activeProposal}
         disabled={disabled}
       />
-
-      <section className="field-document-section">
-        <SectionHeading title="도착한 기록" />
-        {state.discoveredEvidence.length === 0 ? (
-          <p className="document-empty">아직 추가로 확인한 정보가 이 문서에 들어오지 않았다.</p>
-        ) : (
-          <div className="document-records" aria-live="polite">
-            {state.discoveredEvidence.map((evidenceId) => {
-              const evidence = EVIDENCE[evidenceId];
-              const attachment = ATTACHMENTS[evidenceId];
-              return (
-                <article className="document-record" key={evidenceId}>
-                  <h3>{evidence.title}</h3>
-                  <p>{evidence.detail}</p>
-                  <button type="button" className="attachment-link" onClick={() => onOpenAttachment(attachment)}>
-                    {attachment.label}
-                  </button>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
 
       <section className="field-document-section field-document-section--field-log" aria-label="현장 확인 기록">
         <SectionHeading title="확인한 장소" />
@@ -1095,48 +1045,44 @@ function FieldDocument({
   );
 }
 
-type PlanningTab = "schedule" | "collected";
+export interface ResultRow {
+  taskId: TaskId;
+  title: string;
+  actorLabel: string;
+  startedAtMinutes: number;
+  completedAtMinutes: number;
+}
 
-function ResultHistory({
-  state,
-  onOpenResult,
-  disabled = false,
-}: {
-  state: GameState;
-  onOpenResult: (taskId: TaskId) => void;
-  disabled?: boolean;
-}) {
-  const completed = [...state.completedTaskIds].reverse();
-  return (
-    <section className="support-panel support-panel--results" aria-label="최근 조사 결과">
-      <div className="support-panel-heading">
-        <h3>최근 결과</h3>
-      </div>
-      {completed.length === 0 ? (
-        <p className="panel-empty">아직 도착한 조사 결과가 없습니다.</p>
-      ) : (
-        <div className="result-history-list">
-          {completed.map((taskId, index) => {
-            const task = getTask(taskId);
-            return (
-              <button
-                type="button"
-                className={`result-history-item${index === 0 ? " result-history-item--latest" : ""}`}
-                key={taskId}
-                disabled={disabled}
-                onClick={() => onOpenResult(taskId)}
-              >
-                <span>
-                  <strong>{task.result.summary}</strong>
-                </span>
-                <em>열기</em>
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </section>
-  );
+/** Project the completion log into compact table rows, preserving append order. */
+export function getResultRows(state: GameState): ResultRow[] {
+  return state.taskCompletionLog.map((record) => ({
+    taskId: record.taskId,
+    title: getTask(record.taskId).title,
+    actorLabel: ACTOR_LABEL[getTask(record.taskId).actor],
+    startedAtMinutes: record.startedAtMinutes,
+    completedAtMinutes: record.completedAtMinutes,
+  }));
+}
+
+/** Clamp a results-pane height percentage inside the approved resize range. */
+export function clampResultsPercent(percent: number): number {
+  return Math.max(22, Math.min(58, percent));
+}
+
+/**
+ * Height share of the results pane when the separator is dragged to clientY.
+ * The results pane hugs the workspace bottom; the separator row (10px) sits
+ * above it, so the dragged divider center is half that height above the
+ * pointer position. Subtracting it keeps the divider tracking the pointer.
+ */
+export function getResultsHeightPercent(
+  workspaceTop: number,
+  workspaceHeight: number,
+  clientY: number,
+): number {
+  if (workspaceHeight <= 0) return RESULTS_HEIGHT_DEFAULT;
+  const raw = ((workspaceTop + workspaceHeight - RESULTS_SEPARATOR_HEIGHT / 2 - clientY) / workspaceHeight) * 100;
+  return clampResultsPercent(raw);
 }
 
 function ResultViewer({
@@ -1216,79 +1162,64 @@ function RawLogViewer({
   );
 }
 
-function PlanningTabs({
+function InvestigationResults({
   state,
-  activeTab,
-  onChange,
-  dispatch,
-  onOpenAttachment,
   onOpenResult,
-  transitionProgress,
   disabled = false,
 }: {
   state: GameState;
-  activeTab: PlanningTab;
-  onChange: (tab: PlanningTab) => void;
-  dispatch: Dispatch<GameAction>;
-  onOpenAttachment: (attachment: AttachmentDefinition) => void;
   onOpenResult: (taskId: TaskId) => void;
-  transitionProgress: number;
   disabled?: boolean;
 }) {
+  const rows = getResultRows(state);
+
   return (
-    <section className={`planning-tabs${disabled ? " planning-tabs--disabled" : ""}`} aria-label="조사 계획 상세">
-      <nav className="planning-tab-list" aria-label="조사 계획 탭" role="tablist">
-        {([
-          ["schedule", "조사 일정 편집"],
-          ["collected", "추가 수집한 정보"],
-        ] as [PlanningTab, string][]).map(([tab, label]) => (
-          <button
-            type="button"
-            className={activeTab === tab ? "is-active" : ""}
-            aria-selected={activeTab === tab}
-            aria-controls={`planning-tab-${tab}`}
-            id={`planning-tab-button-${tab}`}
-            role="tab"
-            key={tab}
-            disabled={disabled}
-            onClick={() => onChange(tab)}
-          >
-            {label}
-            {tab === "collected" && state.completedTaskIds.length > 0 && (
-              <span>{state.completedTaskIds.length}</span>
-            )}
-          </button>
-        ))}
-      </nav>
-      {activeTab === "schedule" ? (
-        <div
-          className="planning-tab-content planning-tab-content--schedule"
-          id="planning-tab-schedule"
-          role="tabpanel"
-          aria-labelledby="planning-tab-button-schedule"
-        >
-          <InvestigationPlanner
-            state={state}
-            dispatch={dispatch}
-            disabled={disabled}
-            transitionProgress={transitionProgress}
-          />
-        </div>
-      ) : (
-        <div
-          className="planning-tab-content planning-tab-content--collected"
-          id="planning-tab-collected"
-          role="tabpanel"
-          aria-labelledby="planning-tab-button-collected"
-        >
-          <header className="collected-information-heading">
-            <h3>조사로 새로 얻은 근거와 기록</h3>
-          </header>
-          <EvidenceSidebar state={state} onOpenAttachment={onOpenAttachment} disabled={disabled} />
-          <ResultHistory state={state} onOpenResult={onOpenResult} disabled={disabled} />
-        </div>
-      )}
-    </section>
+    <>
+      <h2 className="results-heading">조사 결과</h2>
+      <div className="results-scroll">
+        {rows.length === 0 ? (
+          <p className="results-empty">아직 완료된 조사가 없습니다.</p>
+        ) : (
+          <table className="results-table">
+            <colgroup>
+              <col />
+              <col className="results-col-actor" />
+              <col className="results-col-time" />
+              <col className="results-col-open" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">조사 종료(작업명)</th>
+                <th scope="col">조사 인원</th>
+                <th scope="col">시작 시간 → 종료 시간</th>
+                <th scope="col">열기</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.taskId}>
+                  <th scope="row">{row.title}</th>
+                  <td>{row.actorLabel}</td>
+                  <td>
+                    {formatClock(row.startedAtMinutes)} → {formatClock(row.completedAtMinutes)}
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="results-open-button"
+                      disabled={disabled}
+                      onClick={() => onOpenResult(row.taskId)}
+                    >
+                      열기
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -1320,24 +1251,16 @@ function CompletionToast({
 function PlanningPanel({
   state,
   dispatch,
-  onOpenAttachment,
   displayClockMinutes = state.clockMinutes,
   transitionProgress = 0,
   isAdvancing = false,
-  activePlanningTab,
-  onPlanningTabChange,
-  onOpenResult,
   onAdvance,
 }: {
   state: GameState;
   dispatch: Dispatch<GameAction>;
-  onOpenAttachment: (attachment: AttachmentDefinition) => void;
   displayClockMinutes?: number;
   transitionProgress?: number;
   isAdvancing?: boolean;
-  activePlanningTab: PlanningTab;
-  onPlanningTabChange: (tab: PlanningTab) => void;
-  onOpenResult: (taskId: TaskId) => void;
   onAdvance: () => void;
 }) {
   const nextStep = getNextCompletionMinutes(state);
@@ -1393,15 +1316,11 @@ function PlanningPanel({
         </section>
         <div className="planning-overview-end" ref={overviewEndRef} aria-hidden="true" />
 
-        <PlanningTabs
+        <InvestigationPlanner
           state={state}
-          activeTab={activePlanningTab}
-          onChange={onPlanningTabChange}
           dispatch={dispatch}
-          onOpenAttachment={onOpenAttachment}
-          onOpenResult={onOpenResult}
-          transitionProgress={transitionProgress}
           disabled={isAdvancing}
+          transitionProgress={transitionProgress}
         />
       </div>
     </aside>
@@ -1419,7 +1338,6 @@ export function ReportScreen({
 }: ReportScreenProps) {
   const [openWindows, setOpenWindows] = useState<FloatingWindowState[]>([]);
   const [proposalDialog, setProposalDialog] = useState<{ id: ProposalId; evidenceIds: EvidenceId[] } | null>(null);
-  const [activePlanningTab, setActivePlanningTab] = useState<PlanningTab>("schedule");
   const [toastTaskIds, setToastTaskIds] = useState<TaskId[]>([]);
   const [transition, setTransition] = useState<{ from: number; to: number } | null>(null);
   const [previewClock, setPreviewClock] = useState(state.clockMinutes);
@@ -1428,8 +1346,11 @@ export function ReportScreen({
   const windowLayer = useRef(30);
   const windowSpawn = useRef(0);
   const [documentPanePercent, setDocumentPanePercent] = useState(50.9);
+  const [resultsHeightPercent, setResultsHeightPercent] = useState(RESULTS_HEIGHT_DEFAULT);
   const [isResizing, setIsResizing] = useState(false);
+  const [isResizingResults, setIsResizingResults] = useState(false);
   const resizePointer = useRef<number | null>(null);
+  const resultsResizePointer = useRef<number | null>(null);
 
   useEffect(() => {
     if (state.recentlyCompleted.length > 0) {
@@ -1508,7 +1429,6 @@ export function ReportScreen({
   };
 
   const openResultViewer = (taskId: TaskId) => {
-    setActivePlanningTab("collected");
     openWindow({ key: `result:${taskId}`, type: "result", contentId: taskId });
   };
 
@@ -1534,6 +1454,60 @@ export function ReportScreen({
     setIsResizing(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const startResultsResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    resultsResizePointer.current = event.pointerId;
+    setIsResizingResults(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+
+  const moveResultsResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (resultsResizePointer.current !== event.pointerId) return;
+    const workspace = event.currentTarget.parentElement;
+    if (!workspace) return;
+    const rect = workspace.getBoundingClientRect();
+    setResultsHeightPercent(
+      getResultsHeightPercent(rect.top, rect.height, event.clientY),
+    );
+  };
+
+  const stopResultsResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (resultsResizePointer.current !== event.pointerId) return;
+    resultsResizePointer.current = null;
+    setIsResizingResults(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const moveResultsResizeBy = (deltaPercent: number) => {
+    setResultsHeightPercent((current) => clampResultsPercent(current + deltaPercent));
+  };
+
+  const handleResultsResizeKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    // The results pane is bottom-anchored: moving the separator up (ArrowUp)
+    // grows it, so ArrowUp increases the percentage.
+    const step = event.shiftKey ? 10 : 2;
+    switch (event.key) {
+      case "ArrowUp":
+        event.preventDefault();
+        moveResultsResizeBy(step);
+        break;
+      case "ArrowDown":
+        event.preventDefault();
+        moveResultsResizeBy(-step);
+        break;
+      case "Home":
+        event.preventDefault();
+        setResultsHeightPercent(22);
+        break;
+      case "End":
+        event.preventDefault();
+        setResultsHeightPercent(58);
+        break;
     }
   };
 
@@ -1569,24 +1543,49 @@ export function ReportScreen({
         </div>
       </header>
       <div
-        className={`report-workspace${isResizing ? " is-resizing" : ""}`}
-        style={{ "--document-pane-width": `${documentPanePercent}%` } as CSSProperties}
+        className={`report-workspace${isResizing ? " is-resizing" : ""}${isResizingResults ? " is-resizing-results" : ""}`}
+        style={
+          {
+            "--document-pane-width": `${documentPanePercent}%`,
+            "--results-pane-height": `${resultsHeightPercent}%`,
+          } as CSSProperties
+        }
       >
-        <section className="document-pane" aria-label="정보 문서">
-          <div className="document-scroll">
-            <FieldDocument
-              state={state}
-              onOpenAttachment={openAttachmentViewer}
-              onStartProposal={startProposal}
-              onOpenRawLog={(proposalId) => openWindow({ key: `raw-log:${proposalId}`, type: "raw-log", contentId: proposalId })}
-              highlightedRoute={highlightedRoute}
-              activeProposal={activeProposal}
-              disabled={isInputLocked}
-            />
-          </div>
-        </section>
+        <div className="left-workspace">
+          <section className="document-pane" aria-label="정보 문서">
+            <div className="document-scroll">
+              <FieldDocument
+                state={state}
+                onStartProposal={startProposal}
+                onOpenRawLog={(proposalId) => openWindow({ key: `raw-log:${proposalId}`, type: "raw-log", contentId: proposalId })}
+                highlightedRoute={highlightedRoute}
+                activeProposal={activeProposal}
+                disabled={isInputLocked}
+              />
+            </div>
+          </section>
+          <div
+            className="workspace-resizer workspace-resizer--horizontal"
+            role="separator"
+            aria-label="보고서와 조사 결과 높이 조절"
+            aria-orientation="horizontal"
+            aria-valuemin={22}
+            aria-valuemax={58}
+            aria-valuenow={Math.round(resultsHeightPercent)}
+            aria-valuetext={`조사 결과 높이 ${Math.round(resultsHeightPercent)}%`}
+            tabIndex={0}
+            onPointerDown={startResultsResize}
+            onPointerMove={moveResultsResize}
+            onPointerUp={stopResultsResize}
+            onPointerCancel={stopResultsResize}
+            onKeyDown={handleResultsResizeKeyDown}
+          ><span aria-hidden="true" /></div>
+          <section className="results-pane" aria-label="조사 결과">
+            <InvestigationResults state={state} onOpenResult={openResultViewer} disabled={isInputLocked} />
+          </section>
+        </div>
         <div
-          className="workspace-resizer"
+          className="workspace-resizer workspace-resizer--vertical"
           role="separator"
           aria-label="보고서와 조사 계획 너비 조절"
           aria-orientation="vertical"
@@ -1602,13 +1601,9 @@ export function ReportScreen({
         <PlanningPanel
           state={state}
           dispatch={dispatch}
-          onOpenAttachment={openAttachmentViewer}
           displayClockMinutes={displayClockMinutes}
           transitionProgress={transitionProgress}
           isAdvancing={isInputLocked}
-          activePlanningTab={activePlanningTab}
-          onPlanningTabChange={setActivePlanningTab}
-          onOpenResult={openResultViewer}
           onAdvance={beginTimeAdvance}
         />
       </div>
@@ -1616,7 +1611,6 @@ export function ReportScreen({
         taskIds={toastTaskIds}
         onOpen={() => {
           if (toastTaskIds.length > 0) {
-            setActivePlanningTab("collected");
             toastTaskIds.forEach((taskId) => openWindow({ key: `result:${taskId}`, type: "result", contentId: taskId }));
             setToastTaskIds([]);
           }

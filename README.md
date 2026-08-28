@@ -9,13 +9,13 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 ## 플레이 흐름
 
 1. VN 장면에서 두 사람의 첫 대화를 진행합니다.
-2. 대화가 끝나면 OASIS 내부 운영 보고서 화면으로 이동합니다.
+2. 대화가 끝나면 OASIS 내부 운영 보고서 화면으로 이동합니다. 왼쪽은 보고서 문서, 오른쪽은 조사 계획 판만 있는 2분할 화면이고, 화면 아래에는 조사 결과 판이 별도로 놓입니다.
 3. MIRAGE에게 로그·센서·기록 분석을 맡겨 조사 예정에 넣고 순서를 정합니다.
 4. 조사 예정에 넣는 순간에는 작업이나 시간이 시작되지 않습니다. 진행 버튼을 눌렀을 때 각자의 첫 작업이 시작되고, 다음 완료 시점까지 시간이 흐릅니다.
-5. 작업이 완료되면 새로운 근거가 보고서에 추가되고, 확보한 정보에 따라 시작 가능한 조사와 대사 분기가 달라집니다.
-6. 제안이 수락되면 한서윤이 실제 현장으로 이동하며, 방문 전체가 콘텐츠에 정의된 세계 시간을 소비합니다. 같은 시간 동안 이미 진행 중인 MIRAGE 조사도 진행되지만 다음 예약 작업은 자동 시작하지 않습니다.
+5. 작업이 완료되면 완료 기록이 아래 조사 결과 판에 한 줄씩 쌓입니다. 각 행의 `열기`를 누르면 기존 플로팅 결과 창에서 세부 내용과 첨부 자료를 확인할 수 있습니다. 보고서와 조사 결과 판의 높이, 보고서와 조사 계획 판의 너비는 구분선을 드래그해 조절할 수 있습니다.
+6. 확보한 정보에 따라 시작 가능한 조사와 대사 분기가 달라집니다. 제안이 수락되면 한서윤이 실제 현장으로 이동하며, 방문 전체가 콘텐츠에 정의된 세계 시간을 소비합니다. 같은 시간 동안 이미 진행 중인 MIRAGE 조사도 진행되지만 다음 예약 작업은 자동 시작하지 않습니다.
 7. 승인된 현장 방문만 FIELD LINK와 FIELD LOG UPDATED 기록을 거칩니다. 거절된 제안은 짧은 fade와 거절 대화 뒤 보고서로 돌아옵니다.
-8. 돌아온 장소·현장 메모·사실은 보고서에 누적됩니다. 완료한 방문은 `현장 확인 완료`로 남고 다시 제안할 수 없습니다.
+8. 돌아온 장소·현장 메모·사실은 보고서 문서의 `확인한 장소` 섹션에 누적됩니다. 완료한 방문은 `현장 확인 완료`로 남고 다시 제안할 수 없습니다.
 
 ## Screenshots
 
@@ -25,11 +25,11 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![VN scene with the saved dark theme isolated](docs/screenshots/vn-theme-isolated-dark.svg)
 
-![VN field scene](docs/screenshots/vn-field-scene.png)
+![VN field scene](docs/screenshots/vn-field-scene.svg)
 
-![FIELD LINK transition](docs/screenshots/transition-field-link.png)
+![FIELD LINK transition](docs/screenshots/transition-field-link.svg)
 
-![FIELD LOG transition](docs/screenshots/transition-field-log.png)
+![FIELD LOG transition](docs/screenshots/transition-field-log.svg)
 
 ![Proposal dialog cleaned](docs/screenshots/proposal-dialog-cleaned.svg)
 
@@ -41,11 +41,19 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report action debate as document text](docs/screenshots/report-action-debate-document.svg)
 
-![Report document results section](docs/screenshots/report-document-results.svg)
-
 ![Report document field log section](docs/screenshots/report-document-field-log.svg)
 
 ![Report document light theme](docs/screenshots/report-document-light.svg)
+
+![Investigation results empty](docs/screenshots/investigation-results-empty.svg)
+
+![Investigation results with a completed task log](docs/screenshots/investigation-results-log.svg)
+
+![Investigation results with resized height](docs/screenshots/investigation-results-resized.svg)
+
+![Investigation results light theme](docs/screenshots/investigation-results-log-light.svg)
+
+![Investigation results resized over the full report](docs/screenshots/investigation-results-resized-full.svg)
 
 ![Planning schedule cleaned](docs/screenshots/planning-schedule-cleaned.svg)
 
@@ -53,19 +61,21 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Timeline and advance time control](docs/screenshots/planning-schedule-bottom.svg)
 
-![Collected information tab cleaned](docs/screenshots/planning-collected-cleaned.svg)
-
-![Collected information tab with advance control](docs/screenshots/planning-collected-final.svg)
-
 ![Planning schedule after advancing time](docs/screenshots/planning-schedule-advance.svg)
+
+![Report shell after a completed field route](docs/screenshots/report-shell-field-route.svg)
 
 ![Non-modal attachment window](docs/screenshots/nonmodal-attachment-window.svg)
 
 ![Non-modal result window](docs/screenshots/nonmodal-result-window.svg)
 
+![Non-modal result window over the report](docs/screenshots/nonmodal-result-window-full.svg)
+
 ![Non-modal raw-log window](docs/screenshots/nonmodal-raw-log-window.svg)
 
 ![Attachment, result, and raw-log non-modal windows](docs/screenshots/floating-nonmodal-windows.svg)
+
+![Dragged attachment window over result and raw-log windows](docs/screenshots/floating-attachment-result-raw-log.svg)
 
 ## 실행
 

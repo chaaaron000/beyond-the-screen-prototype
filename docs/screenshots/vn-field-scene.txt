@@ -1,10 +1,9 @@
 - main:
-  - paragraph: OASIS / ACT 02 / DAY 01
   - paragraph: OASIS · 생활 구역 03
   - button "시나리오 다시 시작"
   - region "비주얼 노벨 장면":
     - img "미라"
     - img "한서윤"
-  - text: OASIS 기록
-  - paragraph: 09:20. OASIS의 아침은 비상 전원의 낮은 진동과 함께 시작됐다.
+  - text: 당신
+  - paragraph: 발전소부터 보자.
   - complementary "장면 조작 안내": 대사록 ◐ 숨기기 ◒ 메뉴창 Esc 빨리 감기 Ctrl 오토 모드 F10
