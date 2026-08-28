@@ -1,10 +1,9 @@
 /*
- * Report typography follows Notion's default document scale:
- * Page title 36px/700, H1 30px/700, H2 24px/600, H3 20px/600,
- * Body 16px/400, Secondary 14px/400~500, Metadata 12px/400~500.
- * Each role renders as a fixed-height block with a single 16px gap
- * between blocks. H1 section dividers get 32px above and 16px below,
- * so the web document matches the Penpot boards.
+ * Planning pane follows the Penpot 10/After board scale:
+ * Pane title 36px/700, section heading 30px/700, item 16px/400
+ * with a 14px/500 status column, metadata 12px/500.
+ * Fixed-height blocks keep the same 16px gap rhythm as the document;
+ * H1 section dividers sit 32px above and 16px below, like the boards.
  */
 .report-shell {
   --type-meta: 0.75rem;
@@ -15,6 +14,13 @@
   --type-h3: 1.25rem;
   --type-h2: 1.875rem;
   --type-h1: 2.25rem;
+  --plan-type-item: 1rem;
+  --plan-type-item-status: 0.875rem;
+  --plan-type-meta: 0.75rem;
+  --plan-block-gap: 1rem;
+  --plan-divider-gap-above: 2rem;
+  --plan-block-item: 1.5rem;
+  --plan-block-meta: 1.125rem;
   --block-gap: 1rem;
   --divider-gap-above: 2rem;
   --block-title: 3rem;
@@ -31,8 +37,7 @@
   line-height: 1.35;
 }
 
-.report-topbar-right span,
-.planning-clock span {
+.report-topbar-right span {
   font-size: var(--type-meta);
 }
 
@@ -116,51 +121,63 @@
   line-height: 1.5;
 }
 
-/* The planning pane is a compact sidebar, but keeps the same hierarchy. */
+/* The planning pane mirrors the Penpot 10/After board. */
 .planning-pane {
-  font-size: var(--type-body-small);
+  font-size: var(--type-body);
 }
 
 .planning-header h2 {
-  font-size: 1.625rem;
-  line-height: 1.2;
+  font-size: var(--type-h1);
+  min-height: 3rem;
+  line-height: 3rem;
+  letter-spacing: 0;
+}
+
+.planning-clock span {
+  font-size: var(--type-meta);
 }
 
 .planning-clock strong {
-  font-size: 1.5rem;
+  font-size: var(--type-h1);
   line-height: 1;
 }
 
 .deadline-key,
 .deadline-unknown,
-.timeline-axis,
-.timeline-lane-label small,
-.sidebar-evidence > p {
+.timeline-lane-label small {
   font-size: var(--type-meta);
   line-height: 1.35;
+}
+
+.sidebar-evidence > p {
+  font-size: var(--type-meta);
+  line-height: 1.5;
 }
 
 .timeline-heading h3,
 .deadline-summary-label,
 .support-panel-heading h3 {
-  font-size: var(--type-h3);
-  line-height: 1.35;
+  font-size: var(--type-h2);
+  min-height: 2.5rem;
+  line-height: 2.5rem;
+  letter-spacing: 0;
 }
 
 .deadline-line span,
 .timeline-now-marker span,
+.timeline-axis,
 .timeline-empty,
 .timeline-note,
 .queue-empty,
 .queue-list li,
 .advance-time-control,
 .panel-empty {
-  font-size: var(--type-body-small);
+  font-size: var(--type-body);
 }
 
 .timeline-lane-label > span,
 .actor-planning-header h3 {
-  font-size: var(--type-body-small);
+  font-size: var(--type-body);
   line-height: 1.35;
 }
 
@@ -169,14 +186,14 @@
 }
 
 .deadline-summary-copy h3,
+.deadline-summary-copy p,
 .sidebar-evidence strong,
 .actor-available-task strong,
 .result-history-item strong {
-  font-size: var(--type-body-small);
-  line-height: 1.35;
+  font-size: var(--plan-type-item);
+  line-height: 1.5;
 }
 
-.deadline-summary-copy p,
 .deadline-summary-count,
 .deadline-summary-status,
 .actor-planning-count,
@@ -189,17 +206,20 @@
 .advance-time-control strong,
 .sidebar-evidence button span,
 .result-history-item em {
-  font-size: var(--type-caption);
+  font-size: var(--plan-type-item-status);
+  font-weight: 500;
 }
 
 .planner-section-heading h3,
 .collected-information-heading h3 {
-  font-size: var(--type-h3);
-  line-height: 1.35;
+  font-size: var(--type-h2);
+  min-height: 2.5rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.03em;
 }
 
 .advance-time-control b {
-  font-size: var(--type-body-small);
+  font-size: 1rem;
 }
 
 .evidence-sidebar .field-section-heading h2 {
@@ -265,9 +285,5 @@
 @media (max-width: 760px) {
   .field-document h1 {
     font-size: 2.25rem;
-  }
-
-  .planning-header h2 {
-    font-size: 1.375rem;
   }
 }

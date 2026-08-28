@@ -49,13 +49,15 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Planning schedule cleaned](docs/screenshots/planning-schedule-cleaned.svg)
 
-![Planning schedule with compact deadline tracker](docs/screenshots/planning-schedule-top.png)
+![Planning schedule with planned tasks](docs/screenshots/planning-schedule-top.svg)
 
-![Timeline and advance time control](docs/screenshots/planning-schedule-bottom.png)
+![Timeline and advance time control](docs/screenshots/planning-schedule-bottom.svg)
 
 ![Collected information tab cleaned](docs/screenshots/planning-collected-cleaned.svg)
 
-![Collected information tab with advance control](docs/screenshots/planning-collected-final.png)
+![Collected information tab with advance control](docs/screenshots/planning-collected-final.svg)
+
+![Planning schedule after advancing time](docs/screenshots/planning-schedule-advance.svg)
 
 ![Non-modal attachment window](docs/screenshots/nonmodal-attachment-window.svg)
 

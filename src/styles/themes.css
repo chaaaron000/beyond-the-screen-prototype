@@ -60,6 +60,12 @@ html[data-theme="light"][data-palette="nord"] {
   --p-dialogue-ink: #2e3440;
 }
 
+html[data-theme="dark"][data-palette="nord"] .planning-pane {
+  --plan-panel: #1a2429;
+  --plan-panel-raised: #2e3440;
+  --plan-line: #3a4a52;
+}
+
 html[data-theme="dark"][data-palette="material"] {
   color-scheme: dark;
   --p-bg: #121212;
@@ -416,7 +422,7 @@ html[data-theme="light"] .report-topbar strong {
   color: var(--p-muted);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.78rem, 1.08cqw, 1.08rem);
+  font-size: 0.8125rem;
   transition: color 160ms ease, border-color 160ms ease;
 }
 
@@ -433,7 +439,7 @@ html[data-theme="light"] .report-topbar strong {
   color: var(--p-muted);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.78rem, 1.08cqw, 1.08rem);
+  font-size: 0.8125rem;
   transition: color 160ms ease, border-color 160ms ease;
 }
 

@@ -651,8 +651,8 @@ body {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: var(--plan-amber);
-  box-shadow: 0 0 0 1px rgba(239, 212, 173, 0.12);
+  background: transparent;
+  box-shadow: none;
   pointer-events: none;
   transition: left 120ms linear;
 }
@@ -666,7 +666,7 @@ body {
   border: 1px solid var(--plan-panel);
   border-radius: 50%;
   background: var(--plan-amber);
-  content: "";
+  content: none;
   transform: translate(-50%, -50%);
 }
 
@@ -676,7 +676,7 @@ body {
   left: 0.3rem;
   color: var(--plan-amber);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.69rem;
+  font-size: 1rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
@@ -695,7 +695,7 @@ body {
 }
 
 .investigation-planner {
-  margin-top: clamp(1.25rem, 2.2cqw, 2.2rem);
+  margin-top: var(--plan-divider-gap-above, 2rem);
   border-top: 1px solid var(--plan-line);
   padding-top: 1rem;
 }
@@ -705,16 +705,14 @@ body {
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .planner-section-heading h3 {
-  margin: 0.32rem 0 0;
+  margin: 0;
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.425rem, 1.83cqw, 1.83rem);
-  font-weight: 400;
-  letter-spacing: -0.045em;
+  font-weight: 700;
 }
 
 .actor-planning-grid {
@@ -757,7 +755,7 @@ body {
 .actor-planning-header h3 {
   margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(1.08rem, 1.35cqw, 1.35rem);
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -765,7 +763,8 @@ body {
   margin-left: auto;
   color: var(--plan-muted);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.66rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .actor-current-work,
@@ -790,7 +789,8 @@ body {
 .actor-subheading > span {
   color: var(--plan-amber);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.705rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -798,8 +798,8 @@ body {
 .actor-current-task {
   margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(0.84rem, 1.02cqw, 1.02rem);
-  line-height: 1.42;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .actor-current-task::before {
@@ -839,7 +839,8 @@ body {
 .actor-empty-message {
   margin: 0;
   color: var(--plan-faint);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .actor-available-list {
@@ -881,8 +882,9 @@ body {
 
 .actor-available-task strong {
   overflow: hidden;
-  font-size: 0.795rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -890,7 +892,8 @@ body {
 .actor-available-task small {
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: 0.675rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   line-height: 1.35;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -899,37 +902,38 @@ body {
 .actor-available-task em {
   flex: 0 0 auto;
   color: var(--plan-amber);
-  font-size: 0.72rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   font-style: normal;
 }
 
 .advance-time-control {
   align-items: center;
-  min-height: 4.6rem;
-  margin-top: clamp(1.1rem, 1.8cqw, 1.8rem);
-  border: 1px solid var(--plan-amber);
-  padding: 0.72rem 0.82rem;
-  box-shadow: 0 0.7rem 1.6rem rgba(0, 0, 0, 0.14);
+  min-height: 2.25rem;
+  margin-top: 0;
+  border: 1px solid color-mix(in srgb, var(--plan-line-base) 20%, transparent);
+  padding: 0 1rem;
+  box-shadow: none;
 }
 
 .advance-time-control > span {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.15rem;
 }
 
 .advance-time-control b {
-  font-size: clamp(0.99rem, 1.32cqw, 1.32rem);
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .advance-time-control small {
   color: currentColor;
-  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
+  font-size: 0.75rem;
   opacity: 0.72;
 }
 
 .advance-time-control strong {
-  font-size: clamp(1.14rem, 1.5cqw, 1.5rem);
+  font-size: 1rem;
 }
 
 .advance-time-control:disabled {
@@ -937,26 +941,27 @@ body {
 }
 
 .planning-tabs {
-  margin-top: clamp(1rem, 1.8cqw, 1.8rem);
+  margin-top: var(--plan-divider-gap-above, 2rem);
   border-top: 1px solid var(--plan-line);
 }
 
 .planning-tab-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-bottom: 1px solid var(--plan-line);
+  grid-template-columns: 14rem minmax(0, 1fr);
 }
 
 .planning-tab-list button {
   position: relative;
   min-height: 2.15rem;
   border: 0;
-  border-right: 1px solid var(--plan-line);
-  padding: 0.35rem 0.3rem;
+  border-right: 0;
+  padding: 0.9375rem 0 0.6875rem;
   color: var(--plan-faint);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.69rem, 0.87cqw, 0.87rem);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: left;
 }
 
 .planning-tab-list button:last-child {
@@ -969,13 +974,7 @@ body {
 }
 
 .planning-tab-list button.is-active::after {
-  position: absolute;
-  right: 0.3rem;
-  bottom: -1px;
-  left: 0.3rem;
-  height: 2px;
-  background: var(--plan-amber);
-  content: "";
+  content: none;
 }
 
 .planning-tab-list button span {
@@ -997,26 +996,24 @@ body {
 }
 
 .planning-tab-content .investigation-planner {
-  margin-top: clamp(1rem, 1.8cqw, 1.8rem);
+  margin-top: 1rem;
   border-top: 0;
   padding-top: 0;
 }
 
 .planning-tab-content--collected {
-  padding-top: clamp(1rem, 1.8cqw, 1.8rem);
+  padding-top: 1rem;
 }
 
 .collected-information-heading {
-  padding-bottom: 0.85rem;
+  padding-bottom: 1rem;
 }
 
 .collected-information-heading h3 {
   margin: 0;
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.425rem, 1.83cqw, 1.83rem);
-  font-weight: 400;
-  letter-spacing: -0.045em;
+  font-weight: 700;
 }
 
 .planning-tab-content--collected .evidence-sidebar {
@@ -1024,9 +1021,9 @@ body {
 }
 
 .planning-tab-content--collected .support-panel--results {
-  margin-top: clamp(1.45rem, 2.4cqw, 2.4rem);
+  margin-top: var(--plan-divider-gap-above, 2rem);
   border-top: 1px solid var(--plan-line);
-  padding-top: 1.15rem;
+  padding-top: 1rem;
 }
 
 .support-panel {
@@ -1043,8 +1040,7 @@ body {
   margin: 0;
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.38rem, 1.8cqw, 1.8rem);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .result-history-list {
@@ -1084,9 +1080,9 @@ body {
 .result-history-item strong {
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1094,7 +1090,8 @@ body {
 .result-history-item em {
   flex: 0 0 auto;
   color: var(--plan-amber);
-  font-size: 0.705rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   font-style: normal;
 }
 
@@ -1149,7 +1146,7 @@ body {
 }
 
 .completion-toast-main strong {
-  font-size: 0.87rem;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
@@ -1234,7 +1231,7 @@ body {
 .result-viewer-entry h3 {
   margin: 0;
   color: var(--plan-ink);
-  font-size: 1.17rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
@@ -1242,8 +1239,8 @@ body {
 .result-viewer-evidence p {
   margin: 0.45rem 0 0;
   color: var(--plan-muted);
-  font-size: 0.87rem;
-  line-height: 1.65;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
 .result-viewer-evidence {
@@ -1254,7 +1251,7 @@ body {
 
 .result-viewer-evidence strong {
   color: var(--plan-amber);
-  font-size: 0.87rem;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 
@@ -1397,10 +1394,7 @@ body {
 }
 
 .report-topbar-right span,
-.deadline-readout > span,
-.timeline-axis,
-.timeline-lane-label small,
-.sidebar-evidence > p {
+.deadline-readout > span {
   margin: 0;
   color: var(--plan-faint);
   font-family: "Noto Sans KR", sans-serif;
@@ -1603,6 +1597,7 @@ body {
 }
 
 .planning-pane {
+  position: relative;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
@@ -1613,7 +1608,7 @@ body {
 }
 
 .planning-scroll {
-  padding: clamp(1rem, 2.4cqw, 2.4rem) clamp(0.9rem, 2.1cqw, 2.1rem) 2.5rem;
+  padding: 2.5rem 3.5rem;
   overflow-anchor: none;
   scrollbar-color: rgba(137, 180, 173, 0.5) transparent;
 }
@@ -1624,16 +1619,14 @@ body {
   justify-content: space-between;
   gap: 1rem;
   border-bottom: 1px solid var(--plan-line);
-  padding-bottom: 0.85rem;
+  padding-bottom: 2rem;
 }
 
 .planning-header h2 {
-  margin: 0.35rem 0 0;
+  margin: 0;
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.8rem, 2.85cqw, 2.85rem);
-  font-weight: 400;
-  letter-spacing: -0.065em;
+  font-weight: 700;
 }
 
 .planning-clock {
@@ -1645,18 +1638,17 @@ body {
 .planning-clock span {
   color: var(--plan-muted);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.72rem, 0.93cqw, 0.93rem);
+  font-size: 0.75rem;
 }
 
 .planning-clock strong {
   color: var(--plan-amber);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.5rem, 2.325cqw, 2.325rem);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .timeline-section {
-  margin-top: clamp(1rem, 2cqw, 2rem);
+  margin-top: 1rem;
 }
 
 .timeline-heading {
@@ -1664,21 +1656,22 @@ body {
   align-items: end;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1rem;
+  border-top: 0;
+  padding-top: 0;
 }
 
 .timeline-heading h3 {
-  margin: 0.33rem 0 0;
+  margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .deadline-key,
 .deadline-unknown {
   color: var(--plan-amber);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.675rem, 0.87cqw, 0.87rem);
+  font-size: 0.75rem;
   white-space: nowrap;
 }
 
@@ -1688,10 +1681,11 @@ body {
 
 .timeline-axis {
   position: relative;
-  height: 1.15rem;
+  height: 1.5rem;
   margin-left: 4.2rem;
   color: var(--plan-muted);
-  font-size: clamp(0.645rem, 0.855cqw, 0.855rem);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .timeline-axis span {
@@ -1706,8 +1700,8 @@ body {
 
 .timeline-board {
   position: relative;
-  border-top: 1px solid var(--plan-line);
-  border-bottom: 1px solid var(--plan-line);
+  margin-top: 2px;
+  border: 0;
   padding: 0.35rem 0;
 }
 
@@ -1738,7 +1732,7 @@ body {
   left: 0.24rem;
   color: var(--plan-amber);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.795rem;
+  font-size: 0.75rem;
   white-space: nowrap;
 }
 
@@ -1756,7 +1750,7 @@ body {
   grid-template-columns: 4.2rem minmax(0, 1fr);
   align-items: center;
   gap: 0.55rem;
-  min-height: 3.25rem;
+  min-height: 3.625rem;
 }
 
 .timeline-lane-label {
@@ -1766,8 +1760,8 @@ body {
 
 .timeline-lane-label > span {
   color: var(--plan-mira);
-  font-size: clamp(0.93rem, 1.17cqw, 1.17rem);
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .timeline-lane--seoyun .timeline-lane-label > span {
@@ -1777,7 +1771,7 @@ body {
 .timeline-lane-label small {
   overflow: hidden;
   color: var(--plan-faint);
-  font-size: clamp(0.585rem, 0.75cqw, 0.75rem);
+  font-size: 0.75rem;
   letter-spacing: 0.02em;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1786,23 +1780,19 @@ body {
 .timeline-track {
   position: relative;
   height: 2.25rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--plan-line-base) 8%, transparent);
+  border-bottom: 0;
 }
 
 .timeline-tick {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: color-mix(in srgb, var(--plan-line-base) 7.000000000000001%, transparent);
+  display: none;
 }
 
 .timeline-empty {
   position: absolute;
   top: 0.68rem;
   left: 0;
-  color: var(--plan-faint);
-  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
+  color: transparent;
+  font-size: 1rem;
 }
 
 .timeline-block {
@@ -1817,7 +1807,7 @@ body {
   border-left: 2px solid color-mix(in srgb, var(--plan-on-accent) 72%, transparent);
   padding: 0 0.42rem;
   color: var(--plan-on-accent);
-  font-size: clamp(0.6rem, 0.825cqw, 0.825rem);
+  font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.1;
   text-overflow: ellipsis;
@@ -1835,94 +1825,72 @@ body {
 .timeline-note {
   margin: 0.65rem 0 0;
   color: var(--plan-muted);
-  font-size: clamp(0.69rem, 0.885cqw, 0.885rem);
+  font-size: 1rem;
   line-height: 1.5;
 }
 
 .deadline-summary {
   display: grid;
-  margin-top: clamp(1rem, 1.8cqw, 1.8rem);
+  margin-top: 1rem;
   border-bottom: 1px solid var(--plan-line);
+  padding-bottom: 1rem;
 }
 
 .deadline-summary-list {
   display: grid;
-  border-top: 1px solid var(--plan-line);
 }
 
 .deadline-summary-item {
   position: relative;
   display: grid;
   min-width: 0;
-  min-height: 4.25rem;
-  grid-template-columns: 0.4rem minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.7rem;
-  border-left: 3px solid var(--plan-accent);
-  padding: 0.65rem 1rem 0.65rem 1.05rem;
-  background: color-mix(in srgb, var(--plan-ink) 2%, transparent);
+  min-height: 2.5rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 0;
+  padding: 0;
 }
 
 .deadline-summary-item + .deadline-summary-item {
-  border-top: 1px solid var(--plan-line);
-}
-
-.deadline-summary-item--unknown {
-  border-left-color: var(--plan-faint);
-}
-
-.deadline-summary-item--warning {
-  border-left-color: var(--plan-alert);
-  background: color-mix(in srgb, var(--plan-alert) 8%, transparent);
+  border-top: 0;
 }
 
 .deadline-summary-marker {
-  width: 0.38rem;
-  height: 0.38rem;
-  border-radius: 50%;
-  background: var(--plan-accent);
-}
-
-.deadline-summary-item--unknown .deadline-summary-marker {
-  background: var(--plan-faint);
-}
-
-.deadline-summary-item--warning .deadline-summary-marker {
-  background: var(--plan-alert);
+  display: none;
 }
 
 .deadline-summary-copy {
+  display: grid;
   min-width: 0;
+  grid-template-columns: 7.25rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0;
 }
 
 .deadline-summary-copy h3 {
   overflow: hidden;
   margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(0.84rem, 1.05cqw, 1.05rem);
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .deadline-summary-copy p {
   overflow: hidden;
-  margin: 0.38rem 0 0;
+  margin: 0;
   color: var(--plan-muted);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
-  font-weight: 500;
-  line-height: 1;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .deadline-summary-count {
-  color: var(--plan-faint);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
-  letter-spacing: 0.04em;
+  display: none;
 }
 
 .deadline-summary-heading {
@@ -1930,22 +1898,22 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  padding-bottom: 0.65rem;
+  padding-bottom: calc(1rem - 1px);
 }
 
 .deadline-summary-label {
   margin: 0;
   color: var(--plan-ink);
-  font-size: clamp(1.08rem, 1.425cqw, 1.425rem);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .deadline-summary-status {
   flex: 0 0 auto;
   color: var(--plan-accent);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
+  font-size: 0.875rem;
   font-weight: 500;
+  line-height: 1.5;
+  text-align: right;
   white-space: nowrap;
 }
 
@@ -1958,7 +1926,7 @@ body {
 }
 
 .advance-time-block {
-  margin-top: clamp(1.1rem, 1.8cqw, 1.8rem);
+  margin-top: calc(var(--plan-divider-gap-above, 2rem) + 4px);
 }
 
 .advance-time-block .advance-time-control {
@@ -1968,7 +1936,7 @@ body {
 .queue-empty {
   margin: 0;
   color: var(--plan-faint);
-  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
+  font-size: 0.875rem;
 }
 
 .queue-list {
@@ -1985,7 +1953,8 @@ body {
   align-items: center;
   gap: 0.38rem;
   color: var(--plan-muted);
-  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .queue-index {
@@ -2010,7 +1979,7 @@ body {
   color: var(--plan-faint);
   background: transparent;
   cursor: pointer;
-  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
+  font-size: 0.875rem;
 }
 
 .queue-actions button:hover:not(:disabled) {
@@ -2024,17 +1993,19 @@ body {
 
 .advance-time-control {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-height: 2.25rem;
   gap: 1rem;
-  margin-top: 1rem;
-  border: 1px solid var(--plan-amber);
-  padding: 0.75rem 0.7rem;
-  color: var(--plan-amber);
-  background: color-mix(in srgb, var(--plan-accent) 8%, transparent);
+  margin-top: 0;
+  border: 1px solid color-mix(in srgb, var(--plan-line-base) 20%, transparent);
+  padding: 0 1rem;
+  color: var(--plan-muted);
+  background: color-mix(in srgb, var(--plan-panel-raised) 60%, transparent);
   cursor: pointer;
-  font-size: clamp(0.78rem, 1.02cqw, 1.02rem);
+  font-size: 1rem;
+  font-weight: 500;
   text-align: left;
   transition: background 160ms ease, color 160ms ease;
 }
@@ -2045,7 +2016,7 @@ body {
 }
 
 .advance-time-control strong {
-  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
+  font-size: 1rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -2053,14 +2024,14 @@ body {
 .advance-time-control:disabled {
   border-color: var(--plan-line);
   color: var(--plan-faint);
-  background: transparent;
+  background: var(--plan-panel-raised);
   cursor: not-allowed;
 }
 
 .evidence-sidebar {
-  margin-top: 1.7rem;
+  margin-top: var(--plan-divider-gap-above, 2rem);
   border-top: 1px solid var(--plan-line);
-  padding-top: 1.15rem;
+  padding-top: 1rem;
 }
 
 .evidence-sidebar .field-section-heading {
@@ -2071,14 +2042,14 @@ body {
 .evidence-sidebar .field-section-heading h2 {
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.5rem, 2.025cqw, 2.025rem);
+  font-size: 1.875rem;
 }
 
 .panel-empty {
   margin: 0;
   color: var(--plan-faint);
-  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .sidebar-evidence-list {
@@ -2094,7 +2065,7 @@ body {
 .sidebar-evidence > p {
   margin-bottom: 0.32rem;
   color: var(--plan-mira);
-  font-size: clamp(0.6rem, 0.75cqw, 0.75rem);
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: none;
 }
@@ -2116,7 +2087,7 @@ body {
 }
 
 .sidebar-evidence strong {
-  font-size: clamp(0.795rem, 0.99cqw, 0.99rem);
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -2124,7 +2095,8 @@ body {
   display: -webkit-box;
   overflow: hidden;
   color: var(--plan-muted);
-  font-size: clamp(0.705rem, 0.87cqw, 0.87rem);
+  font-size: 0.875rem;
+  font-weight: 500;
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -2228,7 +2200,7 @@ body {
   padding: 0.65rem 0;
   color: var(--plan-muted);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.72rem, 0.9cqw, 0.9rem);
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -2431,8 +2403,8 @@ body {
 .actor-planning-row .actor-subheading > span {
   color: var(--plan-ink);
   font-family: inherit;
-  font-size: clamp(0.78rem, 0.96cqw, 0.96rem);
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   letter-spacing: -0.015em;
   text-transform: none;
 }
@@ -2626,7 +2598,7 @@ body {
   margin: 0;
   color: var(--plan-ink);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(1.5rem, 2.4cqw, 2.1rem);
+  font-size: 1.875rem;
   font-weight: 700;
   letter-spacing: -0.035em;
 }
@@ -2638,7 +2610,7 @@ body {
   color: var(--plan-muted);
   background: transparent;
   cursor: pointer;
-  font-size: 0.87rem;
+  font-size: 0.8125rem;
   text-decoration: underline;
   text-underline-offset: 0.22em;
 }
@@ -2676,8 +2648,8 @@ body {
 .proposal-selected-evidence span {
   margin: 0;
   color: var(--plan-muted);
-  font-size: 0.93rem;
-  line-height: 1.6;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
 .proposal-evidence-heading {
@@ -2699,7 +2671,7 @@ body {
 .proposal-evidence-heading > strong {
   color: var(--plan-faint);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.87rem;
+  font-size: 0.8125rem;
   font-weight: 400;
 }
 
@@ -2732,13 +2704,13 @@ body {
 
 .proposal-evidence-option strong {
   color: var(--plan-ink);
-  font-size: 0.975rem;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
 .proposal-evidence-option small {
   color: var(--plan-muted);
-  font-size: 0.87rem;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
@@ -3174,20 +3146,22 @@ body {
 }
 
 .planning-overview-end {
-  height: 1px;
+  height: 0;
 }
 
 .deadline-reminder {
-  position: sticky;
+  position: absolute;
   z-index: 12;
   top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   min-height: 2rem;
   align-items: center;
   gap: 0.65rem;
-  margin: calc(-1 * clamp(1rem, 2.4cqw, 2.4rem)) calc(-1 * clamp(0.9rem, 2.1cqw, 2.1rem)) -2rem;
+  margin: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--plan-accent) 34%, transparent);
-  padding: 0.42rem clamp(0.9rem, 2.1cqw, 2.1rem);
+  padding: 0.42rem 3.5rem;
   color: var(--plan-muted);
   background: color-mix(in srgb, var(--plan-panel-raised) 96%, transparent);
   box-shadow: 0 0.65rem 1.2rem rgba(7, 12, 15, 0.16);
@@ -3206,14 +3180,14 @@ body {
   flex: 0 0 auto;
   color: var(--plan-accent);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(0.75rem, 0.93cqw, 0.93rem);
+  font-size: 0.75rem;
   white-space: nowrap;
 }
 
 .deadline-reminder strong {
   overflow: hidden;
   color: var(--plan-ink);
-  font-size: clamp(0.78rem, 0.99cqw, 0.99rem);
+  font-size: 0.875rem;
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3230,9 +3204,9 @@ body {
 
 .planning-tab-list button {
   min-height: 2.75rem;
-  padding: 0.5rem 0.4rem;
-  font-size: clamp(1.02rem, 1.23cqw, 1.23rem);
-  font-weight: 600;
+  padding: 0.9375rem 0 0.6875rem;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 /* Every reference viewer shares one window chrome. */
@@ -3360,14 +3334,14 @@ body {
   border-bottom: 1px solid var(--plan-line);
   padding: 0.58rem 0;
   color: var(--plan-muted);
-  font-size: clamp(0.93rem, 1.17cqw, 1.17rem);
-  line-height: 1.65;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
 .raw-log-window-lines strong {
   color: var(--plan-accent);
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.855rem;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 

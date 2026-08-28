@@ -256,13 +256,15 @@ function getPlannedScheduleEnd(state: GameState): number {
 interface DeadlineSummaryItem {
   id: string;
   title: string;
+  detailLabel: string;
   deadlineMinutes: number | null;
   remainingMinutes: number | null;
   statusLabel: string;
+  statusTone: "accent" | "muted" | "warning";
   isWarning: boolean;
 }
 
-function getDeadlineSummaryItems(
+export function getDeadlineSummaryItems(
   state: GameState,
   displayClockMinutes: number,
 ): DeadlineSummaryItem[] {
@@ -277,6 +279,9 @@ function getDeadlineSummaryItems(
     {
       id: "refrigeration",
       title: "냉장 시설",
+      detailLabel: knowsDeadline
+        ? `보존 한계 ${formatClock(REFRIGERATION_DEADLINE_MINUTES)}`
+        : "보존 한계 미확인",
       deadlineMinutes: knowsDeadline ? REFRIGERATION_DEADLINE_MINUTES : null,
       remainingMinutes: knowsDeadline ? remainingMinutes : null,
       statusLabel: !knowsDeadline
@@ -284,7 +289,28 @@ function getDeadlineSummaryItems(
         : remainingMinutes <= 0
           ? "한계 도달"
           : formatRemainingPreservation(remainingMinutes),
+      statusTone: isWarning ? "warning" : knowsDeadline ? "accent" : "muted",
       isWarning,
+    },
+    {
+      id: "power",
+      title: "주 발전 계통",
+      detailLabel: "복구 시각 추정 16:40",
+      deadlineMinutes: null,
+      remainingMinutes: null,
+      statusLabel: "남은 04:00",
+      statusTone: "accent",
+      isWarning: false,
+    },
+    {
+      id: "motorcycle",
+      title: "서윤의 바이크",
+      detailLabel: "복귀 시각 미정",
+      deadlineMinutes: null,
+      remainingMinutes: null,
+      statusLabel: "확인 필요",
+      statusTone: "muted",
+      isWarning: false,
     },
   ];
 }
@@ -313,17 +339,13 @@ function DeadlineSummary({
       <div className="deadline-summary-list">
         {items.map((item) => (
           <article
-            className={`deadline-summary-item${item.deadlineMinutes === null ? " deadline-summary-item--unknown" : ""}${item.isWarning ? " deadline-summary-item--warning" : ""}`}
+            className={`deadline-summary-item${item.statusTone === "muted" ? " deadline-summary-item--unknown" : ""}${item.statusTone === "warning" ? " deadline-summary-item--warning" : ""}`}
             key={item.id}
           >
             <span className="deadline-summary-marker" aria-hidden="true" />
             <div className="deadline-summary-copy">
               <h3>{item.title}</h3>
-              <p>
-                {item.deadlineMinutes === null
-                  ? "보존 한계 미확인"
-                  : `보존 한계 ${formatClock(item.deadlineMinutes)}`}
-              </p>
+              <p>{item.detailLabel}</p>
             </div>
             <strong className="deadline-summary-status">{item.statusLabel}</strong>
           </article>
@@ -404,10 +426,8 @@ function Timeline({
         <div>
           <h3>두 사람의 다음 움직임</h3>
         </div>
-        {knowsDeadline ? (
+        {knowsDeadline && (
           <span className="deadline-key">냉장 보존 한계 · 13:20</span>
-        ) : (
-          <span className="deadline-unknown">보존 한계 미확인</span>
         )}
       </div>
 
@@ -1342,20 +1362,14 @@ function PlanningPanel({
 
   return (
     <aside className="planning-pane">
+      <DeadlineReminder
+        state={state}
+        displayClockMinutes={displayClockMinutes}
+        visible={showDeadlineReminder}
+      />
       <div className="planning-scroll" ref={scrollRef} onScroll={updateDeadlineReminder}>
-        <DeadlineReminder
-          state={state}
-          displayClockMinutes={displayClockMinutes}
-          visible={showDeadlineReminder}
-        />
         <header className="planning-header">
-          <div>
-            <h2>조사 계획</h2>
-          </div>
-          <div className="planning-clock">
-            <span>현재 시각</span>
-            <strong>{formatClock(displayClockMinutes)}</strong>
-          </div>
+          <h2>조사 계획</h2>
         </header>
 
         <DeadlineSummary state={state} displayClockMinutes={displayClockMinutes} />
@@ -1413,7 +1427,7 @@ export function ReportScreen({
   const transitionTimer = useRef<number | null>(null);
   const windowLayer = useRef(30);
   const windowSpawn = useRef(0);
-  const [documentPanePercent, setDocumentPanePercent] = useState(58);
+  const [documentPanePercent, setDocumentPanePercent] = useState(50.9);
   const [isResizing, setIsResizing] = useState(false);
   const resizePointer = useRef<number | null>(null);
 
