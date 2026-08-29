@@ -27,8 +27,19 @@
 - Always run relevant automated tests and `npm run build` before completion.
 - Changes to `src/game/`, scheduling, time progression, evidence, proposal evaluation, or knowledge state require deterministic automated tests.
 - Prefer automated component or E2E tests for testable UI interactions.
-- Use browser or manual testing for visual and end-to-end checks: layout, typography, responsive behavior, animations, complete player flows.
+- For visual and end-to-end checks (layout, typography, animations, complete player flows), follow "Browser Verification (playwright-cli)".
 - Report automated tests, build, and exercised browser flows separately.
+
+## Browser Verification (playwright-cli)
+- When debugging or verifying changes that affect the web UI or user interaction, reproduce and test in a real browser using `playwright-cli`.
+- Always perform browser verification for:
+  - UI/layout changes
+  - Changes to buttons, forms, navigation, or other player-facing flows
+  - Frontend runtime errors
+  - Issues reproducible only in the browser
+  - Post-implementation checks that require confirming actual behavior
+- Do not launch a browser for pure backend/logic changes, static analysis, or cases where unit tests are sufficient.
+- Never mark browser verification as passed by assumption; actually execute the target user flow in the browser and confirm the result.
 
 ## Development Host Lifecycle
 - Never run `npm run dev` in the foreground during browser or manual testing.
@@ -36,6 +47,11 @@
 - Stop the host and its child processes after testing, including when testing fails:
   `taskkill /PID $hostProcess.Id /T /F`
 - Do not leave a Vite host running after the task is complete.
+
+## Git Pager Safety
+- Commands that open a pager (`git show`, `git log`, `git diff`, `git branch -l`, `git status` in long output) can hang an interactive shell waiting on `less` — never run them raw.
+- Use `git --no-pager show <ref>`, `git --no-pager log`, `git --no-pager diff`, or redirect to a file first (`git show <ref> > tmp.diff`).
+- For grep-like inspection, prefer `git show <ref>:<path>`, `git grep <pattern> <ref> -- <path>`, or the Grep tool over pager-prone commands.
 
 ## Report Document Typography
 - Base report document typography on Notion's default document scale; font family is Noto Sans KR for all report text.

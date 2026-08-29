@@ -135,3 +135,9 @@ public/assets/
 ├── ui/
 └── evidence/
 ```
+
+## 디자인 파일
+
+레이아웃·UI·에셋 디자인은 Penpot에서 관리합니다. 수정이 필요하면 아래 링크로 바로 이동하세요.
+
+[Penpot 워크스페이스 열기](https://design.penpot.app/#/workspace?team-id=502b4555-3f5f-807a-8008-8a29dee3d6e7&file-id=502b4555-3f5f-807a-8008-8a2a27c83963&page-id=502b4555-3f5f-807a-8008-8a2a27c83964)
