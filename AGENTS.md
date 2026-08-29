@@ -65,6 +65,8 @@
 - Keep dark and light report layouts at identical block positions and sizes; vary only the palette colors.
 
 ## Penpot Structure
+- When exporting shapes via the `penpot-mcp` `export_shape` tool for structural or layout inspection, use `format: "svg"`.
+- Use `format: "png"` only for confirming final rendered appearance (raster-only details like anti-aliasing); never use it to verify coordinates, sizes, colors, or text content.
 - Within each board, group shapes by document section (one group per document section, proposal entry, or dialog block) following the document's order; never leave all shapes flat in one board.
 - Name groups after the content they contain and keep group order matching the table of contents.
 

@@ -2428,8 +2428,7 @@ body {
 }
 
 .proposal-dialog-action p,
-.proposal-no-evidence,
-.proposal-selected-evidence span {
+.proposal-no-evidence {
   margin: 0;
   color: var(--plan-muted);
   font-size: 0.875rem;
@@ -2444,8 +2443,7 @@ body {
   padding: 1rem 0 0.6rem;
 }
 
-.proposal-evidence-heading p,
-.proposal-selected-evidence p {
+.proposal-evidence-heading p {
   margin: 0;
   color: var(--plan-ink);
   font-size: 1rem;
@@ -2505,29 +2503,6 @@ body {
 .proposal-no-evidence {
   border-bottom: 1px solid var(--plan-line);
   padding: 0.75rem 0;
-}
-
-.proposal-selected-evidence {
-  display: grid;
-  gap: 0.24rem;
-  margin-top: 1rem;
-  padding: 0;
-}
-
-.proposal-selected-evidence p {
-  color: var(--plan-faint);
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.84rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.proposal-selected-evidence ul {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--plan-muted);
-  font-size: 0.9rem;
-  line-height: 1.6;
 }
 
 .proposal-dialog-actions {

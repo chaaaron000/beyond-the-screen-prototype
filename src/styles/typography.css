@@ -210,7 +210,6 @@
 .raw-log-window-lines p,
 .proposal-dialog-action p,
 .proposal-no-evidence,
-.proposal-selected-evidence span,
 .proposal-evidence-option small {
   font-size: var(--type-body-small);
   line-height: 1.55;
@@ -231,7 +230,6 @@
 .result-viewer-actor,
 .result-viewer-evidence strong,
 .proposal-dialog-action > span,
-.proposal-selected-evidence p,
 .proposal-evidence-heading > strong {
   font-size: var(--type-caption);
 }

@@ -796,17 +796,6 @@ function ProposalEvidenceDialog({
           )}
         </div>
 
-        <div className="proposal-selected-evidence">
-          <p>선택한 근거</p>
-          <ul>
-            {selectedEvidenceIds.length === 0 ? (
-              <li>근거 없이 행동만 제안</li>
-            ) : (
-              selectedEvidenceIds.map((evidenceId) => <li key={evidenceId}>{EVIDENCE[evidenceId].title}</li>)
-            )}
-          </ul>
-        </div>
-
         <footer className="proposal-dialog-actions">
           <button type="button" className="proposal-cancel-button" onClick={onCancel}>취소</button>
           <button type="button" className="proposal-confirm-button" onClick={onConfirm}>제시하시겠습니까?</button>

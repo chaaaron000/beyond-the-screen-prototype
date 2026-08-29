@@ -2,6 +2,8 @@
 
 ## [배포 URL: https://chaaaron000.github.io/beyond-the-screen-prototype/](https://chaaaron000.github.io/beyond-the-screen-prototype/)
 
+## [Penpot 워크스페이스](https://design.penpot.app/#/workspace?team-id=502b4555-3f5f-807a-8008-8a29dee3d6e7&file-id=502b4555-3f5f-807a-8008-8a2a27c83963&page-id=502b4555-3f5f-807a-8008-8a2a27c83964)
+
 OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시설을 조사하고, 확보한 정보로 다음 행동을 판단하는 비주얼 노벨 프로토타입입니다.
 
 현재 구현 범위는 2막 Day 1의 플레이 가능한 수직 슬라이스입니다. 냉장 설비, 주 발전 계통, 서윤의 바이크를 둘러싼 우선순위 갈등과 조사 흐름을 확인할 수 있습니다.
@@ -135,9 +137,3 @@ public/assets/
 ├── ui/
 └── evidence/
 ```
-
-## 디자인 파일
-
-레이아웃·UI·에셋 디자인은 Penpot에서 관리합니다. 수정이 필요하면 아래 링크로 바로 이동하세요.
-
-[Penpot 워크스페이스 열기](https://design.penpot.app/#/workspace?team-id=502b4555-3f5f-807a-8008-8a29dee3d6e7&file-id=502b4555-3f5f-807a-8008-8a2a27c83963&page-id=502b4555-3f5f-807a-8008-8a2a27c83964)

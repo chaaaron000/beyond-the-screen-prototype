@@ -8,8 +8,5 @@
   - checkbox "주 발전 계통 상태" [checked]
   - strong: 주 발전 계통 상태
   - text: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
-  - paragraph: 선택한 근거
-  - list:
-    - listitem: 주 발전 계통 상태
   - button "취소"
   - button "제시하시겠습니까?"
