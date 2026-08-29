@@ -1,85 +1,118 @@
 # refrigeration.summary.default.seoyun
 
-SEOYUN: 계속 온도가 오르는 건 좀 걸리는데.
+SEOYUN: 냉장고 쪽이 계속 오르는 건 좀 걸리는데.
 
 
 # refrigeration.summary.default.mira
 
-MIRA: 아직 얼마나 급한지는 모르잖아요.
+MIRA: 급한지는 아직 모르잖아요.
 
 
 # refrigeration.summary.deadlineAware.seoyun
 
-SEOYUN: 13:20이면 생각보다 여유가 없네.
+SEOYUN: 13:20이면 생각보다 안 남았네.
 
 
 # refrigeration.summary.deadlineAware.mira
 
-MIRA: 응급 조치는 지금 할 가치가 있어요.
+MIRA: 그 정도면 응급 조치는 해야죠.
 
 
 # refrigeration.rawLog.default
 
-SEOYUN: 계속 온도가 오르는 건 좀 걸리는데.
-SEOYUN: 정확히 얼마나 버티는지부터 알아봐야 하지 않아?
-MIRA: 발전소부터 살리면 같이 해결될 가능성이 높아요.
-MIRA: 아직 얼마나 급한지는 모르잖아요.
+SEOYUN: 근데 냉장고 쪽은 좀 걸리는데.
+MIRA: 뭐가요.
+SEOYUN: 온도 계속 오르잖아. 
+SEOYUN: 얼마나 버티는지부터 봐야 되는 거 아냐?
+MIRA: 발전소 살리면 같이 풀릴 가능성이 높아요.
+SEOYUN: 또 가능성.
+MIRA: ……아직 급한 정도를 모르니까요.
 
 
 # refrigeration.rawLog.deadlineAware
 
-SEOYUN: 네 시간 안쪽이면 그냥 넘기긴 좀 그런데.
-SEOYUN: 13:20이면 생각보다 여유가 없네.
-MIRA: 맞아요. 응급 조치는 지금 할 가치가 있어요.
-MIRA: 그래도 근본 해결은 발전소가 먼저예요.
+SEOYUN: 13:20.
+MIRA: 네.
+SEOYUN: 네 시간도 안 남았네.
+MIRA: 이 정도면 얘기가 좀 달라지죠.
+SEOYUN: 식품부터 빼자.
+MIRA: 응급 조치는 찬성. 근본 해결은 발전소요.
 
 
 # refrigeration.proposal.noEvidence
 
-PLAYER: 냉장 설비부터 보자.
-MIRA: 엥? 냉장 설비를 지금 먼저요?
-SEOYUN: 그게 무슨 상관인데? 보존 한계부터 확인하지 않으면 움직일 수 없어.
+PLAYER: 냉장고부터 가보자.
+MIRA: 지금요? 왜요?
+PLAYER: 으음......
+SEOYUN: 나도 걸리긴 하는데, 얼마나 급한지도 아직 모르잖아.
+MIRA: 그쵸. 일단 한계부터 뽑아봐야죠.
+SEOYUN: 그냥 가자는 건 못 밀어.
 
 
 # refrigeration.proposal.related
 
-PLAYER: 냉장 설비부터 보자.
-SEOYUN: 보존 한계가 이 정도면 냉장 설비부터 확인해야 해. 당장 식품을 지키는 데 가치가 있어.
-MIRA: 맞아요. 응급 조치는 지금 할 가치가 있어요. 그래도 근본 해결은 발전소가 먼저예요.
+PLAYER: 냉장고부터 가보자.
+SEOYUN: 13:20이라고? 
+SEOYUN: 그럼 가야지. 더 미루다 상하면 끝이야.
+MIRA: 응급 조치는 저도 찬성.
+SEOYUN: 웬일?
+MIRA: ......웬일이라뇨.
+MIRA: 저도 추론하고 결론 내고 있거든요!
+SEOYUN: 응, 그렇구나.
+MIRA: 아.
+SEOYUN: 일단 냉장고부터.
+MIRA: ......네.
 
 
 # refrigeration.proposal.irrelevant
 
-PLAYER: 냉장 설비부터 보자.
-MIRA: 엥? 그 기록이 냉장 설비랑 무슨 상관이에요?
-SEOYUN: 그걸로는 식품을 옮길 이유가 안 돼. 보존 상태부터 봐야 해.
+PLAYER: 냉장고부터 가보자.
+MIRA: 선배, 그 기록은 냉장고랑 상관없는데요.
+SEOYUN: 식품이 얼마나 버티는지 말해주는 것도 아니고.
+MIRA: 이걸 근거라고 내시면 저도 좀 곤란한데.
+PLAYER: 미안.
+MIRA: 뭐... 전력 상태도 메롱이니까.
+MIRA: 쿠다 다 안 돌아가면 그럴 수 있죠.
+SEOYUN: 아무튼 다른 거 보고 와.
 
 
 # refrigeration.field.entry
 
-PLAYER: 지하 1층 식당 구역에 도착했다.
-SEOYUN: 냉장 설비실 문을 찾아서 열어 보자.
-SEOYUN: ……야. 여기 생각보다 하나도 안 차가운데.
-MIRA: 잠깐. 센서값도 생각보다 훨씬 올라갔는데요.
-SEOYUN: 안 돼, 상하기 쉬운 식품부터 골라서 옮기자.
-MIRA: 작동하는 주거용 냉장고 위치를 표시할게요. 그쪽으로 가져가요.
-SEOYUN: 식품은 옮겼어. 그런데 온도 제어 패널이 반응하지 않아.
-MIRA: 응급 이동은 했지만, 냉장 설비 자체는 아직 정상으로 돌아오지 않았어요.
+PLAYER: 지하 1층 식당 구역에 도착했다. 
+PLAYER: 냉장 설비실 문을 열자 서윤이 바로 인상을 찌푸렸다.
+SEOYUN: ……야. 하나도 안 차갑잖아.
+MIRA: 잠깐만요. 센서도—
+MIRA: 아, 씨. 생각보다 훨씬 높네.
+SEOYUN: 상하기 쉬운 것부터 빼. 지금.
+MIRA: 주거용 냉장고 살아 있는 데 찍어둘게요. 거기로 옮겨요.
+PLAYER: 둘은 음식을 옮겼다.
+SEOYUN: 됐다. 급한 건 다 옮겼어.
+SEOYUN: ......근데 이 패널 왜 먹통이야?
+MIRA: 패널 자체는 살아 있어요. 제어가 안 넘어오는데.
 
 
 # refrigeration.field.terminal.first
 
-SEOYUN: 단말기? 냉장 설비 온도도 현장 단말로 조절해?
-MIRA: 절차를 보니 로컬 인증 단말이 있어야 온도 제어를 넘길 수 있어요.
+SEOYUN: 제어가 안 넘어온다는 게 뭔데.
+MIRA: 로컬 인증이 필요하대요. 현장 단말기.
+SEOYUN: ……냉장고 온도 바꾸는데도?
+MIRA: 네. 여기 만든 사람들 단말기 진짜 좋아했나 봐요.
 
 
 # refrigeration.field.terminal.second
 
-SEOYUN: 아, 씨발. 또 단말기야? 식품은 옮겼는데 이것도?
-MIRA: 냉장 설비도 예외가 아니네요. 온도 제어가 현장 단말 인증에 묶여 있어요.
+SEOYUN: 야. 설마 여기서도 단말기라고 하지 마.
+MIRA: 어…… 단말기인데요.
+SEOYUN: 아, 씨발.
+MIRA: 저도 말하기 싫었어요.
+SEOYUN: 식품은 옮겨놔서 다행이네.
+MIRA: 설비 자체를 살리려면 결국 찾아야 돼요.
 
 
 # refrigeration.field.terminal.third
 
-SEOYUN: 진짜 죄다 그거네. 냉장 설비 온도까지 단말기 없이는 못 바꿔.
-MIRA: 이제 시설 전체가 같은 단말 제어에 의존한다는 결론을 피할 수 없어요.
+SEOYUN: 됐어. 말 안 해도 알아. 
+SEOYUN: 또 단말기지?
+MIRA: 정답.
+SEOYUN: 진짜 죄다 그거네.
+MIRA: 네. 냉장 설비까지 이러면 거의 시설 공통이에요.
