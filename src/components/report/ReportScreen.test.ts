@@ -2,7 +2,19 @@ import { describe, expect, it } from "vitest";
 import { createInitialState } from "../../game/state";
 import { INITIAL_CLOCK_MINUTES, REFRIGERATION_DEADLINE_MINUTES, formatClock } from "../../game/clock";
 import { gameReducer } from "../../game/reducer";
-import { clampResultsPercent, getDeadlineSummaryItems, getResultRows, getResultsHeightPercent } from "./ReportScreen";
+import {
+  ATTACHMENTS,
+  type AttachmentKind,
+} from "../../content/reports/attachments";
+import { EVIDENCE } from "../../content/reports/facts";
+import {
+  clampResultsPercent,
+  getDeadlineSummaryItems,
+  getResultRows,
+  getResultViewerDetail,
+  getResultsHeightPercent,
+} from "./ReportScreen";
+import type { EvidenceId, TaskId } from "../../types/game";
 
 describe("planning deadline summary", () => {
   it("shows the three scenario constraints without inventing extra gameplay deadlines", () => {
@@ -74,6 +86,48 @@ describe("results row projection", () => {
     expect(formatClock(rows[0].startedAtMinutes)).toBe("09:20");
     expect(formatClock(rows[0].completedAtMinutes)).toBe("09:30");
     expect(formatClock(rows[1].completedAtMinutes)).toBe("09:45");
+  });
+});
+
+describe("result viewer embedded attachment", () => {
+  const EXPECTED_MAPPINGS: Array<[TaskId, EvidenceId, string, AttachmentKind]> = [
+    ["powerAnalysis", "powerGridStatus", "주 발전 계통 / 전력 상태", "trend"],
+    ["refrigerationAnalysis", "refrigerationLimit", "냉장 설비 / 출력 추세", "trend"],
+    ["terminalLocationSearch", "terminalLocation", "유지보수 기록 / 후보 위치", "map"],
+    ["terminalSearch", "terminalConfirmed", "공동 보관실 C-12 / 확인 기록", "photo"],
+  ];
+
+  it("resolves the correct evidence and attachment detail for all four investigation tasks", () => {
+    for (const [taskId, evidenceId, attachmentTitle, kind] of EXPECTED_MAPPINGS) {
+      const detail = getResultViewerDetail(taskId);
+
+      expect(detail, `missing detail for ${taskId}`).not.toBeNull();
+      expect(detail!.evidenceId).toBe(evidenceId);
+      expect(detail!.evidenceTitle).toBe(EVIDENCE[evidenceId].title);
+      expect(detail!.evidenceDetail).toBe(EVIDENCE[evidenceId].detail);
+      expect(detail!.attachment).toBe(ATTACHMENTS[evidenceId]);
+      expect(detail!.attachment.title).toBe(attachmentTitle);
+      expect(detail!.attachment.kind).toBe(kind);
+      expect(detail!.attachment.caption.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("result viewer attachment across a completion chain", () => {
+  it("resolves details matching each completed task's discovery chain", () => {
+    let state = gameReducer(createInitialState(), { type: "PLAN_TASK", taskId: "powerAnalysis" });
+    state = gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+    state = gameReducer(state, { type: "PLAN_TASK", taskId: "refrigerationAnalysis" });
+    state = gameReducer(state, { type: "ADVANCE_TO_NEXT_COMPLETION" });
+
+    const rows = getResultRows(state).map((row) => row.taskId);
+    expect(rows).toEqual(["powerAnalysis", "refrigerationAnalysis"]);
+
+    for (const taskId of rows) {
+      const detail = getResultViewerDetail(taskId);
+      expect(detail).not.toBeNull();
+      expect(state.discoveredEvidence).toContain(detail!.evidenceId);
+    }
   });
 });
 

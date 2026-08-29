@@ -1,0 +1,13 @@
+- dialog "조사 결과":
+  - heading "조사 결과" [level=2]
+  - paragraph: OASIS Viewer
+  - button "조사 결과 닫기": ×
+  - article:
+    - paragraph: 미라 · 완료
+    - heading "현장 단말기 위치 조사" [level=3]
+    - paragraph: 오래된 기록에서 단말기 후보 구역 하나를 좁혔다.
+    - strong: 단말기 후보 위치
+    - paragraph: 오래된 유지보수 기록에 중앙 서비스 구역 공동 보관실 C-12가 후보로 남아 있다.
+    - heading "유지보수 기록 / 후보 위치" [level=4]
+    - text: C-12
+    - paragraph: 중앙 서비스 구역 공동 보관실

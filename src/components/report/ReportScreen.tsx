@@ -145,7 +145,6 @@ function useDraggableWindow(cascade: number) {
 }
 
 type FloatingWindowRequest =
-  | { key: `attachment:${EvidenceId}`; type: "attachment"; contentId: EvidenceId }
   | { key: `result:${TaskId}`; type: "result"; contentId: TaskId }
   | { key: `raw-log:${ProposalId}`; type: "raw-log"; contentId: ProposalId }
   | { key: `field-result:${ProposalId}`; type: "field-result"; contentId: ProposalId };
@@ -860,30 +859,6 @@ function AttachmentVisual({ attachment }: { attachment: AttachmentDefinition }) 
   );
 }
 
-function AttachmentViewer({
-  attachment,
-  windowState,
-  onClose,
-  onFocus,
-}: {
-  attachment: AttachmentDefinition;
-  windowState: FloatingWindowState;
-  onClose: () => void;
-  onFocus: () => void;
-}) {
-  return (
-    <FloatingWindowFrame
-      windowState={windowState}
-      title={attachment.title}
-      className="floating-window--attachment attachment-viewer"
-      onClose={onClose}
-      onFocus={onFocus}
-    >
-      <AttachmentVisual attachment={attachment} />
-    </FloatingWindowFrame>
-  );
-}
-
 function rawSpeakerLabel(speaker: DialogueLine["speaker"]): string {
   switch (speaker) {
     case "mira":
@@ -1068,22 +1043,42 @@ export function getResultsHeightPercent(
   return clampResultsPercent(raw);
 }
 
+/** Evidence + attachment detail a completed investigation task's ResultViewer renders. */
+export interface ResultViewerDetail {
+  evidenceId: EvidenceId;
+  evidenceTitle: string;
+  evidenceDetail: string;
+  attachment: AttachmentDefinition;
+}
+
+/** Resolve the embedded attachment detail for one task's result window. */
+export function getResultViewerDetail(taskId: TaskId): ResultViewerDetail | null {
+  const task = getTask(taskId);
+  if (!task.result.evidenceId) return null;
+  const evidence = EVIDENCE[task.result.evidenceId];
+  const attachment = ATTACHMENTS[task.result.evidenceId];
+  if (!evidence || !attachment) return null;
+  return {
+    evidenceId: task.result.evidenceId,
+    evidenceTitle: evidence.title,
+    evidenceDetail: evidence.detail,
+    attachment,
+  };
+}
+
 function ResultViewer({
   taskId,
   windowState,
   onClose,
   onFocus,
-  onOpenAttachment,
 }: {
   taskId: TaskId;
   windowState: FloatingWindowState;
   onClose: () => void;
   onFocus: () => void;
-  onOpenAttachment: (attachment: AttachmentDefinition) => void;
 }) {
   const task = getTask(taskId);
-  const evidence = task.result.evidenceId ? EVIDENCE[task.result.evidenceId] : null;
-  const attachment = task.result.evidenceId ? ATTACHMENTS[task.result.evidenceId] : null;
+  const detail = getResultViewerDetail(taskId);
 
   return (
     <FloatingWindowFrame
@@ -1098,11 +1093,14 @@ function ResultViewer({
           <p className={`result-viewer-actor result-viewer-actor--${task.actor}`}>{ACTOR_LABEL[task.actor]} · 완료</p>
           <h3>{task.title}</h3>
           <p className="result-viewer-summary">{task.result.summary}</p>
-          {evidence && (
+          {detail && (
             <div className="result-viewer-evidence">
-              <strong>{evidence.title}</strong>
-              <p>{evidence.detail}</p>
-              {attachment && <button type="button" onClick={() => onOpenAttachment(attachment)}>{attachment.label}</button>}
+              <strong>{detail.evidenceTitle}</strong>
+              <p>{detail.evidenceDetail}</p>
+              <div className="result-viewer-attachment">
+                <h4>{detail.attachment.title}</h4>
+                <AttachmentVisual attachment={detail.attachment} />
+              </div>
             </div>
           )}
         </article>
@@ -1437,14 +1435,6 @@ export function ReportScreen({
     setOpenWindows((current) => current.filter((windowState) => windowState.key !== key));
   };
 
-  const openAttachmentViewer = (attachment: AttachmentDefinition) => {
-    openWindow({
-      key: `attachment:${attachment.evidenceId}`,
-      type: "attachment",
-      contentId: attachment.evidenceId,
-    });
-  };
-
   const openResultViewer = (taskId: TaskId) => {
     openWindow({ key: `result:${taskId}`, type: "result", contentId: taskId });
   };
@@ -1647,10 +1637,8 @@ export function ReportScreen({
           onFocus: () => focusWindow(windowState.key),
         };
         switch (windowState.type) {
-          case "attachment":
-            return <AttachmentViewer key={windowState.key} attachment={ATTACHMENTS[windowState.contentId]} {...commonProps} />;
           case "result":
-            return <ResultViewer key={windowState.key} taskId={windowState.contentId} onOpenAttachment={openAttachmentViewer} {...commonProps} />;
+            return <ResultViewer key={windowState.key} taskId={windowState.contentId} {...commonProps} />;
           case "raw-log":
             return <RawLogViewer key={windowState.key} proposal={getProposal(windowState.contentId)} state={state} {...commonProps} />;
           case "field-result":

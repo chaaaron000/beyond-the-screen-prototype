@@ -1,0 +1,14 @@
+- dialog "조사 결과":
+  - heading "조사 결과" [level=2]
+  - paragraph: OASIS Viewer
+  - button "조사 결과 닫기": ×
+  - article:
+    - paragraph: 미라 · 완료
+    - heading "냉장 설비 상태 분석" [level=3]
+    - paragraph: 비상 전원 출력 추세와 식품 보존 한계 시각을 확보했다.
+    - strong: 냉장 보존 한계 추정
+    - paragraph: 비상 전원 출력이 계속 떨어지고 있다. 현재 추세라면 13:20경 식품 보존 한계에 도달한다.
+    - heading "냉장 설비 / 출력 추세" [level=4]
+    - text: 비상 출력 보존 한계 13:20
+    - img "하락하는 출력 추세"
+    - text: 현재 분석 추세 13:20

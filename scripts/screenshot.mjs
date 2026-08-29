@@ -22,8 +22,6 @@
  *                        evidence:<n>        toggle Nth proposal evidence checkbox
  *                        confirm             confirm the proposal dialog
  *                        advance             click the advance-time control
- *                        open-attachment:<n> open Nth attachment button inside
- *                                            an open result viewer window
  *                        open-result:<n>     open Nth result row's 열기 control
  *                        open-rawlog:<n>     open Nth raw-log button
  *                        open-field-result:<n>
@@ -231,9 +229,6 @@ async function runAct(page, act) {
       return;
     case "advance":
       await clickNth(page, ".advance-time-control", 0);
-      return;
-    case "open-attachment":
-      await clickNth(page, ".result-viewer-evidence button", Number(value ?? 0));
       return;
     case "open-result":
       await clickNth(page, ".results-table tbody .results-open-button", Number(value ?? 0));

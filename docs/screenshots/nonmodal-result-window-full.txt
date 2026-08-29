@@ -139,4 +139,13 @@
       - paragraph: 주 발전 계통의 정지와 생활 구역 비상 전력 의존 상태를 확인했다.
       - strong: 주 발전 계통 상태
       - paragraph: 주 발전 계통은 오프라인이며 생활 구역 주요 설비가 비상·제한 전력에 의존한다. 이 상태를 장시간 유지하기 어렵다.
-      - button "전력 상태 기록 보기"
+      - heading "주 발전 계통 / 전력 상태" [level=4]
+      - paragraph:
+        - text: 주 발전 OFFLINE
+        - emphasis: 확인
+      - paragraph:
+        - text: 생활 구역 비상·제한 전력 의존
+        - emphasis: 주의
+      - paragraph:
+        - text: 지속성 장시간 유지 어려움
+        - emphasis: 분석

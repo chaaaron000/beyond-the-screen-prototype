@@ -14,7 +14,7 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 2. 대화가 끝나면 OASIS 내부 운영 보고서 화면으로 이동합니다. 왼쪽은 보고서 문서, 오른쪽은 조사 계획 판만 있는 2분할 화면이고, 화면 아래에는 조사 결과 판이 별도로 놓입니다.
 3. MIRAGE에게 로그·센서·기록 분석을 맡겨 조사 예정에 넣고 순서를 정합니다.
 4. 조사 예정에 넣는 순간에는 작업이나 시간이 시작되지 않습니다. 진행 버튼을 눌렀을 때 각자의 첫 작업이 시작되고, 다음 완료 시점까지 시간이 흐릅니다.
-5. 작업이 완료되면 완료 기록이 아래 조사 결과 판에 한 줄씩 쌓입니다. 각 행의 `열기`를 누르면 기존 플로팅 결과 창에서 세부 내용과 첨부 자료를 확인할 수 있습니다. 보고서와 조사 결과 판의 높이, 보고서와 조사 계획 판의 너비는 구분선을 드래그해 조절할 수 있습니다.
+5. 작업이 완료되면 완료 기록이 아래 조사 결과 판에 한 줄씩 쌓입니다. 각 행의 `열기`를 누르면 플로팅 결과 창 하나에서 조사 요약과 세부 자료를 함께 확인할 수 있습니다. 보고서와 조사 결과 판의 높이, 보고서와 조사 계획 판의 너비는 구분선을 드래그해 조절할 수 있습니다.
 6. 확보한 정보에 따라 시작 가능한 조사와 대사 분기가 달라집니다. 제안이 수락되면 한서윤이 실제 현장으로 이동하며, 방문 전체가 콘텐츠에 정의된 세계 시간을 소비합니다. 같은 시간 동안 이미 진행 중인 MIRAGE 조사도 진행되지만 다음 예약 작업은 자동 시작하지 않습니다.
 7. 승인된 현장 방문만 FIELD LINK와 FIELD LOG UPDATED 기록을 거칩니다. 거절된 제안은 짧은 fade와 거절 대화 뒤 보고서로 돌아옵니다.
 8. 현장 방문이 완료되면 해당 액션의 버튼이 강조된 활성 `결과 확인` 버튼으로 바뀝니다. 버튼을 누르면 경로 세부 내용이 비모달 플로팅 창으로 열리고 새 결과 강조가 해제되며, 완료한 경로는 다시 제안할 수 없습니다.
@@ -73,17 +73,15 @@ OASIS 생활 구역 03에서 한서윤과 미라가 제한된 시간 안에 시�
 
 ![Report shell with the field route result window open](docs/screenshots/field-result-window.svg)
 
-![Non-modal attachment window](docs/screenshots/nonmodal-attachment-window.svg)
-
 ![Non-modal result window](docs/screenshots/nonmodal-result-window.svg)
 
 ![Non-modal result window over the report](docs/screenshots/nonmodal-result-window-full.svg)
 
+![Non-modal refrigeration result window](docs/screenshots/nonmodal-result-window-refrigeration.svg)
+
+![Non-modal terminal location result window](docs/screenshots/nonmodal-result-window-terminal-location.svg)
+
 ![Non-modal raw-log window](docs/screenshots/nonmodal-raw-log-window.svg)
-
-![Attachment, result, and raw-log non-modal windows](docs/screenshots/floating-nonmodal-windows.svg)
-
-![Dragged attachment window over result and raw-log windows](docs/screenshots/floating-attachment-result-raw-log.svg)
 
 ## 실행
 

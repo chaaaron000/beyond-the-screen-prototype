@@ -1099,19 +1099,19 @@ body {
   font-weight: 500;
 }
 
-.result-viewer-evidence button {
-  margin-top: 0.5rem;
-  border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--plan-accent) 48%, transparent);
-  padding: 0 0 0.16rem;
-  color: var(--plan-amber);
-  background: transparent;
-  cursor: pointer;
-  font-size: 0.78rem;
+.result-viewer-attachment {
+  margin-top: 0.55rem;
 }
 
-.result-viewer-evidence button:hover {
-  border-color: var(--plan-amber);
+.result-viewer-attachment h4 {
+  margin: 0;
+  color: var(--plan-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.result-viewer-attachment .attachment-visual {
+  margin-top: 0.35rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1825,20 +1825,6 @@ body {
   color: var(--plan-faint);
   background: var(--plan-panel-raised);
   cursor: not-allowed;
-}
-
-.attachment-viewer {
-  top: clamp(4.5rem, 9vh, 6.5rem);
-  right: clamp(1rem, 11vw, 9rem);
-  width: min(36rem, calc(100vw - 2rem));
-  max-height: calc(100vh - 2rem);
-  overflow: auto;
-  border: 1px solid color-mix(in srgb, var(--plan-line-base) 22%, transparent);
-  border-left: 2px solid var(--plan-amber);
-  padding: clamp(1rem, 2cqw, 2rem);
-  color: var(--plan-ink);
-  background: var(--plan-panel-raised);
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.38);
 }
 
 .floating-window {
@@ -3249,7 +3235,6 @@ body {
   margin-top: 0;
 }
 
-.attachment-viewer,
 .result-viewer {
   padding: 0;
   background: var(--plan-panel-raised);

@@ -229,6 +229,7 @@
 
 .result-viewer-actor,
 .result-viewer-evidence strong,
+.result-viewer-attachment h4,
 .proposal-dialog-action > span,
 .proposal-evidence-heading > strong {
   font-size: var(--type-caption);
